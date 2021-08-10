@@ -35,6 +35,7 @@ class EntregaRepository extends ServiceEntityRepository
             ->addSelect('e.fechaIngreso')
             ->addSelect('e.descripcion')
             ->addSelect('e.codigoEntregaTipoFk')
+            ->addSelect('e.estadoAutorizado')
             ->leftJoin('e.celdaRel', 'c')
             ->where("c.codigoUsuarioFk = {$codigoUsuario}")
             ->andWhere("e.estadoEntregado = 0");
@@ -43,6 +44,7 @@ class EntregaRepository extends ServiceEntityRepository
             ->select('e.codigoEntregaPk')
             ->addSelect('e.fechaIngreso')
             ->addSelect('e.descripcion')
+            ->addSelect('e.estadoAutorizado')
             ->addSelect('e.codigoEntregaTipoFk')
             ->leftJoin('e.celdaRel', 'c')
             ->where("c.codigoUsuarioFk = {$codigoUsuario}")
@@ -86,4 +88,90 @@ class EntregaRepository extends ServiceEntityRepository
         }
     }
 
+    public function apiAutorizar($codigoEntrega, $autorizar, $codigoUsuario)
+    {
+        $em = $this->getEntityManager();
+        $arEntrega = $em->getRepository(Entrega::class)->find($codigoEntrega);
+        if($arEntrega) {
+            if($arEntrega->getEstadoAutorizado() == 'P') {
+                if($arEntrega->isEstadoEntregado() == 0) {
+                    $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
+                    if($arUsuario) {
+                        if($autorizar == 'S' || $autorizar == 'N') {
+                            if($autorizar == 'S') {
+                                $arEntrega->setEstadoAutorizado($autorizar);
+                            }
+                            if($autorizar == 'N') {
+                                $arEntrega->setEstadoAutorizado($autorizar);
+                                $arEntrega->setEstadoEntregado(1);
+                            }
+                            $em->persist($arEntrega);
+                            $em->flush();
+                            return ['error' => false];
+                        } else {
+                            return [
+                                'error' => true,
+                                'errorMensaje' => "Solo se permiten valores S o N en el parametro autorizar"
+                            ];
+                        }
+                    } else {
+                        return [
+                            'error' => true,
+                            'errorMensaje' => "No existe el usuario"
+                        ];
+                    }
+                } else {
+                    return [
+                        'error' => true,
+                        'errorMensaje' => "La entrega esta entregada"
+                    ];
+                }
+            } else {
+                return [
+                    'error' => true,
+                    'errorMensaje' => "La entrega no esta pendiente de autorizacion"
+                ];
+            }
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "No existe la entrega"
+            ];
+        }
+    }
+
+    public function apiEntregar($codigoEntrega, $codigoUsuario)
+    {
+        $em = $this->getEntityManager();
+        $arEntrega = $em->getRepository(Entrega::class)->find($codigoEntrega);
+        if($arEntrega) {
+            if($arEntrega->isEstadoEntregado() == 0) {
+                $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
+                if($arUsuario) {
+                    if($arEntrega->getEstadoAutorizado() == "P") {
+                        $arEntrega->setEstadoAutorizado('S');
+                    }
+                    $arEntrega->setEstadoEntregado(1);
+                    $em->persist($arEntrega);
+                    $em->flush();
+                    return ['error' => false];
+                } else {
+                    return [
+                        'error' => true,
+                        'errorMensaje' => "No existe el usuario"
+                    ];
+                }
+            } else {
+                return [
+                    'error' => true,
+                    'errorMensaje' => "La entrega esta entregada"
+                ];
+            }
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "No existe la entrega"
+            ];
+        }
+    }
 }

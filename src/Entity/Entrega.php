@@ -44,14 +44,14 @@ class Entrega
     private $estadoNotificado = false;
 
     /**
-     * @ORM\Column(name="estado_aceptado", type="boolean", options={"default" : false}, nullable=true)
-     */
-    private $estadoAceptado = false;
-
-    /**
      * @ORM\Column(name="estado_entregado", type="boolean", options={"default" : false}, nullable=true)
      */
     private $estadoEntregado = false;
+
+    /**
+     * @ORM\Column(name="estado_autorizado", type="string", options={"default" : "P"})
+     */
+    private $estadoAutorizado = "P";
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Celda", inversedBy="entregasCeldaRel")
@@ -142,22 +142,6 @@ class Entrega
     /**
      * @return bool
      */
-    public function isEstadoAceptado(): bool
-    {
-        return $this->estadoAceptado;
-    }
-
-    /**
-     * @param bool $estadoAceptado
-     */
-    public function setEstadoAceptado(bool $estadoAceptado): void
-    {
-        $this->estadoAceptado = $estadoAceptado;
-    }
-
-    /**
-     * @return bool
-     */
     public function isEstadoEntregado(): bool
     {
         return $this->estadoEntregado;
@@ -201,6 +185,22 @@ class Entrega
     public function setCodigoEntregaTipoFk($codigoEntregaTipoFk): void
     {
         $this->codigoEntregaTipoFk = $codigoEntregaTipoFk;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEstadoAutorizado(): string
+    {
+        return $this->estadoAutorizado;
+    }
+
+    /**
+     * @param string $estadoAutorizado
+     */
+    public function setEstadoAutorizado(string $estadoAutorizado): void
+    {
+        $this->estadoAutorizado = $estadoAutorizado;
     }
 
 
