@@ -24,38 +24,28 @@ class EntregaRepository extends ServiceEntityRepository
     public function apiLista($codigoUsuario)
     {
         $em = $this->getEntityManager();
+        $queryBuilder = $em->createQueryBuilder()->from(Entrega::class, 'e')
+            ->select('e.codigoEntregaPk')
+            ->addSelect('e.fechaIngreso')
+            ->addSelect('e.entrega')
+            ->addSelect('e.descripcion')
+            ->addSelect('e.codigoEntregaTipoFk')
+            ->addSelect('e.estadoAutorizado')
+            ->addSelect('e.estadoEntregado')
+            ->addSelect('e.estadoNotificado')
+            ->leftJoin('e.celdaRel', 'c')
+            ->where("c.codigoUsuarioFk = {$codigoUsuario}")
+            ->orderBy('e.estadoEntregado', 'ASC')
+            ->setMaxResults(20);
+        $arEntregas = $queryBuilder->getQuery()->getResult();
         $respuesta = [
             'error' => false,
-            'mensajeError' => null,
-            'entregasPendientes' => [],
-            'entregasEntregadas' => []
+            'entregas' => $arEntregas
         ];
-        $queryBuilder = $em->createQueryBuilder()->from(Entrega::class, 'e')
-            ->select('e.codigoEntregaPk')
-            ->addSelect('e.fechaIngreso')
-            ->addSelect('e.descripcion')
-            ->addSelect('e.codigoEntregaTipoFk')
-            ->addSelect('e.estadoAutorizado')
-            ->leftJoin('e.celdaRel', 'c')
-            ->where("c.codigoUsuarioFk = {$codigoUsuario}")
-            ->andWhere("e.estadoEntregado = 0");
-        $arEntregasPendientes = $queryBuilder->getQuery()->getResult();
-        $queryBuilder = $em->createQueryBuilder()->from(Entrega::class, 'e')
-            ->select('e.codigoEntregaPk')
-            ->addSelect('e.fechaIngreso')
-            ->addSelect('e.descripcion')
-            ->addSelect('e.estadoAutorizado')
-            ->addSelect('e.codigoEntregaTipoFk')
-            ->leftJoin('e.celdaRel', 'c')
-            ->where("c.codigoUsuarioFk = {$codigoUsuario}")
-            ->andWhere("e.estadoEntregado = 1");
-        $arEntregasEntregadas = $queryBuilder->getQuery()->getResult();
-        $respuesta['entregasPendientes'] = $arEntregasPendientes;
-        $respuesta['entregasEntregadas'] = $arEntregasEntregadas;
         return $respuesta;
     }
 
-    public function apiNuevo($codigoPanal, $celda, $tipo)
+    public function apiNuevo($codigoPanal, $celda, $tipo, $entrega)
     {
         $em = $this->getEntityManager();
         $arPanal = $em->getRepository(Panal::class)->find($codigoPanal);
@@ -66,6 +56,7 @@ class EntregaRepository extends ServiceEntityRepository
                 $arEntrega->setCeldaRel($arCelda);
                 $arEntrega->setFechaIngreso(new \DateTime('now'));
                 $arEntrega->setCodigoEntregaTipoFk($tipo);
+                $arEntrega->setEntrega($entrega);
                 $em->persist($arEntrega);
                 $em->flush();
                 //Usuarios a los que se debe notificar

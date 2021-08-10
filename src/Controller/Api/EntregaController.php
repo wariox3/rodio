@@ -44,8 +44,9 @@ class EntregaController extends AbstractFOSRestController
         $codigoPanal = $raw['codigoPanal']?? null;
         $celda = $raw['celda']?? null;
         $tipo = $raw['tipo']?? null;
+        $entrega = $raw['entrega']?? null;
         if($codigoPanal && $celda && $tipo) {
-            return $em->getRepository(Entrega::class)->apiNuevo($codigoPanal, $celda, $tipo);
+            return $em->getRepository(Entrega::class)->apiNuevo($codigoPanal, $celda, $tipo, $entrega);
         } else {
             return [
                 'error' => true,

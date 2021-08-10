@@ -34,6 +34,11 @@ class Entrega
     private $codigoEntregaTipoFk;
 
     /**
+     * @ORM\Column(name="entrega", type="string", length=100, nullable=true)
+     */
+    private $entrega;
+
+    /**
      * @ORM\Column(name="descripcion", type="string", length=200, nullable=true)
      */
     private $descripcion;
@@ -201,6 +206,22 @@ class Entrega
     public function setEstadoAutorizado(string $estadoAutorizado): void
     {
         $this->estadoAutorizado = $estadoAutorizado;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEntrega()
+    {
+        return $this->entrega;
+    }
+
+    /**
+     * @param mixed $entrega
+     */
+    public function setEntrega($entrega): void
+    {
+        $this->entrega = $entrega;
     }
 
 
