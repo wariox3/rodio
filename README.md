@@ -1,2 +1,0 @@
-# rodio
-Servicios de uranio
