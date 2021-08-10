@@ -1,0 +1,336 @@
+<?php
+
+
+namespace App\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * @ORM\Entity(repositoryClass="App\Repository\UsuarioRepository")
+ */
+class Usuario
+{
+
+    /**
+     * @ORM\Id
+     * @ORM\Column(name="codigo_usuario_pk", type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $codigoUsuarioPk;
+
+    /**
+     * @ORM\Column(name="usuario", type="string", length=50)
+     */
+    private $usuario;
+
+    /**
+     * @ORM\Column(name="clave", type="string", length=50)
+     */
+    private $clave;
+
+    /**
+     * @ORM\Column(name="codigo_panal_fk", type="integer", nullable=true)
+     */
+    private $codigoPanalFk;
+
+    /**
+     * @ORM\Column(name="codigo_celda_fk", type="integer", nullable=true)
+     */
+    private $codigoCeldaFk;
+
+    /**
+     * @ORM\Column(name="celular", type="string", length=50)
+     */
+    private $celular;
+
+    /**
+     * @ORM\Column(name="url_imagen", type="string", length=250)
+     */
+    private $urlImagen;
+
+    /**
+     * @ORM\Column(name="token_firebase", type="string", length=500, nullable=true)
+     */
+    private $tokenFirebase;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Panal", inversedBy="usuariosPanalRel")
+     * @ORM\JoinColumn(name="codigo_panal_fk", referencedColumnName="codigo_panal_pk")
+     */
+    private $panalRel;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Celda", inversedBy="usuariosCeldaRel")
+     * @ORM\JoinColumn(name="codigo_celda_fk", referencedColumnName="codigo_celda_pk")
+     */
+    private $celdaRel;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Publicacion", mappedBy="usuarioRel")
+     */
+    private $publicacionesUsuarioRel;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Comentario", mappedBy="usuarioRel")
+     */
+    private $comentariosUsuarioRel;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Reaccion", mappedBy="usuarioRel")
+     */
+    private $reaccionesUsuarioRel;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Celda", mappedBy="usuarioRel")
+     */
+    private $celdasUsuarioRel;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Visita", mappedBy="usuarioAutorizaRel")
+     */
+    private $visitasUsuarioAutorizaRel;
+
+    /**
+     * @return mixed
+     */
+    public function getCodigoUsuarioPk()
+    {
+        return $this->codigoUsuarioPk;
+    }
+
+    /**
+     * @param mixed $codigoUsuarioPk
+     */
+    public function setCodigoUsuarioPk($codigoUsuarioPk): void
+    {
+        $this->codigoUsuarioPk = $codigoUsuarioPk;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
+    }
+
+    /**
+     * @param mixed $usuario
+     */
+    public function setUsuario($usuario): void
+    {
+        $this->usuario = $usuario;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getClave()
+    {
+        return $this->clave;
+    }
+
+    /**
+     * @param mixed $clave
+     */
+    public function setClave($clave): void
+    {
+        $this->clave = $clave;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPublicacionesUsuarioRel()
+    {
+        return $this->publicacionesUsuarioRel;
+    }
+
+    /**
+     * @param mixed $publicacionesUsuarioRel
+     */
+    public function setPublicacionesUsuarioRel($publicacionesUsuarioRel): void
+    {
+        $this->publicacionesUsuarioRel = $publicacionesUsuarioRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCeldasUsuarioRel()
+    {
+        return $this->celdasUsuarioRel;
+    }
+
+    /**
+     * @param mixed $celdasUsuarioRel
+     */
+    public function setCeldasUsuarioRel($celdasUsuarioRel): void
+    {
+        $this->celdasUsuarioRel = $celdasUsuarioRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodigoCeldaFk()
+    {
+        return $this->codigoCeldaFk;
+    }
+
+    /**
+     * @param mixed $codigoCeldaFk
+     */
+    public function setCodigoCeldaFk($codigoCeldaFk): void
+    {
+        $this->codigoCeldaFk = $codigoCeldaFk;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCeldaRel()
+    {
+        return $this->celdaRel;
+    }
+
+    /**
+     * @param mixed $celdaRel
+     */
+    public function setCeldaRel($celdaRel): void
+    {
+        $this->celdaRel = $celdaRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVisitasUsuarioAutorizaRel()
+    {
+        return $this->visitasUsuarioAutorizaRel;
+    }
+
+    /**
+     * @param mixed $visitasUsuarioAutorizaRel
+     */
+    public function setVisitasUsuarioAutorizaRel($visitasUsuarioAutorizaRel): void
+    {
+        $this->visitasUsuarioAutorizaRel = $visitasUsuarioAutorizaRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getComentariosUsuarioRel()
+    {
+        return $this->comentariosUsuarioRel;
+    }
+
+    /**
+     * @param mixed $comentariosUsuarioRel
+     */
+    public function setComentariosUsuarioRel($comentariosUsuarioRel): void
+    {
+        $this->comentariosUsuarioRel = $comentariosUsuarioRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUrlImagen()
+    {
+        return $this->urlImagen;
+    }
+
+    /**
+     * @param mixed $urlImagen
+     */
+    public function setUrlImagen($urlImagen): void
+    {
+        $this->urlImagen = $urlImagen;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCelular()
+    {
+        return $this->celular;
+    }
+
+    /**
+     * @param mixed $celular
+     */
+    public function setCelular($celular): void
+    {
+        $this->celular = $celular;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodigoPanalFk()
+    {
+        return $this->codigoPanalFk;
+    }
+
+    /**
+     * @param mixed $codigoPanalFk
+     */
+    public function setCodigoPanalFk($codigoPanalFk): void
+    {
+        $this->codigoPanalFk = $codigoPanalFk;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPanalRel()
+    {
+        return $this->panalRel;
+    }
+
+    /**
+     * @param mixed $panalRel
+     */
+    public function setPanalRel($panalRel): void
+    {
+        $this->panalRel = $panalRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReaccionesUsuarioRel()
+    {
+        return $this->reaccionesUsuarioRel;
+    }
+
+    /**
+     * @param mixed $reaccionesUsuarioRel
+     */
+    public function setReaccionesUsuarioRel($reaccionesUsuarioRel): void
+    {
+        $this->reaccionesUsuarioRel = $reaccionesUsuarioRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTokenFirebase()
+    {
+        return $this->tokenFirebase;
+    }
+
+    /**
+     * @param mixed $tokenFirebase
+     */
+    public function setTokenFirebase($tokenFirebase): void
+    {
+        $this->tokenFirebase = $tokenFirebase;
+    }
+
+
+
+}
