@@ -31,7 +31,9 @@ class VisitaRepository extends ServiceEntityRepository
             ->addSelect('v.placa')
             ->addSelect('v.estadoAutorizado')
             ->addSelect('v.estadoCerrado')
-            ->where("v.codigoCeldaFk = {$codigoCelda}");
+            ->where("v.codigoCeldaFk = {$codigoCelda}")
+            ->orderBy('e.estadoCerrado', 'ASC')
+            ->addSelect('v.fecha', 'DESC');
         $arVisitas = $queryBuilder->getQuery()->getResult();
         return [
             'error' => false,
