@@ -3,6 +3,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Celda;
 use App\Entity\Panal;
 use App\Entity\Usuario;
 use App\Utilidades\Dubnio;
@@ -111,4 +112,48 @@ class UsuarioRepository extends ServiceEntityRepository
         }
     }
 
+    public function apiAsignar($codigoUsuario, $codigoPanal, $celda)
+    {
+        $em = $this->getEntityManager();
+        $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
+        if($arUsuario) {
+            $arPanal = $em->getRepository(Panal::class)->find($codigoPanal);
+            if($arPanal) {
+                $arCelda = $em->getRepository(Celda::class)->findOneBy(['codigoPanalFk' => $codigoPanal, 'celda' => $celda]);
+                if($arCelda) {
+                    if(!$arCelda->getUsuarioRel()) {
+                        $arCelda->setUsuarioRel($arUsuario);
+                        $em->persist($arCelda);
+                        $arUsuario->setCeldaRel($arCelda);
+                        $arUsuario->setPanalRel($arPanal);
+                        $em->persist($arUsuario);
+                        $em->flush();
+                        return [
+                            'error' => false,
+                        ];
+                    } else {
+                        return [
+                            'error' => true,
+                            'errorMensaje' => "La celda ya esta asignada a otro usuario, comuniquese con la administracion de su panal"
+                        ];
+                    }
+                } else {
+                    return [
+                        'error' => true,
+                        'errorMensaje' => "La celda no existe"
+                    ];
+                }
+            } else {
+                return [
+                    'error' => true,
+                    'errorMensaje' => "El panal no existe"
+                ];
+            }
+        } else {
+            return [
+                'error' => false,
+                'errorMensaje' => "El usuario no existe"
+            ];
+        }
+    }
 }

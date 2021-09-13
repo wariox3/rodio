@@ -51,6 +51,25 @@ class UsuarioController extends AbstractFOSRestController
     }
 
     /**
+     * @Rest\Post("/api/usuario/asignar")
+     */
+    public function asignar(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoUsuario = $raw['codigoUsuario']?? null;
+        $codigoPanal = $raw['codigoPanal']?? null;
+        $celda = $raw['celda']?? null;
+        if($codigoUsuario && $codigoPanal && $celda) {
+            return $em->getRepository(Usuario::class)->apiAsignar($codigoUsuario, $codigoPanal, $celda);
+        } else {
+            return [
+                'error' => true,
+                'mensajeError' => 'Faltan parametros para el consumo de la api'];
+        }
+    }
+
+    /**
      * @Rest\Post("/api/usuario/cambiarimagen")
      */
     public function cambiarImagen(Request $request, SpaceDO $spaceDO)
