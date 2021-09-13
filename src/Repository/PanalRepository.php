@@ -14,7 +14,7 @@ class PanalRepository extends ServiceEntityRepository
         parent::__construct($registry, Panal::class);
     }
 
-    public function apiBuscar($nombre)
+    public function apiBuscar($nombre, $codigoCiudad)
     {
         $em = $this->getEntityManager();
         $queryBuilder = $em->createQueryBuilder()->from(Panal::class, 'p')
@@ -23,6 +23,9 @@ class PanalRepository extends ServiceEntityRepository
             ->setMaxResults(10);
         if($nombre) {
             $queryBuilder->andWhere("p.nombre like '%{$nombre}%'");
+        }
+        if($codigoCiudad) {
+            $queryBuilder->andWhere("p.codigoCiudadFk =  {$codigoCiudad}");
         }
         $arPanales = $queryBuilder->getQuery()->getResult();
         return [

@@ -21,7 +21,8 @@ class PanalController extends AbstractFOSRestController
         $em = $this->getDoctrine()->getManager();
         $raw = json_decode($request->getContent(), true);
         $nombre = $raw['nombre']?? null;
-        return $em->getRepository(Panal::class)->apiBuscar($nombre);
+        $codigoCiudad = $raw['codigoCiudad']?? null;
+        return $em->getRepository(Panal::class)->apiBuscar($nombre, $codigoCiudad);
 
     }
 
