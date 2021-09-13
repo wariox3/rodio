@@ -29,6 +29,11 @@ class Ciudad
     private $panalesCiudadRel;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Usuario", mappedBy="ciudadRel")
+     */
+    private $usuariosCiudadRel;
+
+    /**
      * @return mixed
      */
     public function getCodigoCiudadPk()
@@ -74,6 +79,22 @@ class Ciudad
     public function setPanalesCiudadRel($panalesCiudadRel): void
     {
         $this->panalesCiudadRel = $panalesCiudadRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUsuariosCiudadRel()
+    {
+        return $this->usuariosCiudadRel;
+    }
+
+    /**
+     * @param mixed $usuariosCiudadRel
+     */
+    public function setUsuariosCiudadRel($usuariosCiudadRel): void
+    {
+        $this->usuariosCiudadRel = $usuariosCiudadRel;
     }
 
 

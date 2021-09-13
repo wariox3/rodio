@@ -4,6 +4,7 @@
 namespace App\Repository;
 
 use App\Entity\Celda;
+use App\Entity\Ciudad;
 use App\Entity\Panal;
 use App\Entity\Usuario;
 use App\Utilidades\Dubnio;
@@ -36,7 +37,8 @@ class UsuarioRepository extends ServiceEntityRepository
                     'usuario' => $arUsuario->getUsuario(),
                     'urlImagen' => $arUsuario->getUrlImagen(),
                     'codigoCelda' => $arUsuario->getCodigoCeldaFk(),
-                    'codigoPanal' => $arUsuario->getCodigoPanalFk()
+                    'codigoPanal' => $arUsuario->getCodigoPanalFk(),
+                    'codigoCiudad' => $arUsuario->getCodigoCiudadFk()
                 ],
             ];
         } else {
@@ -47,7 +49,7 @@ class UsuarioRepository extends ServiceEntityRepository
         }
     }
 
-    public function apiNuevo($usuario, $clave, $celular)
+    public function apiNuevo($usuario, $clave, $celular, $codigoCiudad)
     {
         $em = $this->getEntityManager();
         $queryBuilder = $em->createQueryBuilder()->from(Usuario::class, 'u')
@@ -55,17 +57,25 @@ class UsuarioRepository extends ServiceEntityRepository
             ->where("u.usuario = '{$usuario}'");
         $arUsuario = $queryBuilder->getQuery()->getResult();
         if(!$arUsuario) {
-            $arUsuario = new Usuario();
-            $arUsuario->setUsuario($usuario);
-            $arUsuario->setClave($clave);
-            $arUsuario->setCelular($celular);
-            $arUsuario->setUrlImagen('https://semantica.sfo3.digitaloceanspaces.com/rodio/perfil/general.png');
-            $arUsuario->setPanalRel($em->getReference(Panal::class,'1'));
-            $em->persist($arUsuario);
-            $em->flush();
-            return [
-                'error' => false,
-            ];
+            $arCiudad = $em->getRepository(Ciudad::class)->find($codigoCiudad);
+            if($arCiudad) {
+                $arUsuario = new Usuario();
+                $arUsuario->setUsuario($usuario);
+                $arUsuario->setClave($clave);
+                $arUsuario->setCelular($celular);
+                $arUsuario->setUrlImagen('https://semantica.sfo3.digitaloceanspaces.com/rodio/perfil/general.png');
+                $arUsuario->setCiudadRel($arCiudad);
+                $em->persist($arUsuario);
+                $em->flush();
+                return [
+                    'error' => false,
+                ];
+            } else {
+                return [
+                    'error' => true,
+                    'errorMensaje' => 'La ciudad no existe'
+                ];
+            }
         } else {
             return [
                 'error' => true,

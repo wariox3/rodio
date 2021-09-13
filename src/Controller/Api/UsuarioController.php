@@ -41,8 +41,9 @@ class UsuarioController extends AbstractFOSRestController
         $usuario = $raw['usuario']?? null;
         $clave = $raw['clave']?? null;
         $celular = $raw['celular']?? null;
-        if($usuario && $clave && $celular) {
-            return $em->getRepository(Usuario::class)->apiNuevo($usuario, $clave, $celular);
+        $codigoCiudad = $raw['codigoCiudad']?? null;
+        if($usuario && $clave && $celular && $codigoCiudad) {
+            return $em->getRepository(Usuario::class)->apiNuevo($usuario, $clave, $celular, $codigoCiudad);
         } else {
             return [
                 'error' => true,

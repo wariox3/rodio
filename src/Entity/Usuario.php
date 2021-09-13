@@ -45,6 +45,11 @@ class Usuario
     private $celular;
 
     /**
+     * @ORM\Column(name="codigo_ciudad_fk", type="integer", nullable=true)
+     */
+    private $codigoCiudadFk;
+
+    /**
      * @ORM\Column(name="url_imagen", type="string", length=250)
      */
     private $urlImagen;
@@ -65,6 +70,12 @@ class Usuario
      * @ORM\JoinColumn(name="codigo_celda_fk", referencedColumnName="codigo_celda_pk")
      */
     private $celdaRel;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Ciudad", inversedBy="usuariosCiudadRel")
+     * @ORM\JoinColumn(name="codigo_ciudad_fk", referencedColumnName="codigo_ciudad_pk")
+     */
+    private $ciudadRel;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Publicacion", mappedBy="usuarioRel")
@@ -329,6 +340,38 @@ class Usuario
     public function setTokenFirebase($tokenFirebase): void
     {
         $this->tokenFirebase = $tokenFirebase;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodigoCiudadFk()
+    {
+        return $this->codigoCiudadFk;
+    }
+
+    /**
+     * @param mixed $codigoCiudadFk
+     */
+    public function setCodigoCiudadFk($codigoCiudadFk): void
+    {
+        $this->codigoCiudadFk = $codigoCiudadFk;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCiudadRel()
+    {
+        return $this->ciudadRel;
+    }
+
+    /**
+     * @param mixed $ciudadRel
+     */
+    public function setCiudadRel($ciudadRel): void
+    {
+        $this->ciudadRel = $ciudadRel;
     }
 
 
