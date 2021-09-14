@@ -94,7 +94,6 @@ class EntregaRepository extends ServiceEntityRepository
                             }
                             if($autorizar == 'N') {
                                 $arEntrega->setEstadoAutorizado($autorizar);
-                                $arEntrega->setEstadoEntregado(1);
                             }
                             $em->persist($arEntrega);
                             $em->flush();
