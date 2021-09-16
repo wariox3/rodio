@@ -41,9 +41,8 @@ class UsuarioController extends AbstractFOSRestController
         $usuario = $raw['usuario']?? null;
         $clave = $raw['clave']?? null;
         $celular = $raw['celular']?? null;
-        $codigoCiudad = $raw['codigoCiudad']?? null;
-        if($usuario && $clave && $celular && $codigoCiudad) {
-            return $em->getRepository(Usuario::class)->apiNuevo($usuario, $clave, $celular, $codigoCiudad);
+        if($usuario && $clave && $celular) {
+            return $em->getRepository(Usuario::class)->apiNuevo($usuario, $clave, $celular);
         } else {
             return [
                 'error' => true,
@@ -61,8 +60,9 @@ class UsuarioController extends AbstractFOSRestController
         $codigoUsuario = $raw['codigoUsuario']?? null;
         $codigoPanal = $raw['codigoPanal']?? null;
         $celda = $raw['celda']?? null;
-        if($codigoUsuario && $codigoPanal && $celda) {
-            return $em->getRepository(Usuario::class)->apiAsignar($codigoUsuario, $codigoPanal, $celda);
+        $codigoCiudad = $raw['codigoCiudad']?? null;
+        if($codigoUsuario && $codigoPanal && $celda && $codigoCiudad) {
+            return $em->getRepository(Usuario::class)->apiAsignar($codigoUsuario, $codigoPanal, $celda, $codigoCiudad);
         } else {
             return [
                 'error' => true,

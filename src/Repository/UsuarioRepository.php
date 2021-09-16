@@ -49,7 +49,7 @@ class UsuarioRepository extends ServiceEntityRepository
         }
     }
 
-    public function apiNuevo($usuario, $clave, $celular, $codigoCiudad)
+    public function apiNuevo($usuario, $clave, $celular)
     {
         $em = $this->getEntityManager();
         $queryBuilder = $em->createQueryBuilder()->from(Usuario::class, 'u')
@@ -57,25 +57,16 @@ class UsuarioRepository extends ServiceEntityRepository
             ->where("u.usuario = '{$usuario}'");
         $arUsuario = $queryBuilder->getQuery()->getResult();
         if(!$arUsuario) {
-            $arCiudad = $em->getRepository(Ciudad::class)->find($codigoCiudad);
-            if($arCiudad) {
-                $arUsuario = new Usuario();
-                $arUsuario->setUsuario($usuario);
-                $arUsuario->setClave($clave);
-                $arUsuario->setCelular($celular);
-                $arUsuario->setUrlImagen('https://semantica.sfo3.digitaloceanspaces.com/rodio/perfil/general.png');
-                $arUsuario->setCiudadRel($arCiudad);
-                $em->persist($arUsuario);
-                $em->flush();
-                return [
-                    'error' => false,
-                ];
-            } else {
-                return [
-                    'error' => true,
-                    'errorMensaje' => 'La ciudad no existe'
-                ];
-            }
+            $arUsuario = new Usuario();
+            $arUsuario->setUsuario($usuario);
+            $arUsuario->setClave($clave);
+            $arUsuario->setCelular($celular);
+            $arUsuario->setUrlImagen('https://semantica.sfo3.digitaloceanspaces.com/rodio/perfil/general.png');
+            $em->persist($arUsuario);
+            $em->flush();
+            return [
+                'error' => false,
+            ];
         } else {
             return [
                 'error' => true,
@@ -122,46 +113,55 @@ class UsuarioRepository extends ServiceEntityRepository
         }
     }
 
-    public function apiAsignar($codigoUsuario, $codigoPanal, $celda)
+    public function apiAsignar($codigoUsuario, $codigoPanal, $celda, $codigoCiudad)
     {
         $em = $this->getEntityManager();
         $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
         if($arUsuario) {
-            $arPanal = $em->getRepository(Panal::class)->find($codigoPanal);
-            if($arPanal) {
-                $arCelda = $em->getRepository(Celda::class)->findOneBy(['codigoPanalFk' => $codigoPanal, 'celda' => $celda]);
-                if($arCelda) {
-                    if(!$arCelda->getUsuarioRel()) {
-                        $arCelda->setUsuarioRel($arUsuario);
-                        $em->persist($arCelda);
-                        $arUsuario->setCeldaRel($arCelda);
-                        $arUsuario->setPanalRel($arPanal);
-                        $em->persist($arUsuario);
-                        $em->flush();
-                        return [
-                            'error' => false,
-                        ];
+            $arCiudad = $em->getRepository(Ciudad::class)->find($codigoCiudad);
+            if($arCiudad) {
+                $arPanal = $em->getRepository(Panal::class)->find($codigoPanal);
+                if($arPanal) {
+                    $arCelda = $em->getRepository(Celda::class)->findOneBy(['codigoPanalFk' => $codigoPanal, 'celda' => $celda]);
+                    if($arCelda) {
+                        if(!$arCelda->getUsuarioRel()) {
+                            $arCelda->setUsuarioRel($arUsuario);
+                            $em->persist($arCelda);
+                            $arUsuario->setCeldaRel($arCelda);
+                            $arUsuario->setPanalRel($arPanal);
+                            $em->persist($arUsuario);
+                            $em->flush();
+                            return [
+                                'error' => false,
+                            ];
+                        } else {
+                            return [
+                                'error' => true,
+                                'errorMensaje' => "La celda ya esta asignada a otro usuario, comuniquese con la administracion de su panal"
+                            ];
+                        }
                     } else {
                         return [
                             'error' => true,
-                            'errorMensaje' => "La celda ya esta asignada a otro usuario, comuniquese con la administracion de su panal"
+                            'errorMensaje' => "La celda no existe"
                         ];
                     }
                 } else {
                     return [
                         'error' => true,
-                        'errorMensaje' => "La celda no existe"
+                        'errorMensaje' => "El panal no existe"
                     ];
                 }
             } else {
                 return [
                     'error' => true,
-                    'errorMensaje' => "El panal no existe"
+                    'errorMensaje' => "La ciudad no existe"
                 ];
             }
+
         } else {
             return [
-                'error' => false,
+                'error' => true,
                 'errorMensaje' => "El usuario no existe"
             ];
         }
