@@ -34,19 +34,18 @@ class PublicacionController extends AbstractFOSRestController
 
 
     /**
-     * @Rest\Post("/api/publicacion/testo/{pagina}")
+     * @Rest\Get("/api/publicacion/testo/{codigoUsuario}/{pagina}")
      */
-    public function testo(Request $request, PaginatorInterface $paginator, $pagina = 1)
+    public function testo(Request $request, PaginatorInterface $paginator, $pagina = 1, $codigoUsuario)
     {
         $em = $this->getDoctrine()->getManager();
         $raw = json_decode($request->getContent(), true);
-        $codigoUsuario = $raw['codigoUsuario']?? null;
+        //$codigoUsuario = $raw['codigoUsuario']?? null;
         if($codigoUsuario) {
             $respuesta =  $em->getRepository(Publicacion::class)->apiLista2($codigoUsuario);
             if($respuesta['error'] == false){
                 $arLiquidaciones = $paginator->paginate($respuesta['publicaciones'], $request->query->getInt('page', $pagina), 10);
                 $respuesta['publicaciones'] = $arLiquidaciones;
-
                 return $respuesta;
             } else {
                 return $respuesta;
