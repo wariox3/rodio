@@ -58,6 +58,44 @@ class PublicacionRepository extends ServiceEntityRepository
         }
     }
 
+    public function apiLista2($codigoUsuario)
+    {
+        $em = $this->getEntityManager();
+        $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
+        if($arUsuario) {
+            if($arUsuario->getPanalRel()) {
+                $queryBuilder = $em->createQueryBuilder()->from(Publicacion::class, 'p')
+                    ->select('p.codigoPublicacionPk')
+                    ->addSelect('p.fecha')
+                    ->addSelect('p.comentario')
+                    ->addSelect('p.urlImagen')
+                    ->addSelect('p.reacciones')
+                    ->addSelect('p.comentarios')
+                    ->addSelect('u.urlImagen as usuarioUrlImagen')
+                    ->addSelect('u.usuario as usuario')
+                    ->leftJoin('p.celdaRel', 'c')
+                    ->leftJoin('p.usuarioRel', 'u')
+                    ->where("c.codigoPanalFk = {$arUsuario->getCodigoPanalFk()}")
+                    ->orderBy('p.fecha', 'DESC');
+                $arPublicaciones = $queryBuilder->getQuery()->getResult();
+                return [
+                    'error' => false,
+                    'publicaciones' => $arPublicaciones
+                ];
+            }  else {
+                return [
+                    'error' => true,
+                    'errorMensaje' => "El usuario no tiene un panal asignado"
+                ];
+            }
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "El usuario no existe"
+            ];
+        }
+    }
+
     public function apiNuevo($arUsuario, $nombreImagen, $imagenBase64, $comentario) {
         $em = $this->getEntityManager();
         $arPublicacion = new Publicacion();
