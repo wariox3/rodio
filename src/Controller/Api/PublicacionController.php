@@ -13,28 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 class PublicacionController extends AbstractFOSRestController
 {
     /**
-     * @Rest\Post("/api/publicacion/lista")
-     */
-    public function lista(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $raw = json_decode($request->getContent(), true);
-        $codigoUsuario = $raw['codigoUsuario']?? null;
-        $pagina = $raw['pagina']?? 0;
-        if($codigoUsuario) {
-            return $em->getRepository(Publicacion::class)->apiLista($codigoUsuario, $pagina);
-        } else {
-            return [
-                'error' => true,
-                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
-        }
-    }
-
-
-
-
-    /**
-     * @Rest\Get("/api/publicacion/testo/{codigoUsuario}/{pagina}")
+     * @Rest\Get("/api/publicacion/lista/{codigoUsuario}/{pagina}")
      */
     public function testo(Request $request, PaginatorInterface $paginator, $pagina = 1, $codigoUsuario)
     {

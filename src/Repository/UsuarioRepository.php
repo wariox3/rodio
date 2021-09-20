@@ -129,6 +129,7 @@ class UsuarioRepository extends ServiceEntityRepository
                             $em->persist($arCelda);
                             $arUsuario->setCeldaRel($arCelda);
                             $arUsuario->setPanalRel($arPanal);
+                            $arUsuario->setCiudadRel($arCiudad);
                             $em->persist($arUsuario);
                             $em->flush();
                             return [
