@@ -54,9 +54,9 @@ class VisitaController extends AbstractFOSRestController
     }
 
     /**
-     * @Rest\Post("/api/visita/pendientecerrar")
+     * @Rest\Post("/api/visita/pendiente")
      */
-    public function pendienteCerrar(Request $request)
+    public function pendiente(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $raw = json_decode($request->getContent(), true);
