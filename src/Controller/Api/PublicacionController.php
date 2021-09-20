@@ -15,7 +15,7 @@ class PublicacionController extends AbstractFOSRestController
     /**
      * @Rest\Get("/api/publicacion/lista/{codigoUsuario}/{pagina}")
      */
-    public function testo(Request $request, PaginatorInterface $paginator, $pagina = 1, $codigoUsuario)
+    public function lista(Request $request, PaginatorInterface $paginator, $pagina = 1, $codigoUsuario)
     {
         $em = $this->getDoctrine()->getManager();
         $raw = json_decode($request->getContent(), true);
