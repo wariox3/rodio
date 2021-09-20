@@ -62,7 +62,7 @@ class VisitaController extends AbstractFOSRestController
         $raw = json_decode($request->getContent(), true);
         $codigoPanal = $raw['codigoPanal']?? null;
         if($codigoPanal) {
-            return $em->getRepository(Visita::class)->apiPendienteCerrar($codigoPanal);
+            return $em->getRepository(Visita::class)->apiPendiente($codigoPanal);
         } else {
             return [
                 'error' => true,

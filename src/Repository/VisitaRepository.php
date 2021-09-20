@@ -77,7 +77,7 @@ class VisitaRepository extends ServiceEntityRepository
         }
     }
 
-    public function apiPendienteCerrar($codigoPanal)
+    public function apiPendiente($codigoPanal)
     {
         $em = $this->getEntityManager();
         $queryBuilder = $em->createQueryBuilder()->from(Visita::class, 'v')

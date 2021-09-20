@@ -93,4 +93,23 @@ class EntregaController extends AbstractFOSRestController
             ];
         }
     }
+
+    /**
+     * @Rest\Post("/api/entrega/pendiente")
+     */
+    public function pendiente(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoPanal = $raw['codigoPanal']?? null;
+        if($codigoPanal) {
+            return $em->getRepository(Entrega::class)->apiPendiente($codigoPanal);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'
+            ];
+        }
+    }
+
 }

@@ -59,6 +59,11 @@ class Entrega
     private $estadoAutorizado = "P";
 
     /**
+     * @ORM\Column(name="estado_cerrado", type="boolean", options={"default" : false}, nullable=true)
+     */
+    private $estadoCerrado = false;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Celda", inversedBy="entregasCeldaRel")
      * @ORM\JoinColumn(name="codigo_celda_fk", referencedColumnName="codigo_celda_pk")
      */
@@ -222,6 +227,22 @@ class Entrega
     public function setEntrega($entrega): void
     {
         $this->entrega = $entrega;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEstadoCerrado(): bool
+    {
+        return $this->estadoCerrado;
+    }
+
+    /**
+     * @param bool $estadoCerrado
+     */
+    public function setEstadoCerrado(bool $estadoCerrado): void
+    {
+        $this->estadoCerrado = $estadoCerrado;
     }
 
 

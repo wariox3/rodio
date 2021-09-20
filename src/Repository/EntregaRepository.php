@@ -94,6 +94,7 @@ class EntregaRepository extends ServiceEntityRepository
                             }
                             if($autorizar == 'N') {
                                 $arEntrega->setEstadoAutorizado($autorizar);
+                                $arEntrega->setEstadoCerrado(1);
                             }
                             $em->persist($arEntrega);
                             $em->flush();
@@ -163,5 +164,27 @@ class EntregaRepository extends ServiceEntityRepository
                 'errorMensaje' => "No existe la entrega"
             ];
         }
+    }
+
+    public function apiPendiente($codigoPanal)
+    {
+        $em = $this->getEntityManager();
+        $queryBuilder = $em->createQueryBuilder()->from(Entrega::class, 'e')
+            ->select('e.codigoEntregaPk')
+            ->addSelect('e.fechaIngreso')
+            ->addSelect('e.codigoEntregaTipoFk')
+            ->addSelect('e.estadoAutorizado')
+            ->addSelect('e.estadoEntregado')
+            ->addSelect('e.descripcion')
+            ->addSelect('e.entrega')
+            ->addSelect('c.celda')
+            ->leftJoin('e.celdaRel', 'c')
+            ->where("c.codigoPanalFk = {$codigoPanal}")
+            ->andWhere("e.estadoCerrado = 0");
+        $arEntregas = $queryBuilder->getQuery()->getResult();
+        return [
+            'error' => false,
+            'entregas' => $arEntregas
+        ];
     }
 }
