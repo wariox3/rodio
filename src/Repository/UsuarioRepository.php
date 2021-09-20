@@ -134,6 +134,8 @@ class UsuarioRepository extends ServiceEntityRepository
                             $em->flush();
                             return [
                                 'error' => false,
+                                'celda' => $arCelda->getCodigoCeldaPk()
+
                             ];
                         } else {
                             return [
