@@ -107,7 +107,8 @@ class PublicacionRepository extends ServiceEntityRepository
         $em->persist($arPublicacion);
         $em->flush();
         return [
-            'error' => false
+            'error' => false,
+            'codigoPublicacion' => $arPublicacion->getCodigoPublicacionPk()
         ];
     }
 }
