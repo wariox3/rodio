@@ -31,6 +31,7 @@ class VisitaRepository extends ServiceEntityRepository
             ->addSelect('v.placa')
             ->addSelect('v.estadoAutorizado')
             ->addSelect('v.estadoCerrado')
+            ->addSelect('v.codigoIngreso')
             ->where("v.codigoCeldaFk = {$codigoCelda}")
             ->orderBy('e.estadoCerrado', 'ASC')
             ->orderBy('v.fecha', 'DESC');
@@ -41,20 +42,25 @@ class VisitaRepository extends ServiceEntityRepository
         ];
     }
 
-    public function apiNuevo($codigoPanal, $celda, $numeroIdentificacion, $nombre, $placa)
+    public function apiNuevo($codigoPanal, $codigoCelda, $celda, $numeroIdentificacion, $nombre, $placa)
     {
         $em = $this->getEntityManager();
         $arPanal = $em->getRepository(Panal::class)->find($codigoPanal);
         if($arPanal) {
-            $arCelda = $em->getRepository(Celda::class)->findOneBy(['codigoPanalFk' => $codigoPanal, 'celda' => $celda]);
+            if($codigoCelda) {
+                $arCelda = $em->getRepository(Celda::class)->find($codigoCelda);
+            } else {
+                $arCelda = $em->getRepository(Celda::class)->findOneBy(['codigoPanalFk' => $codigoPanal, 'celda' => $celda]);
+            }
             if($arCelda) {
-
+                $codigo = rand(10000, 99999);
                 $arVisita = new Visita();
                 $arVisita->setCeldaRel($arCelda);
                 $arVisita->setFecha(new \DateTime('now'));
                 $arVisita->setNumeroIdentificacion($numeroIdentificacion);
                 $arVisita->setNombre($nombre);
                 $arVisita->setPlaca($placa);
+                $arVisita->setCodigoIngreso($codigo);
                 $em->persist($arVisita);
                 $em->flush();
                 //Usuarios a los que se debe notificar
@@ -62,7 +68,11 @@ class VisitaRepository extends ServiceEntityRepository
                 if($arUsuario) {
                     $this->firebase->nuevaVisita($arUsuario->getTokenFirebase(), $arVisita->getCodigoVisitaPk());
                 }
-                return ['error' => false];
+                return [
+                    'error' => false,
+                    'codigoVisita' => $arVisita->getCodigoVisitaPk(),
+                    'codigoIngreso' => $codigo
+                ];
             } else {
                 return [
                     'error' => true,

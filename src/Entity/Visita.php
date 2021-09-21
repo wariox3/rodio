@@ -59,6 +59,11 @@ class Visita
     private $estadoCerrado = false;
 
     /**
+     * @ORM\Column(name="codigo_ingreso", type="string", length=10, nullable=true)
+     */
+    private $codigoIngreso;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Celda", inversedBy="visitasCeldaRel")
      * @ORM\JoinColumn(name="codigo_celda_fk", referencedColumnName="codigo_celda_pk")
      */
@@ -245,6 +250,22 @@ class Visita
     public function setEstadoAutorizado(string $estadoAutorizado): void
     {
         $this->estadoAutorizado = $estadoAutorizado;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodigoIngreso()
+    {
+        return $this->codigoIngreso;
+    }
+
+    /**
+     * @param mixed $codigoIngreso
+     */
+    public function setCodigoIngreso($codigoIngreso): void
+    {
+        $this->codigoIngreso = $codigoIngreso;
     }
 
 
