@@ -47,7 +47,7 @@ class Firebase
             'to' => $destinatario,
             'notification' => [
                 'title' => "Tienes una nueva entrega",
-                'body' => "En hora buena le ha llegado un {$tipoEntrega} paquete debes autorizar el recibido"
+                'body' => "Te ha llegado un {$tipoEntrega} nuevo, debes autorizar para recibirlo"
             ],
             'data' => [
                 'codigoEntrega' => $codigoEntrega
