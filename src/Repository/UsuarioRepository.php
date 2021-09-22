@@ -134,7 +134,8 @@ class UsuarioRepository extends ServiceEntityRepository
                             $em->flush();
                             return [
                                 'error' => false,
-                                'celda' => $arCelda->getCodigoCeldaPk()
+                                'celda' => $arCelda->getCodigoCeldaPk(),
+                                'panal' => $arPanal->getCodigoPanalPk(),
 
                             ];
                         } else {
