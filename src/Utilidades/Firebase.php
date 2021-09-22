@@ -10,13 +10,13 @@ class Firebase
 
     }
 
-    public function nuevaVisita($destinatario, $codigoVisita) {
+    public function nuevaVisita($destinatario, $codigoVisita, $visitante) {
         $url = "https://fcm.googleapis.com/fcm/send";
         $arreglo = [
             'to' => $destinatario,
             'notification' => [
-                'title' => "visita",
-                'body' => "notificacion"
+                'title' => "Tienes una nueva visita",
+                'body' => "Te visita {$visitante} debes autorizar su ingreso"
             ],
             'data' => [
                 'codigoVisita' => $codigoVisita
@@ -41,13 +41,13 @@ class Firebase
         curl_close($ch);
     }
 
-    public function nuevaEntrega($destinatario, $codigoEntrega) {
+    public function nuevaEntrega($destinatario, $codigoEntrega, $tipoEntrega) {
         $url = "https://fcm.googleapis.com/fcm/send";
         $arreglo = [
             'to' => $destinatario,
             'notification' => [
-                'title' => "entrega",
-                'body' => "notificacion"
+                'title' => "Tienes una nueva entrega",
+                'body' => "En hora buena le ha llegado un {$tipoEntrega} paquete debes autorizar el recibido"
             ],
             'data' => [
                 'codigoEntrega' => $codigoEntrega

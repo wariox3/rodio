@@ -66,7 +66,7 @@ class VisitaRepository extends ServiceEntityRepository
                 //Usuarios a los que se debe notificar
                 $arUsuario = $em->getRepository(Usuario::class)->findOneBy(['codigoCeldaFk' => $arCelda->getCodigoCeldaPk()]);
                 if($arUsuario) {
-                    $this->firebase->nuevaVisita($arUsuario->getTokenFirebase(), $arVisita->getCodigoVisitaPk());
+                    $this->firebase->nuevaVisita($arUsuario->getTokenFirebase(), $arVisita->getCodigoVisitaPk(), $nombre);
                 }
                 return [
                     'error' => false,
