@@ -136,7 +136,7 @@ class UsuarioRepository extends ServiceEntityRepository
                                 'error' => false,
                                 'celda' => $arCelda->getCodigoCeldaPk(),
                                 'panal' => $arPanal->getCodigoPanalPk(),
-
+                                'ciudad' => $arCiudad->getCodigoCiudadPk()
                             ];
                         } else {
                             return [
