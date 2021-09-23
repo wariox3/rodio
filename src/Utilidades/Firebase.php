@@ -19,7 +19,8 @@ class Firebase
                 'body' => "Te visita {$visitante} debes autorizar su ingreso"
             ],
             'data' => [
-                'codigoVisita' => $codigoVisita
+                'codigoVisita' => $codigoVisita,
+                'rutaApp' => 'Visita'
             ]
         ];
         $parametros = json_encode($arreglo);
@@ -50,7 +51,8 @@ class Firebase
                 'body' => "Te ha llegado un {$tipoEntrega} nuevo, debes autorizar para recibirlo"
             ],
             'data' => [
-                'codigoEntrega' => $codigoEntrega
+                'codigoEntrega' => $codigoEntrega,
+                'rutaApp' => 'Entrega'
             ]
         ];
         $parametros = json_encode($arreglo);
