@@ -61,7 +61,7 @@ class UsuarioController extends AbstractFOSRestController
         $codigoPanal = $raw['codigoPanal']?? null;
         $celda = $raw['celda']?? null;
         $codigoCiudad = $raw['codigoCiudad']?? null;
-        if($codigoUsuario && $codigoPanal && $celda && $codigoCiudad) {
+        if($codigoUsuario && $codigoPanal && $codigoCiudad) {
             return $em->getRepository(Usuario::class)->apiAsignar($codigoUsuario, $codigoPanal, $celda, $codigoCiudad);
         } else {
             return [

@@ -14,7 +14,9 @@ use Doctrine\Persistence\ManagerRegistry;
 class UsuarioRepository extends ServiceEntityRepository
 {
     private $dubnio;
-    public function __construct(ManagerRegistry $registry, Dubnio $dubnio) {
+
+    public function __construct(ManagerRegistry $registry, Dubnio $dubnio)
+    {
         parent::__construct($registry, Usuario::class);
         $this->dubnio = $dubnio;
     }
@@ -23,8 +25,8 @@ class UsuarioRepository extends ServiceEntityRepository
     {
         $em = $this->getEntityManager();
         $arUsuario = $em->getRepository(Usuario::class)->findOneBy(['usuario' => $usuario, 'clave' => $clave]);
-        if($arUsuario) {
-            if($tokenFirebase) {
+        if ($arUsuario) {
+            if ($tokenFirebase) {
                 $arUsuario->setTokenFirebase($tokenFirebase);
                 $em->persist($arUsuario);
                 $em->flush();
@@ -56,7 +58,7 @@ class UsuarioRepository extends ServiceEntityRepository
             ->select('u.codigoUsuarioPk')
             ->where("u.usuario = '{$usuario}'");
         $arUsuario = $queryBuilder->getQuery()->getResult();
-        if(!$arUsuario) {
+        if (!$arUsuario) {
             $arUsuario = new Usuario();
             $arUsuario->setUsuario($usuario);
             $arUsuario->setClave($clave);
@@ -79,7 +81,7 @@ class UsuarioRepository extends ServiceEntityRepository
     {
         $em = $this->getEntityManager();
         $arUsuario = $em->getRepository(Usuario::class)->findOneBy(['usuario' => $usuario]);
-        if($arUsuario) {
+        if ($arUsuario) {
             $asunto = "Veci! recuperamos tu clave";
             $mensaje = "Tu clave para acceder a la app Veci! es {$arUsuario->getClave()}";
             $this->dubnio->enviarCorreo($asunto, $mensaje, $usuario);
@@ -98,7 +100,7 @@ class UsuarioRepository extends ServiceEntityRepository
     {
         $em = $this->getEntityManager();
         $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
-        if($arUsuario) {
+        if ($arUsuario) {
             $arUsuario->setClave($claveNueva);
             $em->persist($arUsuario);
             $em->flush();
@@ -117,39 +119,36 @@ class UsuarioRepository extends ServiceEntityRepository
     {
         $em = $this->getEntityManager();
         $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
-        if($arUsuario) {
+        if ($arUsuario) {
             $arCiudad = $em->getRepository(Ciudad::class)->find($codigoCiudad);
-            if($arCiudad) {
+            if ($arCiudad) {
                 $arPanal = $em->getRepository(Panal::class)->find($codigoPanal);
-                if($arPanal) {
+                if ($arPanal) {
                     $arCelda = $em->getRepository(Celda::class)->findOneBy(['codigoPanalFk' => $codigoPanal, 'celda' => $celda]);
-                    if($arCelda) {
-                        if(!$arCelda->getUsuarioRel()) {
+                    $codigoCelda = null;
+                    if ($arCelda) {
+                        if (!$arCelda->getUsuarioRel()) {
+                            $codigoCelda = $arCelda->getCodigoCeldaPk();
                             $arCelda->setUsuarioRel($arUsuario);
-                            $em->persist($arCelda);
                             $arUsuario->setCeldaRel($arCelda);
-                            $arUsuario->setPanalRel($arPanal);
-                            $arUsuario->setCiudadRel($arCiudad);
-                            $em->persist($arUsuario);
-                            $em->flush();
-                            return [
-                                'error' => false,
-                                'celda' => $arCelda->getCodigoCeldaPk(),
-                                'panal' => $arPanal->getCodigoPanalPk(),
-                                'ciudad' => $arCiudad->getCodigoCiudadPk()
-                            ];
+                            $em->persist($arCelda);
                         } else {
                             return [
                                 'error' => true,
                                 'errorMensaje' => "La celda ya esta asignada a otro usuario, comuniquese con la administracion de su panal"
                             ];
                         }
-                    } else {
-                        return [
-                            'error' => true,
-                            'errorMensaje' => "La celda no existe"
-                        ];
                     }
+                    $arUsuario->setPanalRel($arPanal);
+                    $arUsuario->setCiudadRel($arCiudad);
+                    $em->persist($arUsuario);
+                    $em->flush();
+                    return [
+                        'error' => false,
+                        'celda' => $codigoCelda,
+                        'panal' => $arPanal->getCodigoPanalPk(),
+                        'ciudad' => $arCiudad->getCodigoCiudadPk()
+                    ];
                 } else {
                     return [
                         'error' => true,
@@ -162,7 +161,6 @@ class UsuarioRepository extends ServiceEntityRepository
                     'errorMensaje' => "La ciudad no existe"
                 ];
             }
-
         } else {
             return [
                 'error' => true,
