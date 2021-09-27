@@ -16,12 +16,13 @@ class ReaccionRepository extends ServiceEntityRepository
         parent::__construct($registry, Reaccion::class);
     }
 
-    public function apiNuevo($codigoUsuario, $codigoPublicacion) {
+    public function apiNuevo($codigoUsuario, $codigoPublicacion)
+    {
         $em = $this->getEntityManager();
         $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
-        if($arUsuario) {
+        if ($arUsuario) {
             $arPublicacion = $em->getRepository(Publicacion::class)->find($codigoPublicacion);
-            if($arPublicacion) {
+            if ($arPublicacion) {
                 $arReaccion = new Reaccion();
                 $arReaccion->setUsuarioRel($arUsuario);
                 $arReaccion->setPublicacionRel($arPublicacion);
@@ -40,6 +41,40 @@ class ReaccionRepository extends ServiceEntityRepository
             return [
                 'error' => true,
                 'errorMensaje' => 'No existe el usuario'];
+        }
+    }
+
+    public function apiNomeGusta($codigoUsuario, $codigoPublicacion)
+    {
+        $em = $this->getEntityManager();
+        $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
+        if ($arUsuario) {
+            $arPublicacion = $em->getRepository(Publicacion::class)->find($codigoPublicacion);
+            if ($arPublicacion) {
+                $arReaccion = $em->getRepository(Reaccion::class)->findOneBy(['codigoPublicacionFk' => $codigoPublicacion]);
+                if ($arReaccion) {
+                    $em->remove($arReaccion);
+                    $arPublicacion->setReacciones($arPublicacion->getReacciones() - 1);
+                    $em->persist($arPublicacion);
+                    $em->flush();
+                    return ['error' => false];
+                } else {
+                    return [
+                        'error' => true,
+                        'errorMensaje' => 'No existe la reaccion'
+                    ];
+                }
+            } else {
+                return [
+                    'error' => true,
+                    'errorMensaje' => 'No existe la publicacion'
+                ];
+            }
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'No existe el usuario'
+            ];
         }
     }
 
