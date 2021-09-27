@@ -73,9 +73,8 @@ class PublicacionRepository extends ServiceEntityRepository
                     ->addSelect('p.comentarios')
                     ->addSelect('u.urlImagen as usuarioUrlImagen')
                     ->addSelect('u.usuario as usuario')
-                    ->leftJoin('p.celdaRel', 'c')
                     ->leftJoin('p.usuarioRel', 'u')
-                    ->where("c.codigoPanalFk = {$arUsuario->getCodigoPanalFk()}")
+                    ->where("p.codigoPanalFk = {$arUsuario->getCodigoPanalFk()}")
                     ->orderBy('p.fecha', 'DESC');
                 $arPublicaciones = $queryBuilder->getQuery()->getResult();
                 return [
@@ -100,7 +99,7 @@ class PublicacionRepository extends ServiceEntityRepository
         $em = $this->getEntityManager();
         $arPublicacion = new Publicacion();
         $arPublicacion->setUsuarioRel($arUsuario);
-        $arPublicacion->setCeldaRel($arUsuario->getCeldaRel());
+        $arPublicacion->setPanalRel($arUsuario->getPanalRel());
         $arPublicacion->setComentario($comentario);
         $arPublicacion->setFecha(new \DateTime('now'));
         $arPublicacion->setUrlImagen($this->space->subir('publicacion', $nombreImagen, $imagenBase64));

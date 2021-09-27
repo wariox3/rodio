@@ -45,6 +45,11 @@ class Panal
     private $usuariosPanalRel;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Publicacion", mappedBy="panalRel")
+     */
+    private $publicacionesPanalRel;
+
+    /**
      * @return mixed
      */
     public function getCodigoPanalPk()
@@ -138,6 +143,22 @@ class Panal
     public function setCiudadRel($ciudadRel): void
     {
         $this->ciudadRel = $ciudadRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPublicacionesPanalRel()
+    {
+        return $this->publicacionesPanalRel;
+    }
+
+    /**
+     * @param mixed $publicacionesPanalRel
+     */
+    public function setPublicacionesPanalRel($publicacionesPanalRel): void
+    {
+        $this->publicacionesPanalRel = $publicacionesPanalRel;
     }
 
 

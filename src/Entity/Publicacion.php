@@ -34,9 +34,9 @@ class Publicacion
     private $comentario;
 
     /**
-     * @ORM\Column(name="codigo_celda_fk", type="integer", nullable=false)
+     * @ORM\Column(name="codigo_panal_fk", type="integer", nullable=false)
      */
-    private $codigoCeldaFk;
+    private $codigoPanalFk;
 
     /**
      * @ORM\Column(name="url_imagen", type="string", length=500, nullable=true)
@@ -54,10 +54,10 @@ class Publicacion
     private $comentarios = 0;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Celda", inversedBy="publicacionesCeldaRel")
-     * @ORM\JoinColumn(name="codigo_celda_fk", referencedColumnName="codigo_celda_pk")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Panal", inversedBy="publicacionesPanalRel")
+     * @ORM\JoinColumn(name="codigo_panal_fk", referencedColumnName="codigo_panal_pk")
      */
-    private $celdaRel;
+    private $panalRel;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Usuario", inversedBy="publicacionesUsuarioRel")
@@ -110,70 +110,6 @@ class Publicacion
     /**
      * @return mixed
      */
-    public function getComentario()
-    {
-        return $this->comentario;
-    }
-
-    /**
-     * @param mixed $comentario
-     */
-    public function setComentario($comentario): void
-    {
-        $this->comentario = $comentario;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCodigoCeldaFk()
-    {
-        return $this->codigoCeldaFk;
-    }
-
-    /**
-     * @param mixed $codigoCeldaFk
-     */
-    public function setCodigoCeldaFk($codigoCeldaFk): void
-    {
-        $this->codigoCeldaFk = $codigoCeldaFk;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCeldaRel()
-    {
-        return $this->celdaRel;
-    }
-
-    /**
-     * @param mixed $celdaRel
-     */
-    public function setCeldaRel($celdaRel): void
-    {
-        $this->celdaRel = $celdaRel;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUsuarioRel()
-    {
-        return $this->usuarioRel;
-    }
-
-    /**
-     * @param mixed $usuarioRel
-     */
-    public function setUsuarioRel($usuarioRel): void
-    {
-        $this->usuarioRel = $usuarioRel;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getFecha()
     {
         return $this->fecha;
@@ -190,17 +126,33 @@ class Publicacion
     /**
      * @return mixed
      */
-    public function getComentariosPublicacionRel()
+    public function getComentario()
     {
-        return $this->comentariosPublicacionRel;
+        return $this->comentario;
     }
 
     /**
-     * @param mixed $comentariosPublicacionRel
+     * @param mixed $comentario
      */
-    public function setComentariosPublicacionRel($comentariosPublicacionRel): void
+    public function setComentario($comentario): void
     {
-        $this->comentariosPublicacionRel = $comentariosPublicacionRel;
+        $this->comentario = $comentario;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodigoPanalFk()
+    {
+        return $this->codigoPanalFk;
+    }
+
+    /**
+     * @param mixed $codigoPanalFk
+     */
+    public function setCodigoPanalFk($codigoPanalFk): void
+    {
+        $this->codigoPanalFk = $codigoPanalFk;
     }
 
     /**
@@ -222,6 +174,22 @@ class Publicacion
     /**
      * @return int
      */
+    public function getReacciones(): int
+    {
+        return $this->reacciones;
+    }
+
+    /**
+     * @param int $reacciones
+     */
+    public function setReacciones(int $reacciones): void
+    {
+        $this->reacciones = $reacciones;
+    }
+
+    /**
+     * @return int
+     */
     public function getComentarios(): int
     {
         return $this->comentarios;
@@ -236,19 +204,51 @@ class Publicacion
     }
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getReacciones(): int
+    public function getPanalRel()
     {
-        return $this->reacciones;
+        return $this->panalRel;
     }
 
     /**
-     * @param int $reacciones
+     * @param mixed $panalRel
      */
-    public function setReacciones(int $reacciones): void
+    public function setPanalRel($panalRel): void
     {
-        $this->reacciones = $reacciones;
+        $this->panalRel = $panalRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUsuarioRel()
+    {
+        return $this->usuarioRel;
+    }
+
+    /**
+     * @param mixed $usuarioRel
+     */
+    public function setUsuarioRel($usuarioRel): void
+    {
+        $this->usuarioRel = $usuarioRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getComentariosPublicacionRel()
+    {
+        return $this->comentariosPublicacionRel;
+    }
+
+    /**
+     * @param mixed $comentariosPublicacionRel
+     */
+    public function setComentariosPublicacionRel($comentariosPublicacionRel): void
+    {
+        $this->comentariosPublicacionRel = $comentariosPublicacionRel;
     }
 
     /**

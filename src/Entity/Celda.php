@@ -51,11 +51,6 @@ class Celda
     private $entregasCeldaRel;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Publicacion", mappedBy="celdaRel")
-     */
-    private $publicacionesCeldaRel;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Usuario", mappedBy="celdaRel")
      */
     private $usuariosCeldaRel;
@@ -180,22 +175,6 @@ class Celda
     /**
      * @return mixed
      */
-    public function getPublicacionesCeldaRel()
-    {
-        return $this->publicacionesCeldaRel;
-    }
-
-    /**
-     * @param mixed $publicacionesCeldaRel
-     */
-    public function setPublicacionesCeldaRel($publicacionesCeldaRel): void
-    {
-        $this->publicacionesCeldaRel = $publicacionesCeldaRel;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getUsuariosCeldaRel()
     {
         return $this->usuariosCeldaRel;
@@ -224,6 +203,7 @@ class Celda
     {
         $this->visitasCeldaRel = $visitasCeldaRel;
     }
+
 
 
 
