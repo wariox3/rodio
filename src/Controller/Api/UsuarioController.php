@@ -51,18 +51,53 @@ class UsuarioController extends AbstractFOSRestController
     }
 
     /**
-     * @Rest\Post("/api/usuario/asignar")
+     * @Rest\Post("/api/usuario/asignarpanal")
      */
-    public function asignar(Request $request)
+    public function asignarPanal(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoUsuario = $raw['codigoUsuario']?? null;
+        $codigoPanal = $raw['codigoPanal']?? null;
+        $codigoCiudad = $raw['codigoCiudad']?? null;
+        if($codigoUsuario && $codigoPanal && $codigoCiudad) {
+            return $em->getRepository(Usuario::class)->apiAsignarPanal($codigoUsuario, $codigoPanal, $codigoCiudad);
+        } else {
+            return [
+                'error' => true,
+                'mensajeError' => 'Faltan parametros para el consumo de la api'];
+        }
+    }
+
+    /**
+     * @Rest\Post("/api/usuario/asignarcelda")
+     */
+    public function asignarCelda(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $raw = json_decode($request->getContent(), true);
         $codigoUsuario = $raw['codigoUsuario']?? null;
         $codigoPanal = $raw['codigoPanal']?? null;
         $celda = $raw['celda']?? null;
-        $codigoCiudad = $raw['codigoCiudad']?? null;
-        if($codigoUsuario && $codigoPanal && $codigoCiudad) {
-            return $em->getRepository(Usuario::class)->apiAsignar($codigoUsuario, $codigoPanal, $celda, $codigoCiudad);
+        if($codigoUsuario && $codigoPanal) {
+            return $em->getRepository(Usuario::class)->apiAsignarCelda($codigoUsuario, $codigoPanal, $celda);
+        } else {
+            return [
+                'error' => true,
+                'mensajeError' => 'Faltan parametros para el consumo de la api'];
+        }
+    }
+
+    /**
+     * @Rest\Post("/api/usuario/desvincular")
+     */
+    public function desvincular(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoUsuario = $raw['codigoUsuario']?? null;
+        if($codigoUsuario) {
+            return $em->getRepository(Usuario::class)->apiDesvincular($codigoUsuario);
         } else {
             return [
                 'error' => true,
