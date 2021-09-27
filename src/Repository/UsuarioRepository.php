@@ -231,4 +231,33 @@ class UsuarioRepository extends ServiceEntityRepository
             ];
         }
     }
+
+    public function apiDetalle($codigoUsuario)
+    {
+        $em = $this->getEntityManager();
+        $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
+        if($arUsuario) {
+            $panalNombre = null;
+            $celda = null;
+            if($arUsuario->getPanalRel()) {
+                $panalNombre = $arUsuario->getPanalRel()->getNombre();
+            }
+            if($arUsuario->getCeldaRel()) {
+                $celda = $arUsuario->getCeldaRel()->getCelda();
+            }
+            return [
+                'error' => false,
+                'codigoPanalFk' => $arUsuario->getCodigoPanalFk(),
+                'codigoCeldaFk' => $arUsuario->getCodigoCeldaFk(),
+                'celular' => $arUsuario->getCelular(),
+                'panalNombre' => $panalNombre,
+                'celda' => $celda
+            ];
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "El usuario no existe"
+            ];
+        }
+    }
 }

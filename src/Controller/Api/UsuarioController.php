@@ -176,4 +176,21 @@ class UsuarioController extends AbstractFOSRestController
         }
     }
 
+    /**
+     * @Rest\Post("/api/usuario/detalle")
+     */
+    public function detalle(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $usuario = $raw['codigoUsuario']?? null;
+        if($usuario) {
+            return $em->getRepository(Usuario::class)->apiDetalle($usuario);
+        } else {
+            return [
+                'error' => true,
+                'mensajeError' => 'Faltan parametros para el consumo de la api'];
+        }
+    }
+
 }
