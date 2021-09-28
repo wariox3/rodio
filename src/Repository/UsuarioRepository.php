@@ -239,11 +239,15 @@ class UsuarioRepository extends ServiceEntityRepository
         if($arUsuario) {
             $panalNombre = null;
             $celda = null;
+            $ciudadNombre = null;
             if($arUsuario->getPanalRel()) {
                 $panalNombre = $arUsuario->getPanalRel()->getNombre();
             }
             if($arUsuario->getCeldaRel()) {
                 $celda = $arUsuario->getCeldaRel()->getCelda();
+            }
+            if($arUsuario->getCiudadRel()) {
+                $ciudadNombre = $arUsuario->getCiudadRel()->getNombre();
             }
             return [
                 'error' => false,
@@ -251,7 +255,9 @@ class UsuarioRepository extends ServiceEntityRepository
                 'codigoCeldaFk' => $arUsuario->getCodigoCeldaFk(),
                 'celular' => $arUsuario->getCelular(),
                 'panalNombre' => $panalNombre,
-                'celda' => $celda
+                'celda' => $celda,
+                'codigoCiudadFk' => $arUsuario->getCodigoCiudadFk(),
+                'ciudadNombre' => $ciudadNombre
             ];
         } else {
             return [
