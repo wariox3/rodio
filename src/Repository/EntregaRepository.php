@@ -21,21 +21,19 @@ class EntregaRepository extends ServiceEntityRepository
         $this->firebase = $firebase;
     }
 
-    public function apiLista($codigoUsuario)
+    public function apiLista($codigoCelda)
     {
         $em = $this->getEntityManager();
         $queryBuilder = $em->createQueryBuilder()->from(Entrega::class, 'e')
             ->select('e.codigoEntregaPk')
             ->addSelect('e.fechaIngreso')
-            ->addSelect('e.entrega')
             ->addSelect('e.descripcion')
             ->addSelect('e.codigoEntregaTipoFk')
             ->addSelect('e.estadoAutorizado')
-            ->addSelect('e.estadoEntregado')
-            ->addSelect('e.estadoNotificado')
-            ->leftJoin('e.celdaRel', 'c')
-            ->where("c.codigoUsuarioFk = {$codigoUsuario}")
-            ->orderBy('e.estadoEntregado', 'ASC')
+            ->addSelect('e.estadoCerrado')
+            ->where("e.codigoCeldaFk = {$codigoCelda}")
+            ->orderBy('e.estadoCerrado', 'ASC')
+            ->orderBy('e.estadoAutorizado', 'ASC')
             ->setMaxResults(20);
         $arEntregas = $queryBuilder->getQuery()->getResult();
         $respuesta = [
@@ -79,13 +77,31 @@ class EntregaRepository extends ServiceEntityRepository
         }
     }
 
+    public function apiDetalle($codigoEntrega)
+    {
+        $em = $this->getEntityManager();
+        $arEntrega = $em->getRepository(Entrega::class)->find($codigoEntrega);
+        if($arEntrega) {
+            return [
+                'error' => false,
+                'codigoEntrega' => $arEntrega->getCodigoEntregaPk(),
+                'fechaIngreso' => $arEntrega->getFechaIngreso()
+                ];
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "No existe la entrega"
+            ];
+        }
+    }
+
     public function apiAutorizar($codigoEntrega, $autorizar, $codigoUsuario)
     {
         $em = $this->getEntityManager();
         $arEntrega = $em->getRepository(Entrega::class)->find($codigoEntrega);
         if($arEntrega) {
             if($arEntrega->getEstadoAutorizado() == 'P') {
-                if($arEntrega->isEstadoEntregado() == 0) {
+                if($arEntrega->isEstadoCerrado() == 0) {
                     $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
                     if($arUsuario) {
                         if($autorizar == 'S' || $autorizar == 'N') {
@@ -94,7 +110,6 @@ class EntregaRepository extends ServiceEntityRepository
                             }
                             if($autorizar == 'N') {
                                 $arEntrega->setEstadoAutorizado($autorizar);
-                                $arEntrega->setEstadoCerrado(1);
                             }
                             $em->persist($arEntrega);
                             $em->flush();
@@ -114,7 +129,7 @@ class EntregaRepository extends ServiceEntityRepository
                 } else {
                     return [
                         'error' => true,
-                        'errorMensaje' => "La entrega esta entregada"
+                        'errorMensaje' => "La entrega esta cerrada"
                     ];
                 }
             } else {
@@ -131,18 +146,15 @@ class EntregaRepository extends ServiceEntityRepository
         }
     }
 
-    public function apiEntregar($codigoEntrega, $codigoUsuario)
+    public function apiCerrar($codigoEntrega, $codigoUsuario)
     {
         $em = $this->getEntityManager();
         $arEntrega = $em->getRepository(Entrega::class)->find($codigoEntrega);
         if($arEntrega) {
-            if($arEntrega->isEstadoEntregado() == 0) {
+            if($arEntrega->isEstadoCerrado() == 0) {
                 $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
                 if($arUsuario) {
-                    if($arEntrega->getEstadoAutorizado() == "P") {
-                        $arEntrega->setEstadoAutorizado('S');
-                    }
-                    $arEntrega->setEstadoEntregado(1);
+                    $arEntrega->setEstadoCerrado(1);
                     $em->persist($arEntrega);
                     $em->flush();
                     return ['error' => false];
@@ -155,7 +167,7 @@ class EntregaRepository extends ServiceEntityRepository
             } else {
                 return [
                     'error' => true,
-                    'errorMensaje' => "La entrega esta entregada"
+                    'errorMensaje' => "La entrega esta cerrada"
                 ];
             }
         } else {
@@ -174,9 +186,7 @@ class EntregaRepository extends ServiceEntityRepository
             ->addSelect('e.fechaIngreso')
             ->addSelect('e.codigoEntregaTipoFk')
             ->addSelect('e.estadoAutorizado')
-            ->addSelect('e.estadoEntregado')
             ->addSelect('e.descripcion')
-            ->addSelect('e.entrega')
             ->addSelect('c.celda')
             ->leftJoin('e.celdaRel', 'c')
             ->where("c.codigoPanalFk = {$codigoPanal}")

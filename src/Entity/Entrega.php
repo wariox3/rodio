@@ -34,24 +34,9 @@ class Entrega
     private $codigoEntregaTipoFk;
 
     /**
-     * @ORM\Column(name="entrega", type="string", length=100, nullable=true)
-     */
-    private $entrega;
-
-    /**
      * @ORM\Column(name="descripcion", type="string", length=200, nullable=true)
      */
     private $descripcion;
-
-    /**
-     * @ORM\Column(name="estado_notificado", type="boolean", options={"default" : false}, nullable=true)
-     */
-    private $estadoNotificado = false;
-
-    /**
-     * @ORM\Column(name="estado_entregado", type="boolean", options={"default" : false}, nullable=true)
-     */
-    private $estadoEntregado = false;
 
     /**
      * @ORM\Column(name="estado_autorizado", type="string", options={"default" : "P"})
@@ -120,70 +105,6 @@ class Entrega
     /**
      * @return mixed
      */
-    public function getDescripcion()
-    {
-        return $this->descripcion;
-    }
-
-    /**
-     * @param mixed $descripcion
-     */
-    public function setDescripcion($descripcion): void
-    {
-        $this->descripcion = $descripcion;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isEstadoNotificado(): bool
-    {
-        return $this->estadoNotificado;
-    }
-
-    /**
-     * @param bool $estadoNotificado
-     */
-    public function setEstadoNotificado(bool $estadoNotificado): void
-    {
-        $this->estadoNotificado = $estadoNotificado;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isEstadoEntregado(): bool
-    {
-        return $this->estadoEntregado;
-    }
-
-    /**
-     * @param bool $estadoEntregado
-     */
-    public function setEstadoEntregado(bool $estadoEntregado): void
-    {
-        $this->estadoEntregado = $estadoEntregado;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCeldaRel()
-    {
-        return $this->celdaRel;
-    }
-
-    /**
-     * @param mixed $celdaRel
-     */
-    public function setCeldaRel($celdaRel): void
-    {
-        $this->celdaRel = $celdaRel;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getCodigoEntregaTipoFk()
     {
         return $this->codigoEntregaTipoFk;
@@ -195,6 +116,22 @@ class Entrega
     public function setCodigoEntregaTipoFk($codigoEntregaTipoFk): void
     {
         $this->codigoEntregaTipoFk = $codigoEntregaTipoFk;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
+    }
+
+    /**
+     * @param mixed $descripcion
+     */
+    public function setDescripcion($descripcion): void
+    {
+        $this->descripcion = $descripcion;
     }
 
     /**
@@ -214,22 +151,6 @@ class Entrega
     }
 
     /**
-     * @return mixed
-     */
-    public function getEntrega()
-    {
-        return $this->entrega;
-    }
-
-    /**
-     * @param mixed $entrega
-     */
-    public function setEntrega($entrega): void
-    {
-        $this->entrega = $entrega;
-    }
-
-    /**
      * @return bool
      */
     public function isEstadoCerrado(): bool
@@ -244,6 +165,23 @@ class Entrega
     {
         $this->estadoCerrado = $estadoCerrado;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCeldaRel()
+    {
+        return $this->celdaRel;
+    }
+
+    /**
+     * @param mixed $celdaRel
+     */
+    public function setCeldaRel($celdaRel): void
+    {
+        $this->celdaRel = $celdaRel;
+    }
+
 
 
 

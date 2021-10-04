@@ -20,14 +20,9 @@ class EntregaController extends AbstractFOSRestController
     {
         $em = $this->getDoctrine()->getManager();
         $raw = json_decode($request->getContent(), true);
-        $codigoUsuario = $raw['codigoUsuario']?? null;
-        if($codigoUsuario) {
-            $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
-            if($arUsuario) {
-                $respuesta = $em->getRepository(Entrega::class)->apiLista($codigoUsuario);
-            } else {
-                $respuesta = ['error' => true, 'mensajeError' => 'No existe el usuario'];
-            }
+        $codigoCelda = $raw['codigoCelda']?? null;
+        if($codigoCelda) {
+            $respuesta = $em->getRepository(Entrega::class)->apiLista($codigoCelda);
         } else {
             $respuesta = ['error' => true, 'mensajeError' => 'Faltan parametros para el consumo de la api'];
         }
@@ -47,6 +42,24 @@ class EntregaController extends AbstractFOSRestController
         $entrega = $raw['entrega']?? null;
         if($codigoPanal && $celda && $tipo) {
             return $em->getRepository(Entrega::class)->apiNuevo($codigoPanal, $celda, $tipo, $entrega);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'
+            ];
+        }
+    }
+
+    /**
+     * @Rest\Post("/api/entrega/detalle")
+     */
+    public function detalle(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoEntrega = $raw['codigoEntrega']?? null;
+        if($codigoEntrega) {
+            return $em->getRepository(Entrega::class)->apiDetalle($codigoEntrega);
         } else {
             return [
                 'error' => true,
@@ -76,16 +89,16 @@ class EntregaController extends AbstractFOSRestController
     }
 
     /**
-     * @Rest\Post("/api/entrega/entregar")
+     * @Rest\Post("/api/entrega/cerrar")
      */
-    public function entregar(Request $request)
+    public function cerrar(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $raw = json_decode($request->getContent(), true);
         $codigoEntrega = $raw['codigoEntrega']?? null;
         $codigoUsuario = $raw['codigoUsuario']?? null;
         if($codigoEntrega && $codigoUsuario) {
-            return $em->getRepository(Entrega::class)->apiEntregar($codigoEntrega, $codigoUsuario);
+            return $em->getRepository(Entrega::class)->apiCerrar($codigoEntrega, $codigoUsuario);
         } else {
             return [
                 'error' => true,
