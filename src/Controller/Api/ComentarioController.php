@@ -23,7 +23,7 @@ class ComentarioController extends AbstractFOSRestController
         if($codigoPublicacion) {
             $respuesta = $em->getRepository(Comentario::class)->apiLista($codigoPublicacion);
         } else {
-            $respuesta = ['error' => true, 'mensajeError' => 'Faltan parametros para el consumo de la api'];
+            $respuesta = ['error' => true, 'errorMensaje' => 'Faltan parametros para el consumo de la api'];
         }
         return $respuesta;
     }

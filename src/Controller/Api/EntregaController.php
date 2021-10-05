@@ -24,7 +24,7 @@ class EntregaController extends AbstractFOSRestController
         if($codigoCelda) {
             $respuesta = $em->getRepository(Entrega::class)->apiLista($codigoCelda);
         } else {
-            $respuesta = ['error' => true, 'mensajeError' => 'Faltan parametros para el consumo de la api'];
+            $respuesta = ['error' => true, 'errorMensaje' => 'Faltan parametros para el consumo de la api'];
         }
         return $respuesta;
     }

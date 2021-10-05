@@ -27,7 +27,7 @@ class UsuarioController extends AbstractFOSRestController
         } else {
             return [
                 'error' => true,
-                'mensajeError' => 'Faltan parametros para el consumo de la api'];
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
         }
     }
 
@@ -46,7 +46,7 @@ class UsuarioController extends AbstractFOSRestController
         } else {
             return [
                 'error' => true,
-                'mensajeError' => 'Faltan parametros para el consumo de la api'];
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
         }
     }
 
@@ -65,7 +65,7 @@ class UsuarioController extends AbstractFOSRestController
         } else {
             return [
                 'error' => true,
-                'mensajeError' => 'Faltan parametros para el consumo de la api'];
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
         }
     }
 
@@ -84,7 +84,7 @@ class UsuarioController extends AbstractFOSRestController
         } else {
             return [
                 'error' => true,
-                'mensajeError' => 'Faltan parametros para el consumo de la api'];
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
         }
     }
 
@@ -101,7 +101,7 @@ class UsuarioController extends AbstractFOSRestController
         } else {
             return [
                 'error' => true,
-                'mensajeError' => 'Faltan parametros para el consumo de la api'];
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
         }
     }
 
@@ -154,7 +154,7 @@ class UsuarioController extends AbstractFOSRestController
         } else {
             return [
                 'error' => true,
-                'mensajeError' => 'Faltan parametros para el consumo de la api'];
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
         }
     }
 
@@ -172,7 +172,7 @@ class UsuarioController extends AbstractFOSRestController
         } else {
             return [
                 'error' => true,
-                'mensajeError' => 'Faltan parametros para el consumo de la api'];
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
         }
     }
 
@@ -189,7 +189,7 @@ class UsuarioController extends AbstractFOSRestController
         } else {
             return [
                 'error' => true,
-                'mensajeError' => 'Faltan parametros para el consumo de la api'];
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
         }
     }
 
