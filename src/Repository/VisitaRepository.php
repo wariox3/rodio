@@ -66,7 +66,11 @@ class VisitaRepository extends ServiceEntityRepository
                 //Usuarios a los que se debe notificar
                 $arUsuario = $em->getRepository(Usuario::class)->findOneBy(['codigoCeldaFk' => $arCelda->getCodigoCeldaPk()]);
                 if($arUsuario) {
-                    $this->firebase->nuevaVisita($arUsuario->getTokenFirebase(), $arVisita->getCodigoVisitaPk(), $nombre);
+                    $cantidadPendiente = $em->createQueryBuilder()->from(Visita::class, 'v')
+                        ->select('count(v.codigoVisitaPk)')
+                        ->where("v.estadoAutorizado = 'P' ")
+                        ->getQuery()->getSingleScalarResult();
+                    $this->firebase->nuevaVisita($arUsuario->getTokenFirebase(), $arVisita->getCodigoVisitaPk(), $nombre, $cantidadPendiente);
                 }
                 return [
                     'error' => false,

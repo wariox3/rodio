@@ -10,7 +10,7 @@ class Firebase
 
     }
 
-    public function nuevaVisita($destinatario, $codigoVisita, $visitante) {
+    public function nuevaVisita($destinatario, $codigoVisita, $visitante, $cantidadPendiente) {
         $url = "https://fcm.googleapis.com/fcm/send";
         $arreglo = [
             'to' => $destinatario,
@@ -20,7 +20,8 @@ class Firebase
             ],
             'data' => [
                 'codigoVisita' => $codigoVisita,
-                'rutaApp' => 'Visita'
+                'rutaApp' => 'Visita',
+                'cantidadPendiente' =>$cantidadPendiente
             ]
         ];
         $parametros = json_encode($arreglo);
