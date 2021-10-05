@@ -42,7 +42,7 @@ class Firebase
         curl_close($ch);
     }
 
-    public function nuevaEntrega($destinatario, $codigoEntrega, $tipoEntrega) {
+    public function nuevaEntrega($destinatario, $codigoEntrega, $tipoEntrega, $cantidadPendiente) {
         $url = "https://fcm.googleapis.com/fcm/send";
         $arreglo = [
             'to' => $destinatario,
@@ -52,7 +52,8 @@ class Firebase
             ],
             'data' => [
                 'codigoEntrega' => $codigoEntrega,
-                'rutaApp' => 'Entrega'
+                'rutaApp' => 'Entrega',
+                'cantidadPendiente' =>$cantidadPendiente
             ]
         ];
         $parametros = json_encode($arreglo);
