@@ -69,7 +69,7 @@ class VisitaRepository extends ServiceEntityRepository
                     $cantidadPendiente = $em->createQueryBuilder()->from(Visita::class, 'v')
                         ->select('count(v.codigoVisitaPk)')
                         ->where("v.estadoAutorizado = 'P' ")
-                        ->andWhere("v.codigoCeldaFk = ${$celda}")
+                        ->andWhere("v.codigoCeldaFk = '${$celda}' ")
                         ->getQuery()->getSingleScalarResult();
                     $this->firebase->nuevaVisita($arUsuario->getTokenFirebase(), $arVisita->getCodigoVisitaPk(), $nombre, $cantidadPendiente);
                 }

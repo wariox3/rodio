@@ -62,7 +62,7 @@ class EntregaRepository extends ServiceEntityRepository
                     $cantidadPendiente = $em->createQueryBuilder()->from(Entrega::class, 'e')
                         ->select('count(e.codigoEntregaPk)')
                         ->where("e.estadoCerrado = 'P' ")
-                        ->andWhere("e.codigoCeldaFk = ${$celda}")
+                        ->andWhere("e.codigoCeldaFk = '${$celda}'")
                         ->getQuery()->getSingleScalarResult();
                     $this->firebase->nuevaEntrega($arUsuario->getTokenFirebase(), $arEntrega->getCodigoEntregaPk(), $tipo, $cantidadPendiente);
                 }
