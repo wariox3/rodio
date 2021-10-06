@@ -103,6 +103,11 @@ class Usuario
     private $visitasUsuarioAutorizaRel;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\CeldaUsuario", mappedBy="usuarioRel")
+     */
+    private $celdasUsuariosUsuarioRel;
+
+    /**
      * @return mixed
      */
     public function getCodigoUsuarioPk()
@@ -372,6 +377,22 @@ class Usuario
     public function setCiudadRel($ciudadRel): void
     {
         $this->ciudadRel = $ciudadRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCeldasUsuariosUsuarioRel()
+    {
+        return $this->celdasUsuariosUsuarioRel;
+    }
+
+    /**
+     * @param mixed $celdasUsuariosUsuarioRel
+     */
+    public function setCeldasUsuariosUsuarioRel($celdasUsuariosUsuarioRel): void
+    {
+        $this->celdasUsuariosUsuarioRel = $celdasUsuariosUsuarioRel;
     }
 
 

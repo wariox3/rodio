@@ -4,6 +4,7 @@
 namespace App\Repository;
 
 use App\Entity\Celda;
+use App\Entity\CeldaUsuario;
 use App\Entity\Panal;
 use App\Entity\Usuario;
 use App\Entity\Visita;
@@ -64,9 +65,9 @@ class VisitaRepository extends ServiceEntityRepository
                 $em->persist($arVisita);
                 $em->flush();
                 //Usuarios a los que se debe notificar
-                $arUsuario = $em->getRepository(Usuario::class)->findOneBy(['codigoCeldaFk' => $arCelda->getCodigoCeldaPk()]);
-                if($arUsuario) {
-                    $this->firebase->nuevaVisita($arUsuario->getTokenFirebase(), $arVisita->getCodigoVisitaPk(), $nombre, 0);
+                $arCeldaUsuarios = $em->getRepository(CeldaUsuario::class)->findBy(['codigoCeldaFk' => $arCelda->getCodigoCeldaPk()]);
+                foreach ($arCeldaUsuarios as $arCeldaUsuario) {
+                    $this->firebase->nuevaVisita($arCeldaUsuario->getUsuarioRel()->getTokenFirebase(), $arVisita->getCodigoVisitaPk(), $nombre, 0);
                 }
                 return [
                     'error' => false,
@@ -96,6 +97,7 @@ class VisitaRepository extends ServiceEntityRepository
             ->addSelect('v.numeroIdentificacion')
             ->addSelect('v.nombre')
             ->addSelect('v.placa')
+            ->addSelect('v.codigoIngreso')
             ->addSelect('v.estadoAutorizado')
             ->addSelect('v.estadoCerrado')
             ->addSelect('c.celda')

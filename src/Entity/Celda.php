@@ -24,11 +24,6 @@ class Celda
     private $codigoPanalFk;
 
     /**
-     * @ORM\Column(name="codigo_usuario_fk", type="integer", nullable=true)
-     */
-    private $codigoUsuarioFk;
-
-    /**
      * @ORM\Column(name="celda", type="string", length=20, nullable=true)
      */
     private $celda;
@@ -50,12 +45,6 @@ class Celda
     private $panalRel;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Usuario", inversedBy="celdasUsuarioRel")
-     * @ORM\JoinColumn(name="codigo_usuario_fk", referencedColumnName="codigo_usuario_pk")
-     */
-    private $usuarioRel;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Entrega", mappedBy="celdaRel")
      */
     private $entregasCeldaRel;
@@ -69,6 +58,11 @@ class Celda
      * @ORM\OneToMany(targetEntity="App\Entity\Visita", mappedBy="celdaRel")
      */
     private $visitasCeldaRel;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\CeldaUsuario", mappedBy="celdaRel")
+     */
+    private $celdasUsuariosCeldaRel;
 
     /**
      * @return mixed
@@ -105,22 +99,6 @@ class Celda
     /**
      * @return mixed
      */
-    public function getCodigoUsuarioFk()
-    {
-        return $this->codigoUsuarioFk;
-    }
-
-    /**
-     * @param mixed $codigoUsuarioFk
-     */
-    public function setCodigoUsuarioFk($codigoUsuarioFk): void
-    {
-        $this->codigoUsuarioFk = $codigoUsuarioFk;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getCelda()
     {
         return $this->celda;
@@ -137,6 +115,38 @@ class Celda
     /**
      * @return mixed
      */
+    public function getCelular()
+    {
+        return $this->celular;
+    }
+
+    /**
+     * @param mixed $celular
+     */
+    public function setCelular($celular): void
+    {
+        $this->celular = $celular;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCorreo()
+    {
+        return $this->correo;
+    }
+
+    /**
+     * @param mixed $correo
+     */
+    public function setCorreo($correo): void
+    {
+        $this->correo = $correo;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getPanalRel()
     {
         return $this->panalRel;
@@ -148,22 +158,6 @@ class Celda
     public function setPanalRel($panalRel): void
     {
         $this->panalRel = $panalRel;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUsuarioRel()
-    {
-        return $this->usuarioRel;
-    }
-
-    /**
-     * @param mixed $usuarioRel
-     */
-    public function setUsuarioRel($usuarioRel): void
-    {
-        $this->usuarioRel = $usuarioRel;
     }
 
     /**
@@ -217,36 +211,18 @@ class Celda
     /**
      * @return mixed
      */
-    public function getCelular()
+    public function getCeldasUsuariosCeldaRel()
     {
-        return $this->celular;
+        return $this->celdasUsuariosCeldaRel;
     }
 
     /**
-     * @param mixed $celular
+     * @param mixed $celdasUsuariosCeldaRel
      */
-    public function setCelular($celular): void
+    public function setCeldasUsuariosCeldaRel($celdasUsuariosCeldaRel): void
     {
-        $this->celular = $celular;
+        $this->celdasUsuariosCeldaRel = $celdasUsuariosCeldaRel;
     }
-
-    /**
-     * @return mixed
-     */
-    public function getCorreo()
-    {
-        return $this->correo;
-    }
-
-    /**
-     * @param mixed $correo
-     */
-    public function setCorreo($correo): void
-    {
-        $this->correo = $correo;
-    }
-
-
 
 
 }

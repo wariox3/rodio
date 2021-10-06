@@ -4,6 +4,7 @@
 namespace App\Repository;
 
 use App\Entity\Celda;
+use App\Entity\CeldaUsuario;
 use App\Entity\Ciudad;
 use App\Entity\Panal;
 use App\Entity\Usuario;
@@ -169,22 +170,17 @@ class UsuarioRepository extends ServiceEntityRepository
             if(!$arUsuario->getCeldaRel()) {
                 $arCelda = $em->getRepository(Celda::class)->findOneBy(['codigoPanalFk' => $codigoPanal, 'celda' => $celda]);
                 if ($arCelda) {
-                    if(!$arCelda->getUsuarioRel()) {
-                        $arCelda->setUsuarioRel($arUsuario);
-                        $em->persist($arCelda);
-                        $arUsuario->setCeldaRel($arCelda);
-                        $em->persist($arUsuario);
-                        $em->flush();
-                        return [
-                            'error' => false,
-                            'codigoCelda' => $arCelda->getCodigoCeldaPk()
-                        ];
-                    } else {
-                        return [
-                            'error' => true,
-                            'errorMensaje' => "La celda ya tiene un usuario asignado"
-                        ];
-                    }
+                    $arCeldaUsuario = new CeldaUsuario();
+                    $arCeldaUsuario->setCeldaRel($arCelda);
+                    $arCeldaUsuario->setUsuarioRel($arUsuario);
+                    $em->persist($arCeldaUsuario);
+                    $arUsuario->setCeldaRel($arCelda);
+                    $em->persist($arUsuario);
+                    $em->flush();
+                    return [
+                        'error' => false,
+                        'codigoCelda' => $arCelda->getCodigoCeldaPk()
+                    ];
                 } else {
                     return [
                         'error' => true,
@@ -212,9 +208,10 @@ class UsuarioRepository extends ServiceEntityRepository
         $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
         if ($arUsuario) {
             if($arUsuario->getCeldaRel()) {
-                $arCelda = $em->getRepository(Celda::class)->find($arUsuario->getCodigoCeldaFk());
-                $arCelda->setUsuarioRel(null);
-                $em->persist($arCelda);
+                $arCeldaUsuarios = $em->getRepository(CeldaUsuario::class)->findBy(['codigoCeldaFk' => $arUsuario->getCodigoCeldaFk(), 'codigoUsuarioFk' => $codigoUsuario]);
+                foreach ($arCeldaUsuarios as $arCeldaUsuario) {
+                    $em->remove($arCeldaUsuario);
+                }
             }
             $arUsuario->setCeldaRel(null);
             $arUsuario->setPanalRel(null);

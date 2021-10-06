@@ -4,6 +4,7 @@
 namespace App\Repository;
 
 use App\Entity\Celda;
+use App\Entity\CeldaUsuario;
 use App\Entity\Entrega;
 use App\Entity\Panal;
 use App\Entity\Usuario;
@@ -57,10 +58,11 @@ class EntregaRepository extends ServiceEntityRepository
                 $em->persist($arEntrega);
                 $em->flush();
                 //Usuarios a los que se debe notificar
-                $arUsuario = $em->getRepository(Usuario::class)->findOneBy(['codigoCeldaFk' => $arCelda->getCodigoCeldaPk()]);
-                if($arUsuario) {
-                    $this->firebase->nuevaEntrega($arUsuario->getTokenFirebase(), $arEntrega->getCodigoEntregaPk(), $tipo, 0);
+                $arCeldaUsuarios = $em->getRepository(CeldaUsuario::class)->findBy(['codigoCeldaFk' => $arCelda->getCodigoCeldaPk()]);
+                foreach ($arCeldaUsuarios as $arCeldaUsuario) {
+                    $this->firebase->nuevaEntrega($arCeldaUsuario->getUsuarioRel()->getTokenFirebase(), $arEntrega->getCodigoEntregaPk(), $tipo, 0);
                 }
+
                 return ['error' => false];
             } else {
                 return [
