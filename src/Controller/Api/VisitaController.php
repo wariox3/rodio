@@ -62,8 +62,10 @@ class VisitaController extends AbstractFOSRestController
         $em = $this->getDoctrine()->getManager();
         $raw = json_decode($request->getContent(), true);
         $codigoPanal = $raw['codigoPanal']?? null;
+        $celda = $raw['celda']?? null;
+        $estadoAutorizado = $raw['estadoAutorizado']?? null;
         if($codigoPanal) {
-            return $em->getRepository(Visita::class)->apiPendiente($codigoPanal);
+            return $em->getRepository(Visita::class)->apiPendiente($codigoPanal, $celda, $estadoAutorizado);
         } else {
             return [
                 'error' => true,

@@ -87,7 +87,7 @@ class VisitaRepository extends ServiceEntityRepository
         }
     }
 
-    public function apiPendiente($codigoPanal)
+    public function apiPendiente($codigoPanal, $celda, $estadoAutorizado)
     {
         $em = $this->getEntityManager();
         $queryBuilder = $em->createQueryBuilder()->from(Visita::class, 'v')
@@ -102,6 +102,12 @@ class VisitaRepository extends ServiceEntityRepository
             ->leftJoin('v.celdaRel', 'c')
             ->where("c.codigoPanalFk = {$codigoPanal}")
             ->andWhere('v.estadoCerrado = 0');
+        if($celda) {
+            $queryBuilder->andWhere("c.celda = '{$celda}'");
+        }
+        if($estadoAutorizado) {
+            $queryBuilder->andWhere("v.estadoAutorizado = '{$estadoAutorizado}'");
+        }
         $arVisitas = $queryBuilder->getQuery()->getResult();
         return [
             'error' => false,
