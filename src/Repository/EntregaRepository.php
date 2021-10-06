@@ -59,12 +59,7 @@ class EntregaRepository extends ServiceEntityRepository
                 //Usuarios a los que se debe notificar
                 $arUsuario = $em->getRepository(Usuario::class)->findOneBy(['codigoCeldaFk' => $arCelda->getCodigoCeldaPk()]);
                 if($arUsuario) {
-                    $cantidadPendiente = $em->createQueryBuilder()->from(Entrega::class, 'e')
-                        ->select('count(e.codigoEntregaPk)')
-                        ->where("e.estadoCerrado = 'P' ")
-                        ->andWhere("e.codigoCeldaFk = '${$celda}'")
-                        ->getQuery()->getSingleScalarResult();
-                    $this->firebase->nuevaEntrega($arUsuario->getTokenFirebase(), $arEntrega->getCodigoEntregaPk(), $tipo, $cantidadPendiente);
+                    $this->firebase->nuevaEntrega($arUsuario->getTokenFirebase(), $arEntrega->getCodigoEntregaPk(), $tipo, 0);
                 }
                 return ['error' => false];
             } else {
