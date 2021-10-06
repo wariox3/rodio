@@ -99,6 +99,8 @@ class VisitaRepository extends ServiceEntityRepository
             ->addSelect('v.estadoAutorizado')
             ->addSelect('v.estadoCerrado')
             ->addSelect('c.celda')
+            ->addSelect('c.celular')
+            ->addSelect('c.correo')
             ->leftJoin('v.celdaRel', 'c')
             ->where("c.codigoPanalFk = {$codigoPanal}")
             ->andWhere('v.estadoCerrado = 0');

@@ -34,6 +34,16 @@ class Celda
     private $celda;
 
     /**
+     * @ORM\Column(name="celular", type="string", length=20, nullable=true)
+     */
+    private $celular;
+
+    /**
+     * @ORM\Column(name="correo", type="string", length=150, nullable=true)
+     */
+    private $correo;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Panal", inversedBy="celdasPanalRel")
      * @ORM\JoinColumn(name="codigo_panal_fk", referencedColumnName="codigo_panal_pk")
      */
@@ -202,6 +212,38 @@ class Celda
     public function setVisitasCeldaRel($visitasCeldaRel): void
     {
         $this->visitasCeldaRel = $visitasCeldaRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCelular()
+    {
+        return $this->celular;
+    }
+
+    /**
+     * @param mixed $celular
+     */
+    public function setCelular($celular): void
+    {
+        $this->celular = $celular;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCorreo()
+    {
+        return $this->correo;
+    }
+
+    /**
+     * @param mixed $correo
+     */
+    public function setCorreo($correo): void
+    {
+        $this->correo = $correo;
     }
 
 
