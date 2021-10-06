@@ -177,7 +177,7 @@ class EntregaRepository extends ServiceEntityRepository
         }
     }
 
-    public function apiPendiente($codigoPanal)
+    public function apiPendiente($codigoPanal, $celda, $estadoAutorizado)
     {
         $em = $this->getEntityManager();
         $queryBuilder = $em->createQueryBuilder()->from(Entrega::class, 'e')
@@ -192,6 +192,12 @@ class EntregaRepository extends ServiceEntityRepository
             ->andWhere("e.estadoCerrado = 0")
             ->orderBy("e.estadoAutorizado", "DESC")
             ->addOrderBy("e.fechaIngreso", "ASC");
+        if($celda) {
+            $queryBuilder->andWhere("c.celda = '{$celda}'");
+        }
+        if($estadoAutorizado) {
+            $queryBuilder->andWhere("e.estadoAutorizado = '{$estadoAutorizado}'");
+        }
         $arEntregas = $queryBuilder->getQuery()->getResult();
         return [
             'error' => false,
