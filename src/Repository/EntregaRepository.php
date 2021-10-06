@@ -194,7 +194,9 @@ class EntregaRepository extends ServiceEntityRepository
             ->addSelect('c.celda')
             ->leftJoin('e.celdaRel', 'c')
             ->where("c.codigoPanalFk = {$codigoPanal}")
-            ->andWhere("e.estadoCerrado = 0");
+            ->andWhere("e.estadoCerrado = 0")
+            ->orderBy("e.estadoAutorizado", "DESC")
+            ->addOrderBy("e.fechaIngreso", "ASC");
         $arEntregas = $queryBuilder->getQuery()->getResult();
         return [
             'error' => false,
