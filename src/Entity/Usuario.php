@@ -40,6 +40,11 @@ class Usuario
     private $codigoCeldaFk;
 
     /**
+     * @ORM\Column(name="codigo_operador_fk", type="integer", nullable=true)
+     */
+    private $codigoOperadorFk;
+
+    /**
      * @ORM\Column(name="celular", type="string", length=50)
      */
     private $celular;
@@ -76,6 +81,12 @@ class Usuario
      * @ORM\JoinColumn(name="codigo_ciudad_fk", referencedColumnName="codigo_ciudad_pk")
      */
     private $ciudadRel;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Operador", inversedBy="usuariosOperadorRel")
+     * @ORM\JoinColumn(name="codigo_operador_fk", referencedColumnName="codigo_operador_pk")
+     */
+    private $operadorRel;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Publicacion", mappedBy="usuarioRel")
@@ -393,6 +404,38 @@ class Usuario
     public function setCeldasUsuariosUsuarioRel($celdasUsuariosUsuarioRel): void
     {
         $this->celdasUsuariosUsuarioRel = $celdasUsuariosUsuarioRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodigoOperadorFk()
+    {
+        return $this->codigoOperadorFk;
+    }
+
+    /**
+     * @param mixed $codigoOperadorFk
+     */
+    public function setCodigoOperadorFk($codigoOperadorFk): void
+    {
+        $this->codigoOperadorFk = $codigoOperadorFk;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOperadorRel()
+    {
+        return $this->operadorRel;
+    }
+
+    /**
+     * @param mixed $operadorRel
+     */
+    public function setOperadorRel($operadorRel): void
+    {
+        $this->operadorRel = $operadorRel;
     }
 
 

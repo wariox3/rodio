@@ -32,6 +32,12 @@ class UsuarioRepository extends ServiceEntityRepository
                 $em->persist($arUsuario);
                 $em->flush();
             }
+            $operador = "";
+            $puntoServicioSemantica = "";
+            if($arUsuario->getOperadorRel()) {
+                $operador = $arUsuario->getOperadorRel()->getNombre();
+                $puntoServicioSemantica = $arUsuario->getOperadorRel()->getPuntoServicioSemantica();
+            }
             return [
                 'error' => false,
                 'autenticar' => true,
@@ -41,7 +47,9 @@ class UsuarioRepository extends ServiceEntityRepository
                     'urlImagen' => $arUsuario->getUrlImagen(),
                     'codigoCelda' => $arUsuario->getCodigoCeldaFk(),
                     'codigoPanal' => $arUsuario->getCodigoPanalFk(),
-                    'codigoCiudad' => $arUsuario->getCodigoCiudadFk()
+                    'codigoCiudad' => $arUsuario->getCodigoCiudadFk(),
+                    'operador' => $operador,
+                    'puntoServicio' => $puntoServicioSemantica
                 ],
             ];
         } else {
