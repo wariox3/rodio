@@ -170,4 +170,21 @@ class VisitaRepository extends ServiceEntityRepository
             ];
         }
     }
+
+    public function apiInformeEstados($codigoPanal)
+    {
+        $em = $this->getEntityManager();
+        $queryBuilder = $em->createQueryBuilder()->from(Visita::class, 'v')
+            ->select('v.estadoAutorizado')
+            ->addSelect('count(v.estadoAutorizado) as cantidad' )
+            ->groupBy('v.estadoAutorizado')
+            ->leftJoin('v.celdaRel', 'c')
+            ->Where("c.codigoPanalFk  = '{$codigoPanal}' ");
+
+        $arVisitas = $queryBuilder->getQuery()->getResult();
+        return [
+            'error' => false,
+            'visitas' => $arVisitas
+        ];
+    }
 }

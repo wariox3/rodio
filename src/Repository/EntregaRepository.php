@@ -206,4 +206,22 @@ class EntregaRepository extends ServiceEntityRepository
             'entregas' => $arEntregas
         ];
     }
+
+    public function apiInformeEstados($codigoPanal)
+    {
+        $em = $this->getEntityManager();
+        $queryBuilder = $em->createQueryBuilder()->from(Entrega::class, 'e')
+            ->select('e.codigoEntregaTipoFk')
+            ->addSelect('count(e.codigoEntregaTipoFk) as cantidad' )
+            ->groupBy('e.codigoEntregaTipoFk')
+            ->leftJoin('e.celdaRel', 'c')
+            ->Where("c.codigoPanalFk  = '{$codigoPanal}' ");
+
+        $arEntregas = $queryBuilder->getQuery()->getResult();
+        return [
+            'error' => false,
+            'entregas' => $arEntregas
+        ];
+    }
+
 }
