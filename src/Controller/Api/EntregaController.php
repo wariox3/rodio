@@ -97,8 +97,9 @@ class EntregaController extends AbstractFOSRestController
         $raw = json_decode($request->getContent(), true);
         $codigoEntrega = $raw['codigoEntrega']?? null;
         $codigoUsuario = $raw['codigoUsuario']?? null;
+        $arrImagen = $raw['imagen']??[];
         if($codigoEntrega && $codigoUsuario) {
-            return $em->getRepository(Entrega::class)->apiCerrar($codigoEntrega, $codigoUsuario);
+            return $em->getRepository(Entrega::class)->apiCerrar($codigoEntrega, $codigoUsuario, $arrImagen);
         } else {
             return [
                 'error' => true,

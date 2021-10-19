@@ -49,6 +49,11 @@ class Entrega
     private $estadoCerrado = false;
 
     /**
+     * @ORM\Column(name="url_imagen", type="string", length=500, nullable=true)
+     */
+    private $urlImagen;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Celda", inversedBy="entregasCeldaRel")
      * @ORM\JoinColumn(name="codigo_celda_fk", referencedColumnName="codigo_celda_pk")
      */
@@ -180,6 +185,22 @@ class Entrega
     public function setCeldaRel($celdaRel): void
     {
         $this->celdaRel = $celdaRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUrlImagen()
+    {
+        return $this->urlImagen;
+    }
+
+    /**
+     * @param mixed $urlImagen
+     */
+    public function setUrlImagen($urlImagen): void
+    {
+        $this->urlImagen = $urlImagen;
     }
 
 

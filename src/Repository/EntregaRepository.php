@@ -32,6 +32,7 @@ class EntregaRepository extends ServiceEntityRepository
             ->addSelect('e.codigoEntregaTipoFk')
             ->addSelect('e.estadoAutorizado')
             ->addSelect('e.estadoCerrado')
+            ->addSelect('e.urlImagen')
             ->where("e.codigoCeldaFk = {$codigoCelda}")
             ->orderBy('e.estadoCerrado', 'ASC')
             ->orderBy('e.estadoAutorizado', 'ASC')
@@ -86,7 +87,8 @@ class EntregaRepository extends ServiceEntityRepository
             return [
                 'error' => false,
                 'codigoEntrega' => $arEntrega->getCodigoEntregaPk(),
-                'fechaIngreso' => $arEntrega->getFechaIngreso()
+                'fechaIngreso' => $arEntrega->getFechaIngreso(),
+                'urlImagen' => $arEntrega->getUrlImagen()
                 ];
         } else {
             return [
@@ -147,7 +149,7 @@ class EntregaRepository extends ServiceEntityRepository
         }
     }
 
-    public function apiCerrar($codigoEntrega, $codigoUsuario)
+    public function apiCerrar($codigoEntrega, $codigoUsuario, $imagenBase64)
     {
         $em = $this->getEntityManager();
         $arEntrega = $em->getRepository(Entrega::class)->find($codigoEntrega);
@@ -156,6 +158,9 @@ class EntregaRepository extends ServiceEntityRepository
                 $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
                 if($arUsuario) {
                     $arEntrega->setEstadoCerrado(1);
+                    if($imagenBase64) {
+                        $arEntrega->setUrlImagen($this->space->subir('entrega', $imagenBase64['nombre'], $imagenBase64['base64']));
+                    }
                     $em->persist($arEntrega);
                     $em->flush();
                     return ['error' => false];
