@@ -70,25 +70,6 @@ class UsuarioController extends AbstractFOSRestController
     }
 
     /**
-     * @Rest\Post("/api/usuario/asignarcelda")
-     */
-    public function asignarCelda(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $raw = json_decode($request->getContent(), true);
-        $codigoUsuario = $raw['codigoUsuario']?? null;
-        $codigoPanal = $raw['codigoPanal']?? null;
-        $celda = $raw['celda']?? null;
-        if($codigoUsuario && $codigoPanal) {
-            return $em->getRepository(Usuario::class)->apiAsignarCelda($codigoUsuario, $codigoPanal, $celda);
-        } else {
-            return [
-                'error' => true,
-                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
-        }
-    }
-
-    /**
      * @Rest\Post("/api/usuario/desvincular")
      */
     public function desvincular(Request $request)

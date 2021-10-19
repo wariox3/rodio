@@ -29,6 +29,16 @@ class CeldaUsuario
     private $codigoUsuarioFk;
 
     /**
+     * @ORM\Column(name="validado", type="boolean", options={"default" : false}, nullable=true)
+     */
+    private $validado = false;
+
+    /**
+     * @ORM\Column(name="llave", type="string", length=10, nullable=true)
+     */
+    private $llave;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Celda", inversedBy="celdasUsuariosCeldaRel")
      * @ORM\JoinColumn(name="codigo_celda_fk", referencedColumnName="codigo_celda_pk")
      */
@@ -118,6 +128,38 @@ class CeldaUsuario
     public function setUsuarioRel($usuarioRel): void
     {
         $this->usuarioRel = $usuarioRel;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isValidado(): bool
+    {
+        return $this->validado;
+    }
+
+    /**
+     * @param bool $validado
+     */
+    public function setValidado(bool $validado): void
+    {
+        $this->validado = $validado;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLlave()
+    {
+        return $this->llave;
+    }
+
+    /**
+     * @param mixed $llave
+     */
+    public function setLlave($llave): void
+    {
+        $this->llave = $llave;
     }
 
 

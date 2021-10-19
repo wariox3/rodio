@@ -170,46 +170,6 @@ class UsuarioRepository extends ServiceEntityRepository
         }
     }
 
-    public function apiAsignarCelda($codigoUsuario, $codigoPanal, $celda)
-    {
-        $em = $this->getEntityManager();
-        $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
-        if ($arUsuario) {
-            if(!$arUsuario->getCeldaRel()) {
-                $arCelda = $em->getRepository(Celda::class)->findOneBy(['codigoPanalFk' => $codigoPanal, 'celda' => $celda]);
-                if ($arCelda) {
-                    $arCeldaUsuario = new CeldaUsuario();
-                    $arCeldaUsuario->setCeldaRel($arCelda);
-                    $arCeldaUsuario->setUsuarioRel($arUsuario);
-                    $em->persist($arCeldaUsuario);
-                    $arUsuario->setCeldaRel($arCelda);
-                    $em->persist($arUsuario);
-                    $em->flush();
-                    return [
-                        'error' => false,
-                        'codigoCelda' => $arCelda->getCodigoCeldaPk()
-                    ];
-                } else {
-                    return [
-                        'error' => true,
-                        'errorMensaje' => "La celda no existe"
-                    ];
-                }
-            } else {
-                return [
-                    'error' => true,
-                    'errorMensaje' => "El usuario ya tiene una celda asignada, debe desvincularse de este panal/celda para seleccionar uno nuevo"
-                ];
-            }
-
-        } else {
-            return [
-                'error' => true,
-                'errorMensaje' => "El usuario no existe"
-            ];
-        }
-    }
-
     public function apiDesvincular($codigoUsuario)
     {
         $em = $this->getEntityManager();
