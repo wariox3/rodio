@@ -64,6 +64,16 @@ class Visita
     private $codigoIngreso;
 
     /**
+     * @ORM\Column(name="url_imagen", type="string", length=500, nullable=true)
+     */
+    private $urlImagen;
+
+    /**
+     * @ORM\Column(name="url_imagen_ingreso", type="string", length=500, nullable=true)
+     */
+    private $urlImagenIngreso;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Celda", inversedBy="visitasCeldaRel")
      * @ORM\JoinColumn(name="codigo_celda_fk", referencedColumnName="codigo_celda_pk")
      */
@@ -268,6 +278,36 @@ class Visita
         $this->codigoIngreso = $codigoIngreso;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getUrlImagen()
+    {
+        return $this->urlImagen;
+    }
 
+    /**
+     * @param mixed $urlImagen
+     */
+    public function setUrlImagen($urlImagen): void
+    {
+        $this->urlImagen = $urlImagen;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUrlImagenIngreso()
+    {
+        return $this->urlImagenIngreso;
+    }
+
+    /**
+     * @param mixed $urlImagenIngreso
+     */
+    public function setUrlImagenIngreso($urlImagenIngreso): void
+    {
+        $this->urlImagenIngreso = $urlImagenIngreso;
+    }
 
 }
