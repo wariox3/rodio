@@ -36,6 +36,7 @@ class EntregaRepository extends ServiceEntityRepository
             ->addSelect('e.estadoAutorizado')
             ->addSelect('e.estadoCerrado')
             ->addSelect('e.urlImagen')
+            ->addSelect('e.urlImagenIngreso')
             ->where("e.codigoCeldaFk = {$codigoCelda}")
             ->orderBy('e.estadoCerrado', 'ASC')
             ->orderBy('e.estadoAutorizado', 'ASC')
@@ -48,7 +49,7 @@ class EntregaRepository extends ServiceEntityRepository
         return $respuesta;
     }
 
-    public function apiNuevo($codigoPanal, $celda, $tipo, $entrega)
+    public function apiNuevo($codigoPanal, $celda, $tipo, $entrega, $imagen)
     {
         $em = $this->getEntityManager();
         $arPanal = $em->getRepository(Panal::class)->find($codigoPanal);
@@ -61,6 +62,9 @@ class EntregaRepository extends ServiceEntityRepository
                 $arEntrega->setCodigoEntregaTipoFk($tipo);
                 $em->persist($arEntrega);
                 $em->flush();
+                if($imagen) {
+                    $arEntrega->setUrlImagenIngreso($this->space->subir('entrega', $imagen['nombre'], $imagen['base64']));
+                }
                 //Usuarios a los que se debe notificar
                 $arCeldaUsuarios = $em->getRepository(CeldaUsuario::class)->findBy(['codigoCeldaFk' => $arCelda->getCodigoCeldaPk()]);
                 foreach ($arCeldaUsuarios as $arCeldaUsuario) {
@@ -91,7 +95,8 @@ class EntregaRepository extends ServiceEntityRepository
                 'error' => false,
                 'codigoEntrega' => $arEntrega->getCodigoEntregaPk(),
                 'fechaIngreso' => $arEntrega->getFechaIngreso(),
-                'urlImagen' => $arEntrega->getUrlImagen()
+                'urlImagen' => $arEntrega->getUrlImagen(),
+                'urlImagenIngreso' => $arEntrega->getUrlImagenIngreso()
                 ];
         } else {
             return [
@@ -152,7 +157,7 @@ class EntregaRepository extends ServiceEntityRepository
         }
     }
 
-    public function apiCerrar($codigoEntrega, $codigoUsuario, $imagenBase64)
+    public function apiCerrar($codigoEntrega, $codigoUsuario, $imagen)
     {
         $em = $this->getEntityManager();
         $arEntrega = $em->getRepository(Entrega::class)->find($codigoEntrega);
@@ -161,8 +166,8 @@ class EntregaRepository extends ServiceEntityRepository
                 $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
                 if($arUsuario) {
                     $arEntrega->setEstadoCerrado(1);
-                    if($imagenBase64) {
-                        $arEntrega->setUrlImagen($this->space->subir('entrega', $imagenBase64['nombre'], $imagenBase64['base64']));
+                    if($imagen) {
+                        $arEntrega->setUrlImagen($this->space->subir('entrega', $imagen['nombre'], $imagen['base64']));
                     }
                     $em->persist($arEntrega);
                     $em->flush();
