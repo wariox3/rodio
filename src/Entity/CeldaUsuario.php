@@ -19,12 +19,12 @@ class CeldaUsuario
     private $codigoCeldaUaurioPk;
 
     /**
-     * @ORM\Column(name="codigo_celda_fk", type="integer", nullable=true)
+     * @ORM\Column(name="codigo_celda_fk", type="integer")
      */
     private $codigoCeldaFk;
 
     /**
-     * @ORM\Column(name="codigo_usuario_fk", type="integer", nullable=true)
+     * @ORM\Column(name="codigo_usuario_fk", type="integer")
      */
     private $codigoUsuarioFk;
 

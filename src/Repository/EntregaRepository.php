@@ -60,11 +60,12 @@ class EntregaRepository extends ServiceEntityRepository
                 $arEntrega->setCeldaRel($arCelda);
                 $arEntrega->setFechaIngreso(new \DateTime('now'));
                 $arEntrega->setCodigoEntregaTipoFk($tipo);
-                $em->persist($arEntrega);
-                $em->flush();
                 if($imagen) {
                     $arEntrega->setUrlImagenIngreso($this->space->subir('entrega', $imagen['nombre'], $imagen['base64']));
                 }
+                $em->persist($arEntrega);
+                $em->flush();
+
                 //Usuarios a los que se debe notificar
                 $arCeldaUsuarios = $em->getRepository(CeldaUsuario::class)->findBy(['codigoCeldaFk' => $arCelda->getCodigoCeldaPk()]);
                 foreach ($arCeldaUsuarios as $arCeldaUsuario) {
