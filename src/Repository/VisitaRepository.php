@@ -9,16 +9,20 @@ use App\Entity\Panal;
 use App\Entity\Usuario;
 use App\Entity\Visita;
 use App\Utilidades\Firebase;
+use App\Utilidades\SpaceDO;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 class VisitaRepository extends ServiceEntityRepository
 {
     private $firebase;
-    public function __construct(ManagerRegistry $registry, Firebase $firebase)
+    private $space;
+
+    public function __construct(ManagerRegistry $registry, Firebase $firebase, SpaceDO $space)
     {
         parent::__construct($registry, Visita::class);
         $this->firebase = $firebase;
+        $this->space = $space;
     }
 
     public function apiLista($codigoCelda)
@@ -33,6 +37,7 @@ class VisitaRepository extends ServiceEntityRepository
             ->addSelect('v.estadoAutorizado')
             ->addSelect('v.estadoCerrado')
             ->addSelect('v.codigoIngreso')
+            ->addSelect('v.urlImagen')
             ->where("v.codigoCeldaFk = {$codigoCelda}")
             ->orderBy('e.estadoCerrado', 'ASC')
             ->orderBy('v.fecha', 'DESC');
@@ -43,7 +48,7 @@ class VisitaRepository extends ServiceEntityRepository
         ];
     }
 
-    public function apiNuevo($codigoPanal, $codigoCelda, $celda, $numeroIdentificacion, $nombre, $placa)
+    public function apiNuevo($codigoPanal, $codigoCelda, $celda, $numeroIdentificacion, $nombre, $placa, $imagen)
     {
         $em = $this->getEntityManager();
         $arPanal = $em->getRepository(Panal::class)->find($codigoPanal);
@@ -62,6 +67,9 @@ class VisitaRepository extends ServiceEntityRepository
                 $arVisita->setNombre($nombre);
                 $arVisita->setPlaca($placa);
                 $arVisita->setCodigoIngreso($codigo);
+                if($imagen) {
+                    $arVisita->setUrlImagen($this->space->subir('visita', $imagen['nombre'], $imagen['base64']));
+                }
                 $em->persist($arVisita);
                 $em->flush();
                 //Usuarios a los que se debe notificar
@@ -100,6 +108,7 @@ class VisitaRepository extends ServiceEntityRepository
             ->addSelect('v.codigoIngreso')
             ->addSelect('v.estadoAutorizado')
             ->addSelect('v.estadoCerrado')
+            ->addSelect('v.urlImagen')
             ->addSelect('c.celda')
             ->addSelect('c.celular')
             ->addSelect('c.correo')

@@ -44,8 +44,9 @@ class VisitaController extends AbstractFOSRestController
         $numeroIdentificacion = $raw['numeroIdentificacion']?? null;
         $nombre = $raw['nombre']?? null;
         $placa = $raw['placa']?? null;
+        $imagen = $raw['imagen']?? null;
         if($codigoPanal && ($celda || $codigoCelda)) {
-            return $em->getRepository(Visita::class)->apiNuevo($codigoPanal, $codigoCelda, $celda, $numeroIdentificacion, $nombre, $placa);
+            return $em->getRepository(Visita::class)->apiNuevo($codigoPanal, $codigoCelda, $celda, $numeroIdentificacion, $nombre, $placa, $imagen);
         } else {
             return [
                 'error' => true,
