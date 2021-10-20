@@ -43,6 +43,7 @@ class CeldaRepository extends ServiceEntityRepository
                     $this->dubnio->enviarCorreo("Se ha generado un codigo de validacion para Veci", $mensaje, $arCelda->getCorreo());
                     return [
                         'error' => false,
+                        'correo' => $arCelda->getCorreo()
                     ];
                 } else {
                     return [
