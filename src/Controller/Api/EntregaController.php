@@ -90,6 +90,26 @@ class EntregaController extends AbstractFOSRestController
     }
 
     /**
+     * @Rest\Post("/api/entrega/entregar")
+     */
+    public function entregar(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoEntrega = $raw['codigoEntrega']?? null;
+        $codigoUsuario = $raw['codigoUsuario']?? null;
+        $arrImagen = $raw['imagen']??[];
+        if($codigoEntrega && $codigoUsuario) {
+            return $em->getRepository(Entrega::class)->apiEntregar($codigoEntrega, $codigoUsuario, $arrImagen);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'
+            ];
+        }
+    }
+
+    /**
      * @Rest\Post("/api/entrega/cerrar")
      */
     public function cerrar(Request $request)
@@ -98,9 +118,8 @@ class EntregaController extends AbstractFOSRestController
         $raw = json_decode($request->getContent(), true);
         $codigoEntrega = $raw['codigoEntrega']?? null;
         $codigoUsuario = $raw['codigoUsuario']?? null;
-        $arrImagen = $raw['imagen']??[];
         if($codigoEntrega && $codigoUsuario) {
-            return $em->getRepository(Entrega::class)->apiCerrar($codigoEntrega, $codigoUsuario, $arrImagen);
+            return $em->getRepository(Entrega::class)->apiCerrar($codigoEntrega, $codigoUsuario);
         } else {
             return [
                 'error' => true,

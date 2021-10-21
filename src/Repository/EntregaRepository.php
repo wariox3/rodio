@@ -158,7 +158,7 @@ class EntregaRepository extends ServiceEntityRepository
         }
     }
 
-    public function apiCerrar($codigoEntrega, $codigoUsuario, $imagen)
+    public function apiEntregar($codigoEntrega, $codigoUsuario, $imagen)
     {
         $em = $this->getEntityManager();
         $arEntrega = $em->getRepository(Entrega::class)->find($codigoEntrega);
@@ -170,6 +170,38 @@ class EntregaRepository extends ServiceEntityRepository
                     if($imagen) {
                         $arEntrega->setUrlImagen($this->space->subir('entrega', $imagen['nombre'], $imagen['base64']));
                     }
+                    $em->persist($arEntrega);
+                    $em->flush();
+                    return ['error' => false];
+                } else {
+                    return [
+                        'error' => true,
+                        'errorMensaje' => "No existe el usuario"
+                    ];
+                }
+            } else {
+                return [
+                    'error' => true,
+                    'errorMensaje' => "La entrega esta cerrada"
+                ];
+            }
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "No existe la entrega"
+            ];
+        }
+    }
+
+    public function apiCerrar($codigoEntrega, $codigoUsuario)
+    {
+        $em = $this->getEntityManager();
+        $arEntrega = $em->getRepository(Entrega::class)->find($codigoEntrega);
+        if($arEntrega) {
+            if($arEntrega->isEstadoCerrado() == 0) {
+                $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
+                if($arUsuario) {
+                    $arEntrega->setEstadoCerrado(1);
                     $em->persist($arEntrega);
                     $em->flush();
                     return ['error' => false];
