@@ -182,6 +182,41 @@ class VisitaRepository extends ServiceEntityRepository
         }
     }
 
+    public function apiCerrar($codigoVisita, $codigoUsuario)
+    {
+        $em = $this->getEntityManager();
+        $arVisita = $em->getRepository(Visita::class)->find($codigoVisita);
+        if($arVisita) {
+            if($arVisita->getEstadoCerrado() == 0) {
+                $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
+                if($arUsuario) {
+                    $arVisita->setEstadoCerrado(1);
+                    $em->persist($arVisita);
+                    $em->flush();
+                    return [
+                        'error' => false
+                    ];
+                } else {
+                    return [
+                        'error' => true,
+                        'errorMensaje' => "No existe el usuario"
+                    ];
+                }
+            } else {
+                return [
+                    'error' => true,
+                    'errorMensaje' => "La visita fue cerrada"
+                ];
+            }
+
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "No existe la visita"
+            ];
+        }
+    }
+
     public function apiInformeEstados($codigoPanal)
     {
         $em = $this->getEntityManager();

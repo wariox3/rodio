@@ -97,6 +97,25 @@ class VisitaController extends AbstractFOSRestController
     }
 
     /**
+     * @Rest\Post("/api/visita/cerrar")
+     */
+    public function cerrar(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoVisita = $raw['codigoVisita']?? null;
+        $codigoUsuario = $raw['codigoUsuario']?? null;
+        if($codigoVisita && $codigoUsuario) {
+            return $em->getRepository(Visita::class)->apiCerrar($codigoVisita, $codigoUsuario);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'
+            ];
+        }
+    }
+
+    /**
      * @Rest\Post("/api/visita/informe/estados")
      */
     public function informeEstados(Request $request)
