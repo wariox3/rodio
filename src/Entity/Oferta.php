@@ -44,10 +44,21 @@ class Oferta
     private $urlImagen;
 
     /**
+     * @ORM\Column(name="codigo_categoria_fk", type="string", length=10, nullable=true)
+     */
+    private $codigoCategoriaFk;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Panal", inversedBy="ofertasPanalRel")
      * @ORM\JoinColumn(name="codigo_panal_fk", referencedColumnName="codigo_panal_pk")
      */
     private $panalRel;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Categoria", inversedBy="ofertasCategoriaRel")
+     * @ORM\JoinColumn(name="codigo_categoria_fk", referencedColumnName="codigo_catagoria_pk")
+     */
+    private $categoriaRel;
 
     /**
      * @return mixed
@@ -159,6 +170,22 @@ class Oferta
     public function setPanalRel($panalRel): void
     {
         $this->panalRel = $panalRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTipo()
+    {
+        return $this->tipo;
+    }
+
+    /**
+     * @param mixed $tipo
+     */
+    public function setTipo($tipo): void
+    {
+        $this->tipo = $tipo;
     }
 
 
