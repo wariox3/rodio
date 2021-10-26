@@ -29,6 +29,7 @@ class OfertaRepository extends ServiceEntityRepository
             ->addSelect('o.descripcion')
             ->addSelect('o.precio')
             ->addSelect('o.urlImagen')
+            ->addSelect('o.codigoCategoriaFk')
             ->where("o.codigoPanalFk = {$codigoPanal}")
             ->orderBy("o.fecha", "DESC");
         $arOfertas = $queryBuilder->getQuery()->getResult();
