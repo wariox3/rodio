@@ -3,6 +3,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Categoria;
 use App\Entity\Oferta;
 use App\Entity\Panal;
 use App\Utilidades\SpaceDO;
@@ -37,27 +38,36 @@ class OfertaRepository extends ServiceEntityRepository
         ];
     }
 
-    public function apiNuevo($codigoPanal, $descripcion, $precio, $imagen)
+    public function apiNuevo($codigoPanal, $descripcion, $precio, $imagen, $categoria)
     {
         $em = $this->getEntityManager();
         $arPanal = $em->getRepository(Panal::class)->find($codigoPanal);
-        if($arPanal) {
-            $arOferta = new Oferta();
-            $arOferta->setPanalRel($arPanal);
-            $arOferta->setFecha(new \DateTime('now'));
-            $arOferta->setDescripcion($descripcion);
-            $arOferta->setPrecio($precio);
-            if($imagen) {
-                if($imagen['nombre'] && $imagen['base64']) {
-                    $arOferta->setUrlImagen($this->space->subir('oferta', $imagen['nombre'], $imagen['base64']));
+        if ($arPanal) {
+            $arCategoria = $em->getRepository(Categoria::class)->find($categoria);
+            if ($arCategoria) {
+                $arOferta = new Oferta();
+                $arOferta->setPanalRel($arPanal);
+                $arOferta->setCategoriaRel($arCategoria);
+                $arOferta->setFecha(new \DateTime('now'));
+                $arOferta->setDescripcion($descripcion);
+                $arOferta->setPrecio($precio);
+                if ($imagen) {
+                    if ($imagen['nombre'] && $imagen['base64']) {
+                        $arOferta->setUrlImagen($this->space->subir('oferta', $imagen['nombre'], $imagen['base64']));
+                    }
                 }
+                $em->persist($arOferta);
+                $em->flush();
+                return [
+                    'error' => false,
+                    'codigoOferta' => $arOferta->getCodigoOfertaPk()
+                ];
+            } else {
+                return [
+                    'error' => true,
+                    'errorMensaje' => "No existe la categoria"
+                ];
             }
-            $em->persist($arOferta);
-            $em->flush();
-            return [
-                'error' => false,
-                'codigoOferta' => $arOferta->getCodigoOfertaPk()
-            ];
         } else {
             return [
                 'error' => true,

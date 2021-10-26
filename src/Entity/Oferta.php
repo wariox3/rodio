@@ -188,5 +188,38 @@ class Oferta
         $this->tipo = $tipo;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getCodigoCategoriaFk()
+    {
+        return $this->codigoCategoriaFk;
+    }
+
+    /**
+     * @param mixed $codigoCategoriaFk
+     */
+    public function setCodigoCategoriaFk($codigoCategoriaFk): void
+    {
+        $this->codigoCategoriaFk = $codigoCategoriaFk;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCategoriaRel()
+    {
+        return $this->categoriaRel;
+    }
+
+    /**
+     * @param mixed $categoriaRel
+     */
+    public function setCategoriaRel($categoriaRel): void
+    {
+        $this->categoriaRel = $categoriaRel;
+    }
+
+
 
 }

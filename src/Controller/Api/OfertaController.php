@@ -43,8 +43,9 @@ class OfertaController extends AbstractFOSRestController
         $descripcion = $raw['descripcion']?? null;
         $precio = $raw['precio']?? null;
         $imagen = $raw['imagen']?? null;
-        if($codigoPanal && $descripcion && $precio) {
-            return $em->getRepository(Oferta::class)->apiNuevo($codigoPanal, $descripcion, $precio, $imagen);
+        $categoria = $raw['categoria']?? null;
+        if($codigoPanal && $descripcion && $precio && $categoria) {
+            return $em->getRepository(Oferta::class)->apiNuevo($codigoPanal, $descripcion, $precio, $imagen, $categoria);
         } else {
             return [
                 'error' => true,
