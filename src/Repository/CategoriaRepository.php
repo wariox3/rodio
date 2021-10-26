@@ -12,4 +12,20 @@ class CategoriaRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Categoria::class);
     }
+
+    public function apliLista()
+    {
+        $em = $this->getEntityManager();
+        $queryBuilder = $em->createQueryBuilder()->from(Categoria::class, 'c')
+            ->select('c.codigoCatagoriaPk')
+            ->addSelect('c.nombre')
+            ->addSelect('c.urlImagen');
+
+        $arCategorias = $queryBuilder->getQuery()->getResult();
+        return [
+            'error' => false,
+            'categorias' => $arCategorias
+        ];
+    }
+
 }
