@@ -20,7 +20,7 @@ class OfertaRepository extends ServiceEntityRepository
         $this->space = $space;
     }
 
-    public function apiLista($codigoPanal)
+    public function apiLista($codigoPanal, $codigoCategoria)
     {
         $em = $this->getEntityManager();
         $queryBuilder = $em->createQueryBuilder()->from(Oferta::class, 'o')
@@ -32,6 +32,11 @@ class OfertaRepository extends ServiceEntityRepository
             ->addSelect('o.codigoCategoriaFk')
             ->where("o.codigoPanalFk = {$codigoPanal}")
             ->orderBy("o.fecha", "DESC");
+
+        if($codigoCategoria) {
+            $queryBuilder->andWhere("o.codigoCategoriaFk = '{$codigoCategoria}' ");
+        }
+
         $arOfertas = $queryBuilder->getQuery()->getResult();
         return [
             'error' => false,

@@ -22,8 +22,9 @@ class OfertaController extends AbstractFOSRestController
         $em = $this->getDoctrine()->getManager();
         $raw = json_decode($request->getContent(), true);
         $codigoPanal = $raw['codigoPanal']?? null;
+        $codigoCategoria = $raw['codigoCategoria']?? null;
         if($codigoPanal) {
-            return $em->getRepository(Oferta::class)->apiLista($codigoPanal);
+            return $em->getRepository(Oferta::class)->apiLista($codigoPanal, $codigoCategoria);
         } else {
             return [
                 'error' => true,
