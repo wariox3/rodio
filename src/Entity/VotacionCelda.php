@@ -34,6 +34,11 @@ class VotacionCelda
     private $codigoVotacionDetalleFk;
 
     /**
+     * @ORM\Column(name="codigo_usuario_fk", type="integer")
+     */
+    private $codigoUsuarioFk;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Votacion", inversedBy="votacionesCeldasVotacionRel")
      * @ORM\JoinColumn(name="codigo_votacion_fk", referencedColumnName="codigo_votacion_pk")
      */
@@ -44,6 +49,12 @@ class VotacionCelda
      * @ORM\JoinColumn(name="codigo_celda_fk", referencedColumnName="codigo_celda_pk")
      */
     private $celdaRel;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Usuario", inversedBy="votacionesCeldasUsuarioRel")
+     * @ORM\JoinColumn(name="codigo_usuario_fk", referencedColumnName="codigo_usuario_pk")
+     */
+    private $usuarioRel;
 
     /**
      * @return mixed
@@ -139,6 +150,38 @@ class VotacionCelda
     public function setCeldaRel($celdaRel): void
     {
         $this->celdaRel = $celdaRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodigoUsuarioFk()
+    {
+        return $this->codigoUsuarioFk;
+    }
+
+    /**
+     * @param mixed $codigoUsuarioFk
+     */
+    public function setCodigoUsuarioFk($codigoUsuarioFk): void
+    {
+        $this->codigoUsuarioFk = $codigoUsuarioFk;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUsuarioRel()
+    {
+        return $this->usuarioRel;
+    }
+
+    /**
+     * @param mixed $usuarioRel
+     */
+    public function setUsuarioRel($usuarioRel): void
+    {
+        $this->usuarioRel = $usuarioRel;
     }
 
 

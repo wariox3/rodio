@@ -119,6 +119,11 @@ class Usuario
     private $celdasUsuariosUsuarioRel;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\VotacionCelda", mappedBy="usuarioRel")
+     */
+    private $votacionesCeldasUsuarioRel;
+
+    /**
      * @return mixed
      */
     public function getCodigoUsuarioPk()
@@ -436,6 +441,22 @@ class Usuario
     public function setOperadorRel($operadorRel): void
     {
         $this->operadorRel = $operadorRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVotacionesCeldasUsuarioRel()
+    {
+        return $this->votacionesCeldasUsuarioRel;
+    }
+
+    /**
+     * @param mixed $votacionesCeldasUsuarioRel
+     */
+    public function setVotacionesCeldasUsuarioRel($votacionesCeldasUsuarioRel): void
+    {
+        $this->votacionesCeldasUsuarioRel = $votacionesCeldasUsuarioRel;
     }
 
 

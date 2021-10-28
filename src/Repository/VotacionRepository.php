@@ -4,6 +4,7 @@
 namespace App\Repository;
 
 use App\Entity\Celda;
+use App\Entity\Usuario;
 use App\Entity\Votacion;
 use App\Entity\VotacionCelda;
 use App\Entity\VotacionDetalle;
@@ -47,7 +48,8 @@ class VotacionRepository extends ServiceEntityRepository
                 $queryBuilder = $em->createQueryBuilder()->from(VotacionCelda::class, 'vc')
                     ->select('vc.codigoVotacionCeldaPk')
                     ->addSelect('vc.codigoVotacionDetalleFk')
-                    ->where("vc.codigoVotacionFk = {$arVotacion['codigoVotacionPk']}");
+                    ->where("vc.codigoVotacionFk = {$arVotacion['codigoVotacionPk']}")
+                    ->andWhere("vc.codigoCeldaFk = {$codigoCelda}");
                 $arVotacionCelda = $queryBuilder->getQuery()->getResult();
                 if($arVotacionCelda) {
                     $voto = true;
@@ -72,6 +74,58 @@ class VotacionRepository extends ServiceEntityRepository
             return [
                 'error' => true,
                 'errorMensaje' => "La celda no existe"
+            ];
+        }
+    }
+
+    public function apiVotar($codigoVotacion, $codigoCelda, $codigoUsuario, $codigoVotacionDetalle)
+    {
+        $em = $this->getEntityManager();
+        $arVotacion = $em->getRepository(Votacion::class)->find($codigoVotacion);
+        if($arVotacion) {
+            $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
+            if($arUsuario) {
+                $arCelda = $em->getRepository(Celda::class)->find($codigoCelda);
+                if ($arCelda) {
+                    $queryBuilder = $em->createQueryBuilder()->from(VotacionCelda::class, 'vc')
+                        ->select('vc.codigoVotacionCeldaPk')
+                        ->addSelect('vc.codigoVotacionDetalleFk')
+                        ->where("vc.codigoVotacionFk = {$codigoVotacion}")
+                        ->andWhere("vc.codigoCeldaFk = {$codigoCelda}");
+                    $arVotacionesCelda = $queryBuilder->getQuery()->getResult();
+                    if(!$arVotacionesCelda) {
+                        $arVotacionCelda = new VotacionCelda();
+                        $arVotacionCelda->setCeldaRel($arCelda);
+                        $arVotacionCelda->setVotacionRel($arVotacion);
+                        $arVotacionCelda->setUsuarioRel($arUsuario);
+                        $arVotacionCelda->setCodigoVotacionDetalleFk($codigoVotacionDetalle);
+                        $em->persist($arVotacionCelda);
+                        $em->flush();
+                        return [
+                            'error' => false
+                        ];
+                    } else {
+                        return [
+                            'error' => true,
+                            'errorMensaje' => "La celda ya voto"
+                        ];
+                    }
+                } else {
+                    return [
+                        'error' => true,
+                        'errorMensaje' => "La celda no existe"
+                    ];
+                }
+            } else {
+                return [
+                    'error' => true,
+                    'errorMensaje' => "El usuario no existe"
+                ];
+            }
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "La votacion no existe"
             ];
         }
     }

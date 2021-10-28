@@ -32,5 +32,25 @@ class VotacionController extends AbstractFOSRestController
         }
     }
 
+    /**
+     * @Rest\Post("/api/votacion/votar")
+     */
+    public function votar(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoVotacion = $raw['codigoVotacion']?? null;
+        $codigoCelda = $raw['codigoCelda']?? null;
+        $codigoUsuario = $raw['codigoUsuario']?? null;
+        $codigoVotacionDetalle = $raw['codigoVotacionDetalle']?? null;
+        if($codigoCelda && $codigoVotacion && $codigoUsuario && $codigoVotacionDetalle) {
+            return $em->getRepository(Votacion::class)->apiVotar($codigoVotacion, $codigoCelda, $codigoUsuario, $codigoVotacionDetalle);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'
+            ];
+        }
+    }
 
 }
