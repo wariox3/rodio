@@ -55,6 +55,11 @@ class Panal
     private $ofertasPanalRel;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Votacion", mappedBy="panalRel")
+     */
+    private $votacionesPanalRel;
+
+    /**
      * @return mixed
      */
     public function getCodigoPanalPk()
@@ -180,6 +185,22 @@ class Panal
     public function setOfertasPanalRel($ofertasPanalRel): void
     {
         $this->ofertasPanalRel = $ofertasPanalRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVotacionesPanalRel()
+    {
+        return $this->votacionesPanalRel;
+    }
+
+    /**
+     * @param mixed $votacionesPanalRel
+     */
+    public function setVotacionesPanalRel($votacionesPanalRel): void
+    {
+        $this->votacionesPanalRel = $votacionesPanalRel;
     }
 
 
