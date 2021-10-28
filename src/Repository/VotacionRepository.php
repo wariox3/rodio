@@ -5,6 +5,7 @@ namespace App\Repository;
 
 use App\Entity\Celda;
 use App\Entity\Votacion;
+use App\Entity\VotacionCelda;
 use App\Entity\VotacionDetalle;
 use App\Utilidades\Firebase;
 use App\Utilidades\SpaceDO;
@@ -40,6 +41,21 @@ class VotacionRepository extends ServiceEntityRepository
             $arVotaciones = $queryBuilder->getQuery()->getResult();
             $indice = 0;
             foreach ($arVotaciones as $arVotacion) {
+                //Saber si ya voto
+                $voto = false;
+                $codigoVotacionDetalle = null;
+                $queryBuilder = $em->createQueryBuilder()->from(VotacionCelda::class, 'vc')
+                    ->select('vc.codigoVotacionCeldaPk')
+                    ->addSelect('vc.codigoVotacionDetalleFk')
+                    ->where("vc.codigoVotacionFk = {$arVotacion['codigoVotacionPk']}");
+                $arVotacionCelda = $queryBuilder->getQuery()->getResult();
+                if($arVotacionCelda) {
+                    $voto = true;
+                    $codigoVotacionDetalle = $arVotacionCelda[0]['codigoVotacionCeldaPk'];
+
+                }
+                $arVotaciones[$indice]['voto'] = $voto;
+                $arVotaciones[$indice]['codigoVotacionDetalle'] = $codigoVotacionDetalle;
                 $queryBuilder = $em->createQueryBuilder()->from(VotacionDetalle::class, 'vd')
                     ->select('vd.codigoVotacionDetallePk')
                     ->addSelect('vd.descripcion')
