@@ -53,7 +53,7 @@ class VotacionRepository extends ServiceEntityRepository
                 $arVotacionCelda = $queryBuilder->getQuery()->getResult();
                 if($arVotacionCelda) {
                     $voto = true;
-                    $codigoVotacionDetalle = $arVotacionCelda[0]['codigoVotacionCeldaPk'];
+                    $codigoVotacionDetalle = $arVotacionCelda[0]['codigoVotacionDetalleFk'];
 
                 }
                 $arVotaciones[$indice]['voto'] = $voto;
