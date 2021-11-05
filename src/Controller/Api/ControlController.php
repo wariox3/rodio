@@ -43,7 +43,7 @@ class ControlController extends AbstractFOSRestController
         $codigoControl = $raw['codigoControl']?? null;
 
         if($codigoUsuario && $estadoRepote && $codigoControl) {
-            return $em->getRepository(Control::class)->apiReportar($codigoUsuario, $estadoRepote, $codigoControl);
+            return $em->getRepository(Control::class)->apiReportar($codigoUsuario, $codigoControl, $estadoRepote);
         }else {
             return [
                 'error' => true,

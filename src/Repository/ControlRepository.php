@@ -52,8 +52,9 @@ class ControlRepository  extends ServiceEntityRepository
             if($arControl){
                 $arControl->setEstadoRepote($estadoRepote);
                 $arControl->setFechaReporte(new \DateTime('now'));
-                $em->persist($estadoRepote);
+                $em->persist($arControl);
                 $em->flush();
+                return ['error' => false];
             } else {
                 return [
                     'error' => true,
