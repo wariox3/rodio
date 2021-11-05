@@ -32,6 +32,17 @@ class Control
     private $fecha;
 
     /**
+     * @ORM\Column(name="estado_autorizado", type="string", options={"default" : "P"})
+     */
+    private $estadoRepote = "P";
+
+    /**
+     * @ORM\Column(name="fecha_reporte", type="datetime", nullable=true)
+     */
+    private $fechaReporte;
+
+
+    /**
      * @ORM\Column(name="fecha_control", type="datetime", nullable=true)
      */
     private $fechaControl;
@@ -137,5 +148,39 @@ class Control
     {
         $this->usuarioRel = $usuarioRel;
     }
+
+    /**
+     * @return string
+     */
+    public function getEstadoRepote(): string
+    {
+        return $this->estadoRepote;
+    }
+
+    /**
+     * @param string $estadoRepote
+     */
+    public function setEstadoRepote(string $estadoRepote): void
+    {
+        $this->estadoRepote = $estadoRepote;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFechaReporte()
+    {
+        return $this->fechaReporte;
+    }
+
+    /**
+     * @param mixed $fechaReporte
+     */
+    public function setFechaReporte($fechaReporte): void
+    {
+        $this->fechaReporte = $fechaReporte;
+    }
+
+
 
 }

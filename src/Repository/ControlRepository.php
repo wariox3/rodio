@@ -43,4 +43,52 @@ class ControlRepository  extends ServiceEntityRepository
         }
     }
 
+    public function apiReportar($codigoUsuario, $codigoControl, $estadoRepote)
+    {
+        $em = $this->getEntityManager();
+        $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
+        if($arUsuario) {
+            $arControl = $em->getRepository(Control::class)->find($codigoControl);
+            if($arControl){
+                $arControl->setEstadoRepote($estadoRepote);
+                $arControl->setFechaReporte(new \DateTime('now'));
+                $em->persist($estadoRepote);
+                $em->flush();
+            } else {
+                return [
+                    'error' => true,
+                    'errorMensaje' => "No existe el control"
+                ];
+            }
+
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "No existe el usuario"
+            ];
+        }
+    }
+
+    public function apiPendiente($codigoUsuario)
+    {
+        $em = $this->getEntityManager();
+        $usuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
+        if($usuario) {
+            $queryBuilder = $em->createQueryBuilder()->from(Control::class, 'c')
+                ->select('c.codigoControlPk')
+                ->addSelect('c.fecha')
+                ->andWhere("c.estadoRepote = 'p'");
+
+            $arControles = $queryBuilder->getQuery()->getResult();
+            return [
+                'error' => false,
+                'controles' => $arControles
+            ];
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "No existe el usuario"
+            ];
+        }
+    }
 }
