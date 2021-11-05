@@ -77,7 +77,9 @@ class ControlRepository  extends ServiceEntityRepository
             $queryBuilder = $em->createQueryBuilder()->from(Control::class, 'c')
                 ->select('c.codigoControlPk')
                 ->addSelect('c.fecha')
-                ->andWhere("c.estadoRepote = 'p'");
+                ->andWhere("c.estadoRepote = 'p'")
+                ->addWhere("c.codigoUsuarioFk = {$usuario->getCodigoUsuarioPk()} ")
+                ->orderBy("c.codigoControlPk", "DESC");
 
             $arControles = $queryBuilder->getQuery()->getResult();
             return [
