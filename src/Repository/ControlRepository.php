@@ -2,16 +2,22 @@
 
 namespace App\Repository;
 
+use App\Entity\CeldaUsuario;
 use App\Entity\Control;
 use App\Entity\Usuario;
+use App\Utilidades\Firebase;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 class ControlRepository  extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $firebase;
+
+
+    public function __construct(ManagerRegistry $registry, Firebase $firebase)
     {
         parent::__construct($registry, Control::class);
+        $this->firebase = $firebase;
     }
 
     public function apiNuevo($codigoUsuario, $codigoPuesto, $fechaControl)
@@ -28,6 +34,8 @@ class ControlRepository  extends ServiceEntityRepository
                 $arControl->setFechaControl($fechaControl);
                 $em->persist($arControl);
                 $em->flush();
+                //Usuarios a los que se debe notificar
+                $this->firebase->control($usuario->getTokenFirebase());
                 return ['error' => false];
             } else {
                 return [
