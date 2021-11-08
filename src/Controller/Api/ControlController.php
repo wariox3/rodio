@@ -16,13 +16,12 @@ class ControlController extends AbstractFOSRestController
     {
         $em = $this->getDoctrine()->getManager();
         $raw = json_decode($request->getContent(), true);
-        $codigoUsuario = $raw['codigoUsuario']?? null;
-        $codigoPuesto = $raw['codigoPuesto']?? null;
+        $operador = $raw['operador']?? null;
+        $arrPuestos = $raw['arrPuestos']?? null;
         $fechaControl = $raw['fechaControl']?? null;
 
-
-        if($codigoUsuario && $codigoPuesto && $fechaControl) {
-            return $em->getRepository(Control::class)->apiNuevo($codigoUsuario, $codigoPuesto, $fechaControl);
+        if($arrPuestos && $operador && $fechaControl) {
+            return $em->getRepository(Control::class)->apiNuevo($operador, $arrPuestos, $fechaControl);
         }else {
             return [
                 'error' => true,

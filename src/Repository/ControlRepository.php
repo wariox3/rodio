@@ -4,12 +4,13 @@ namespace App\Repository;
 
 use App\Entity\CeldaUsuario;
 use App\Entity\Control;
+use App\Entity\Empresa;
 use App\Entity\Usuario;
 use App\Utilidades\Firebase;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-class ControlRepository  extends ServiceEntityRepository
+class ControlRepository extends ServiceEntityRepository
 {
     private $firebase;
 
@@ -20,22 +21,25 @@ class ControlRepository  extends ServiceEntityRepository
         $this->firebase = $firebase;
     }
 
-    public function apiNuevo($codigoUsuario, $codigoPuesto, $fechaControl)
+    public function apiNuevo($operador, $arrPuestos, $fechaControl)
     {
         $em = $this->getEntityManager();
-        $usuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
-        if($usuario) {
-            if($fechaControl){
+        $arEmpresa = $em->getRepository(Empresa::class)->find($operador);
+        if ($arEmpresa) {
+            if ($fechaControl) {
                 $fechaControl = date_create($fechaControl);
-                $arControl = new Control();
-                $arControl->setCodigoPuestoFk($codigoPuesto);
-                $arControl->setUsuarioRel($usuario);
-                $arControl->setFecha(new \DateTime('now'));
-                $arControl->setFechaControl($fechaControl);
-                $em->persist($arControl);
+                foreach ($arrPuestos as $arPuesto) {
+                    $arUsuario = $em->getRepository(Usuario::class)->find($arPuesto['codigoUsuarioRodio']);
+                    $arControl = new Control();
+                    $arControl->setCodigoPuestoFk($arPuesto['codigoPuestoFk']);
+                    $arControl->setUsuarioRel($arUsuario);
+                    $arControl->setFecha(new \DateTime('now'));
+                    $arControl->setFechaControl($fechaControl);
+                    $em->persist($arControl);
+                    //Usuarios a los que se debe notificar
+                    $this->firebase->control($arUsuario->getTokenFirebase());
+                }
                 $em->flush();
-                //Usuarios a los que se debe notificar
-                $this->firebase->control($usuario->getTokenFirebase());
                 return ['error' => false];
             } else {
                 return [
@@ -46,7 +50,7 @@ class ControlRepository  extends ServiceEntityRepository
         } else {
             return [
                 'error' => true,
-                'errorMensaje' => "No existe el usuario"
+                'errorMensaje' => "No existe la empresa en el servicio rodio por favor comunicarse con soporte técnico"
             ];
         }
     }
@@ -55,9 +59,9 @@ class ControlRepository  extends ServiceEntityRepository
     {
         $em = $this->getEntityManager();
         $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
-        if($arUsuario) {
+        if ($arUsuario) {
             $arControl = $em->getRepository(Control::class)->find($codigoControl);
-            if($arControl){
+            if ($arControl) {
                 $arControl->setEstadoRepote($estadoRepote);
                 $arControl->setFechaReporte(new \DateTime('now'));
                 $em->persist($arControl);
@@ -82,7 +86,7 @@ class ControlRepository  extends ServiceEntityRepository
     {
         $em = $this->getEntityManager();
         $usuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
-        if($usuario) {
+        if ($usuario) {
             $queryBuilder = $em->createQueryBuilder()->from(Control::class, 'c')
                 ->select('c.codigoControlPk')
                 ->addSelect('c.fecha')

@@ -110,4 +110,24 @@ class PublicacionRepository extends ServiceEntityRepository
             'codigoPublicacion' => $arPublicacion->getCodigoPublicacionPk()
         ];
     }
+
+    public function reporte($codigoUsuario, $codigoPublicacion, $tipoReporte, $comentario)
+    {
+        $em = $this->getEntityManager();
+        $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
+        if($arUsuario) {
+            $arPublicacion = $em->getRepository(Publicacion::class)->find($codigoPublicacion);
+            if($arPublicacion) {
+
+            } else {
+                return [
+                    'error' => true,
+                    'errorMensaje' => 'No existe la publicación'];
+            }
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'No existe el usuario'];
+        }
+    }
 }
