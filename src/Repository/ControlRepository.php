@@ -31,22 +31,19 @@ class ControlRepository extends ServiceEntityRepository
                 foreach ($arrPuestos as $arPuesto) {
                     if ($arPuesto['codigoUsuarioRodio']){
                         $arUsuario = $em->getRepository(Usuario::class)->find($arPuesto['codigoUsuarioRodio']);
-                        $arControl = new Control();
-                        $arControl->setCodigoPuestoFk($arPuesto['codigoPuestoFk']);
-                        $arControl->setUsuarioRel($arUsuario);
-                        $arControl->setFecha(new \DateTime('now'));
-                        $arControl->setFechaControl($fechaControl);
-                        $em->persist($arControl);
-                        $em->flush();
-                        //Usuarios a los que se debe notificar
-                        $this->firebase->control($arUsuario->getTokenFirebase());
-                    } else {
-                        return [
-                            'error' => true,
-                            'errorMensaje' => "Puesto no está asociado a un usuario"
-                        ];
+                        if ($arUsuario){
+                            $arControl = new Control();
+                            $arControl->setCodigoPuestoFk($arPuesto['codigoPuestoFk']);
+                            $arControl->setUsuarioRel($arUsuario);
+                            $arControl->setFecha(new \DateTime('now'));
+                            $arControl->setFechaControl($fechaControl);
+                            $em->persist($arControl);
+                            //Usuarios a los que se debe notificar
+                            $this->firebase->control($arUsuario->getTokenFirebase());
+                        }
                     }
                 }
+                $em->flush();
                 return ['error' => false];
             } else {
                 return [
@@ -57,7 +54,8 @@ class ControlRepository extends ServiceEntityRepository
         } else {
             return [
                 'error' => true,
-                'errorMensaje' => "No existe la empresa en el servicio rodio por favor comunicarse con soporte técnico"
+
+
             ];
         }
     }
