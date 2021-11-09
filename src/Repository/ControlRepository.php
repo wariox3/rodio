@@ -29,17 +29,24 @@ class ControlRepository extends ServiceEntityRepository
             if ($fechaControl) {
                 $fechaControl = date_create($fechaControl);
                 foreach ($arrPuestos as $arPuesto) {
-                    $arUsuario = $em->getRepository(Usuario::class)->find($arPuesto['codigoUsuarioRodio']);
-                    $arControl = new Control();
-                    $arControl->setCodigoPuestoFk($arPuesto['codigoPuestoFk']);
-                    $arControl->setUsuarioRel($arUsuario);
-                    $arControl->setFecha(new \DateTime('now'));
-                    $arControl->setFechaControl($fechaControl);
-                    $em->persist($arControl);
-                    //Usuarios a los que se debe notificar
-                    $this->firebase->control($arUsuario->getTokenFirebase());
+                    if ($arPuesto['codigoUsuarioRodio']){
+                        $arUsuario = $em->getRepository(Usuario::class)->find($arPuesto['codigoUsuarioRodio']);
+                        $arControl = new Control();
+                        $arControl->setCodigoPuestoFk($arPuesto['codigoPuestoFk']);
+                        $arControl->setUsuarioRel($arUsuario);
+                        $arControl->setFecha(new \DateTime('now'));
+                        $arControl->setFechaControl($fechaControl);
+                        $em->persist($arControl);
+                        $em->flush();
+                        //Usuarios a los que se debe notificar
+                        $this->firebase->control($arUsuario->getTokenFirebase());
+                    } else {
+                        return [
+                            'error' => true,
+                            'errorMensaje' => "Puesto no esta asociado a un usuario"
+                        ];
+                    }
                 }
-                $em->flush();
                 return ['error' => false];
             } else {
                 return [
