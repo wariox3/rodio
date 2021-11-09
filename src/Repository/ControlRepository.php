@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\CeldaUsuario;
 use App\Entity\Control;
-use App\Entity\Empresa;
+use App\Entity\Operador;
 use App\Entity\Usuario;
 use App\Utilidades\Firebase;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -24,8 +24,8 @@ class ControlRepository extends ServiceEntityRepository
     public function apiNuevo($operador, $arrPuestos, $fechaControl)
     {
         $em = $this->getEntityManager();
-        $arEmpresa = $em->getRepository(Empresa::class)->find($operador);
-        if ($arEmpresa) {
+        $arOperador = $em->getRepository(Operador::class)->find($operador);
+        if ($arOperador) {
             if ($fechaControl) {
                 $fechaControl = date_create($fechaControl);
                 foreach ($arrPuestos as $arPuesto) {
