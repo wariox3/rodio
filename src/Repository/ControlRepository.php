@@ -43,7 +43,7 @@ class ControlRepository extends ServiceEntityRepository
                     } else {
                         return [
                             'error' => true,
-                            'errorMensaje' => "Puesto no esta asociado a un usuario"
+                            'errorMensaje' => "Puesto no está asociado a un usuario"
                         ];
                     }
                 }
