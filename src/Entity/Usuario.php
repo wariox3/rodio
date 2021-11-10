@@ -99,6 +99,11 @@ class Usuario
     private $publicacionesUsuarioRel;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Reporte", mappedBy="usuarioRel")
+     */
+    private $reportesUsuarioRel;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comentario", mappedBy="usuarioRel")
      */
     private $comentariosUsuarioRel;
@@ -480,6 +485,20 @@ class Usuario
         $this->codigoPuestoFk = $codigoPuestoFk;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getReportesUsuarioRel()
+    {
+        return $this->reportesUsuarioRel;
+    }
 
+    /**
+     * @param mixed $reportesUsuarioRel
+     */
+    public function setReportesUsuarioRel($reportesUsuarioRel): void
+    {
+        $this->reportesUsuarioRel = $reportesUsuarioRel;
+    }
 
 }

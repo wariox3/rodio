@@ -4,6 +4,7 @@
 namespace App\Repository;
 
 use App\Entity\Publicacion;
+use App\Entity\Reporte;
 use App\Entity\Usuario;
 use App\Utilidades\SpaceDO;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -118,7 +119,18 @@ class PublicacionRepository extends ServiceEntityRepository
         if($arUsuario) {
             $arPublicacion = $em->getRepository(Publicacion::class)->find($codigoPublicacion);
             if($arPublicacion) {
-
+                $arReporte = new Reporte();
+                $arReporte->setFecha(new \DateTime('now'));
+                $arReporte->setComentario($comentario);
+                $arReporte->setTipo($tipoReporte);
+                $arReporte->setUsuarioRel(
+                    $arUsuario);
+                $em->persist($arReporte);
+                $em->flush();
+                return [
+                    'error' => false,
+                    'codigoReporte' => $arReporte->getCodigoReportePk()
+                ];
             } else {
                 return [
                     'error' => true,

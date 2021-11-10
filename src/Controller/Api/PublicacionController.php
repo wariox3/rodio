@@ -19,7 +19,7 @@ class PublicacionController extends AbstractFOSRestController
     {
         $em = $this->getDoctrine()->getManager();
         $raw = json_decode($request->getContent(), true);
-        //$codigoUsuario = $raw['codigoUsuario']?? null;
+        $codigoUsuario = $raw['codigoUsuario']?? null;
         if($codigoUsuario) {
             $respuesta =  $em->getRepository(Publicacion::class)->apiLista2($codigoUsuario);
             if($respuesta['error'] == false){
@@ -52,6 +52,40 @@ class PublicacionController extends AbstractFOSRestController
                 $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
                 if($arUsuario) {
                     return $em->getRepository(Publicacion::class)->apiNuevo($arUsuario, $nombreImagen, $imagenBase64, $comentario);
+                } else {
+                    return [
+                        'error' => true,
+                        'errorMensaje' => 'No existe el usuario'];
+                }
+            } else {
+                return [
+                    'error' => true,
+                    'errorMensaje' => 'Faltan parametros para el consumo de la api'];
+            }
+        } catch (\Exception $e) {
+            return [
+                'error' => true,
+                'errorMensaje' => $e->getMessage()
+            ];
+        }
+    }
+
+    /**
+     * @Rest\Post("/api/publicacion/reporte")
+     */
+    public function reporte(Request $request)
+    {
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $raw = json_decode($request->getContent(), true);
+            $codigoUsuario = $raw['codigoUsuario']?? null;
+            $tipoReporte = $raw['tipoReporte']?? null;
+            $comentario = $raw['comentario']?? null;
+            $codigoPublicacion = $raw['codigoPublicacion']?? null;
+            if($codigoUsuario) {
+                $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
+                if($arUsuario) {
+                    return $em->getRepository(Publicacion::class)->reporte($arUsuario, $codigoPublicacion, $tipoReporte, $comentario);
                 } else {
                     return [
                         'error' => true,
