@@ -17,11 +17,6 @@ class Control
     private $codigoControlPk;
 
     /**
-     * @ORM\Column(name="codigo_usuario_fk", type="integer", nullable=false)
-     */
-    private $codigoUsuarioFk;
-
-    /**
      * @ORM\Column(name="codigo_puesto_fk", type="integer", nullable=false)
      */
     private $codigoPuestoFk;
@@ -48,10 +43,15 @@ class Control
     private $fechaControl;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Usuario", inversedBy="controlUsuarioRel")
-     * @ORM\JoinColumn(name="codigo_usuario_fk", referencedColumnName="codigo_usuario_pk")
+     * @ORM\Column(name="codigo_operador_fk", type="integer")
      */
-    private $usuarioRel;
+    private $codigoOperadorFk;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Operador", inversedBy="controlesOperadorRel")
+     * @ORM\JoinColumn(name="codigo_operador_fk", referencedColumnName="codigo_operador_pk")
+     */
+    private $operadorRel;
 
     /**
      * @return mixed
@@ -67,22 +67,6 @@ class Control
     public function setCodigoControlPk($codigoControlPk): void
     {
         $this->codigoControlPk = $codigoControlPk;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCodigoUsuarioFk()
-    {
-        return $this->codigoUsuarioFk;
-    }
-
-    /**
-     * @param mixed $codigoUsuarioFk
-     */
-    public function setCodigoUsuarioFk($codigoUsuarioFk): void
-    {
-        $this->codigoUsuarioFk = $codigoUsuarioFk;
     }
 
     /**
@@ -118,38 +102,6 @@ class Control
     }
 
     /**
-     * @return mixed
-     */
-    public function getFechaControl()
-    {
-        return $this->fechaControl;
-    }
-
-    /**
-     * @param mixed $fechaControl
-     */
-    public function setFechaControl($fechaControl): void
-    {
-        $this->fechaControl = $fechaControl;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUsuarioRel()
-    {
-        return $this->usuarioRel;
-    }
-
-    /**
-     * @param mixed $usuarioRel
-     */
-    public function setUsuarioRel($usuarioRel): void
-    {
-        $this->usuarioRel = $usuarioRel;
-    }
-
-    /**
      * @return string
      */
     public function getEstadoRepote(): string
@@ -179,6 +131,54 @@ class Control
     public function setFechaReporte($fechaReporte): void
     {
         $this->fechaReporte = $fechaReporte;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFechaControl()
+    {
+        return $this->fechaControl;
+    }
+
+    /**
+     * @param mixed $fechaControl
+     */
+    public function setFechaControl($fechaControl): void
+    {
+        $this->fechaControl = $fechaControl;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodigoOperadorFk()
+    {
+        return $this->codigoOperadorFk;
+    }
+
+    /**
+     * @param mixed $codigoOperadorFk
+     */
+    public function setCodigoOperadorFk($codigoOperadorFk): void
+    {
+        $this->codigoOperadorFk = $codigoOperadorFk;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOperadorRel()
+    {
+        return $this->operadorRel;
+    }
+
+    /**
+     * @param mixed $operadorRel
+     */
+    public function setOperadorRel($operadorRel): void
+    {
+        $this->operadorRel = $operadorRel;
     }
 
 

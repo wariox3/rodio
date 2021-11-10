@@ -26,36 +26,27 @@ class ControlRepository extends ServiceEntityRepository
         $em = $this->getEntityManager();
         $arOperador = $em->getRepository(Operador::class)->find($operador);
         if ($arOperador) {
-            if ($fechaControl) {
-                $fechaControl = date_create($fechaControl);
-                foreach ($arrPuestos as $arPuesto) {
-                    if ($arPuesto['codigoUsuarioRodio']){
-                        $arUsuario = $em->getRepository(Usuario::class)->find($arPuesto['codigoUsuarioRodio']);
-                        if ($arUsuario){
-                            $arControl = new Control();
-                            $arControl->setCodigoPuestoFk($arPuesto['codigoPuestoFk']);
-                            $arControl->setUsuarioRel($arUsuario);
-                            $arControl->setFecha(new \DateTime('now'));
-                            $arControl->setFechaControl($fechaControl);
-                            $em->persist($arControl);
-                            //Usuarios a los que se debe notificar
-                            $this->firebase->control($arUsuario->getTokenFirebase());
-                        }
-                    }
+            $fechaControl = date_create($fechaControl);
+            foreach ($arrPuestos as $arPuesto) {
+                $arControl = new Control();
+                $arControl->setCodigoPuestoFk($arPuesto['codigoPuestoFk']);
+                $arControl->setFecha(new \DateTime('now'));
+                $arControl->setFechaControl($fechaControl);
+                $arControl->setOperadorRel($arOperador);
+                $em->persist($arControl);
+                //Usuarios a los que se debe notificar
+
+                $arUsuarios = $em->getRepository(Usuario::class)->findBy(['codigoOperadorFk' => $operador, 'codigoPuestoFk' => $arPuesto['codigoPuestoFk']]);
+                foreach ($arUsuarios as $arUsuario) {
+                    $this->firebase->control($arUsuario->getTokenFirebase());
                 }
-                $em->flush();
-                return ['error' => false];
-            } else {
-                return [
-                    'error' => true,
-                    'errorMensaje' => "La fecha control no existe"
-                ];
             }
+            $em->flush();
+            return ['error' => false];
         } else {
             return [
                 'error' => true,
-
-
+                'errorMensaje' => "El operador no existe"
             ];
         }
     }
@@ -78,7 +69,6 @@ class ControlRepository extends ServiceEntityRepository
                     'errorMensaje' => "No existe el control"
                 ];
             }
-
         } else {
             return [
                 'error' => true,

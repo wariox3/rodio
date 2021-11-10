@@ -65,6 +65,11 @@ class Usuario
     private $tokenFirebase;
 
     /**
+     * @ORM\Column(name="codigo_puesto_fk", type="integer", nullable=true)
+     */
+    private $codigoPuestoFk;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Panal", inversedBy="usuariosPanalRel")
      * @ORM\JoinColumn(name="codigo_panal_fk", referencedColumnName="codigo_panal_pk")
      */
@@ -457,6 +462,22 @@ class Usuario
     public function setVotacionesCeldasUsuarioRel($votacionesCeldasUsuarioRel): void
     {
         $this->votacionesCeldasUsuarioRel = $votacionesCeldasUsuarioRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodigoPuestoFk()
+    {
+        return $this->codigoPuestoFk;
+    }
+
+    /**
+     * @param mixed $codigoPuestoFk
+     */
+    public function setCodigoPuestoFk($codigoPuestoFk): void
+    {
+        $this->codigoPuestoFk = $codigoPuestoFk;
     }
 
 
