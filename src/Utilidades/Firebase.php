@@ -97,7 +97,7 @@ class Firebase
         curl_setopt($ch, CURLOPT_POSTFIELDS, $parametros);
 
         $headers = array();
-        $headers[] = 'Authorization: key = ' . $_ENV['GM_CLAVE'];
+        $headers[] = 'Authorization: key = ' . $_ENV['GM_CLAVE_VIGI'];
         $headers[] = 'Content-Type: application/json';
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
