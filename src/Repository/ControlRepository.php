@@ -86,7 +86,8 @@ class ControlRepository extends ServiceEntityRepository
                 ->select('c.codigoControlPk')
                 ->addSelect('c.fecha')
                 ->andWhere("c.estadoRepote = 'p'")
-                ->andWhere("c.codigoUsuarioFk = {$usuario->getCodigoUsuarioPk()} ")
+                ->andWhere("c.codigoOperadorFk = {$usuario->getCodigoOperadorFk()} ")
+                ->andWhere("c.codigoPuestoFk = {$usuario->getCodigoPuestoFk()} ")
                 ->orderBy("c.codigoControlPk", "DESC");
 
             $arControles = $queryBuilder->getQuery()->getResult();
