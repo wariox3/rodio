@@ -39,6 +39,11 @@ class Operador
     private $controlesOperadorRel;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Formulario", mappedBy="operadorRel")
+     */
+    private $formulariosOperadorRel;
+
+    /**
      * @return mixed
      */
     public function getCodigoOperadorPk()
@@ -117,6 +122,23 @@ class Operador
     {
         $this->controlesOperadorRel = $controlesOperadorRel;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getFormulariosOperadorRel()
+    {
+        return $this->formulariosOperadorRel;
+    }
+
+    /**
+     * @param mixed $formulariosOperadorRel
+     */
+    public function setFormulariosOperadorRel($formulariosOperadorRel): void
+    {
+        $this->formulariosOperadorRel = $formulariosOperadorRel;
+    }
+
 
 
 }
