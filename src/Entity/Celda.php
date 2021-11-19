@@ -39,6 +39,11 @@ class Celda
     private $correo;
 
     /**
+     * @ORM\Column(name="propietario", type="string", length=200, nullable=true)
+     */
+    private $propietario;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Panal", inversedBy="celdasPanalRel")
      * @ORM\JoinColumn(name="codigo_panal_fk", referencedColumnName="codigo_panal_pk")
      */
@@ -222,6 +227,22 @@ class Celda
     public function setCeldasUsuariosCeldaRel($celdasUsuariosCeldaRel): void
     {
         $this->celdasUsuariosCeldaRel = $celdasUsuariosCeldaRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPropietario()
+    {
+        return $this->propietario;
+    }
+
+    /**
+     * @param mixed $propietario
+     */
+    public function setPropietario($propietario): void
+    {
+        $this->propietario = $propietario;
     }
 
 
