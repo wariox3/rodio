@@ -49,11 +49,6 @@ class Entrega
     private $estadoCerrado = false;
 
     /**
-     * @ORM\Column(name="estado_entregado", type="boolean", options={"default" : false}, nullable=true)
-     */
-    private $estadoEntregado = false;
-
-    /**
      * @ORM\Column(name="url_imagen", type="string", length=500, nullable=true)
      */
     private $urlImagen;
@@ -228,24 +223,6 @@ class Entrega
     {
         $this->urlImagenIngreso = $urlImagenIngreso;
     }
-
-    /**
-     * @return bool
-     */
-    public function isEstadoEntregado(): bool
-    {
-        return $this->estadoEntregado;
-    }
-
-    /**
-     * @param bool $estadoEntregado
-     */
-    public function setEstadoEntregado(bool $estadoEntregado): void
-    {
-        $this->estadoEntregado = $estadoEntregado;
-    }
-
-
 
 
 }

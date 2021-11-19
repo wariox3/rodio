@@ -35,7 +35,6 @@ class EntregaRepository extends ServiceEntityRepository
             ->addSelect('e.codigoEntregaTipoFk')
             ->addSelect('e.estadoAutorizado')
             ->addSelect('e.estadoCerrado')
-            ->addSelect('e.estadoEntregado')
             ->addSelect('e.urlImagen')
             ->addSelect('e.urlImagenIngreso')
             ->where("e.codigoCeldaFk = {$codigoCelda}")
