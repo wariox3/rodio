@@ -17,6 +17,23 @@ class CeldaController extends AbstractFOSRestController
 {
 
     /**
+     * @Rest\Post("/api/celda/lista")
+     */
+    public function lista(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoPanal = $raw['codigoPanal']?? null;
+        if($codigoPanal) {
+            return $em->getRepository(Celda::class)->apiLista($codigoPanal);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
+        }
+    }
+
+    /**
      * @Rest\Post("/api/celda/llave")
      */
     public function llave(Request $request)
