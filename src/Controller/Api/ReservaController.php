@@ -34,6 +34,28 @@ class ReservaController extends AbstractFOSRestController
     }
 
     /**
+     * @Rest\Post("/api/reserva/nuevo")
+     */
+    public function nuevo(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoCelda = $raw['codigoCelda']?? null;
+        $codigoItem = $raw['codigoItem']?? null;
+        $anio = $raw['anio']?? null;
+        $mes = $raw['mes']?? null;
+        $dia = $raw['dia']?? null;
+        if($codigoCelda && $codigoItem && $anio && $mes && $dia) {
+            return $em->getRepository(Reserva::class)->apiNuevo($codigoCelda, $codigoItem, $anio, $mes, $dia);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'
+            ];
+        }
+    }
+
+    /**
      * @Rest\Post("/api/reserva/listaitem")
      */
     public function listaItem(Request $request)
@@ -43,6 +65,26 @@ class ReservaController extends AbstractFOSRestController
         $codigoPanal = $raw['codigoPanal']?? null;
         if($codigoPanal) {
             $respuesta = $em->getRepository(ReservaItem::class)->apiLista($codigoPanal);
+        } else {
+            $respuesta = [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
+        }
+        return $respuesta;
+    }
+
+    /**
+     * @Rest\Post("/api/reserva/reserva")
+     */
+    public function reserva(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoItem = $raw['codigoItem']?? null;
+        $anio = $raw['anio']?? null;
+        $mes = $raw['mes']?? null;
+        if($codigoItem && $anio && $mes) {
+            $respuesta = $em->getRepository(Reserva::class)->apiReserva($codigoItem, $anio, $mes);
         } else {
             $respuesta = [
                 'error' => true,
