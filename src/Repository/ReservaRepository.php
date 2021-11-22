@@ -106,7 +106,16 @@ class ReservaRepository extends ServiceEntityRepository
         $arReservas = $queryBuilder->getQuery()->getResult();
         $arregloFechas = [];
         foreach ($arReservas as $arReserva) {
-            $arregloFechas[] = $arReserva['fecha']->format('Y-m-d');
+            $arregloFechas[] =
+                [
+                    $arReserva['fecha']->format('Y-m-d') => [
+                        'disabled' => true,
+                        'color' => 'colores.azulClaro',
+                        'textColor' => 'colores.textoGris',
+                        'startingDay' => true,
+                        'endingDay' => true
+                    ]
+                ];
         }
         $respuesta = [
             'error' => false,
