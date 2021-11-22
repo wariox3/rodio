@@ -42,11 +42,9 @@ class ReservaRepository extends ServiceEntityRepository
         return $respuesta;
     }
 
-    public function apiNuevo($codigoCelda, $codigoItem, $anio, $mes, $dia)
+    public function apiNuevo($codigoCelda, $codigoItem, $fecha)
     {
         $em = $this->getEntityManager();
-        $fechaDesde = "{$anio}-{$mes}-{$dia}";
-        $fechaHasta = "{$anio}-{$mes}-{$dia}";
         $arCelda = $em->getRepository(Celda::class)->find($codigoCelda);
         if($arCelda) {
             $arItem = $em->getRepository(ReservaItem::class)->find($codigoItem);
@@ -54,14 +52,14 @@ class ReservaRepository extends ServiceEntityRepository
                 $queryBuilder = $em->createQueryBuilder()->from(Reserva::class, 'r')
                     ->select('r.codigoReservaPk')
                     ->where("r.codigoReservaItemFk = {$codigoItem}")
-                    ->andWhere("r.fecha >= '{$fechaDesde} 00:00:00'")
-                    ->andWhere("r.fecha <= '{$fechaHasta} 23:59:59'");
+                    ->andWhere("r.fecha >= '{$fecha} 00:00:00'")
+                    ->andWhere("r.fecha <= '{$fecha} 23:59:59'");
                 $arReservas = $queryBuilder->getQuery()->getResult();
                 if(!$arReservas) {
                     $arReserva = new Reserva();
                     $arReserva->setCeldaRel($arCelda);
                     $arReserva->setReservaItemRel($arItem);
-                    $arReserva->setFecha(date_create($fechaDesde));
+                    $arReserva->setFecha(date_create($fecha));
                     $em->persist($arReserva);
                     $em->flush();
                     return [
