@@ -104,9 +104,14 @@ class ReservaRepository extends ServiceEntityRepository
             ->andWhere("r.fecha <= '{$fechaHasta}'")
             ->setMaxResults(20);
         $arReservas = $queryBuilder->getQuery()->getResult();
+        $arregloFechas = [];
+        foreach ($arReservas as $arReserva) {
+            $arregloFechas[] = $arReserva['fecha']->format('Y-m-d');
+        }
         $respuesta = [
             'error' => false,
-            'reservas' => $arReservas
+            'reservas' => $arReservas,
+            'arregloFechas' => $arregloFechas
         ];
         return $respuesta;
     }
