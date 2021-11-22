@@ -110,8 +110,8 @@ class ReservaRepository extends ServiceEntityRepository
                 [
                     $arReserva['fecha']->format('Y-m-d') => [
                         'disabled' => true,
-                        'color' => 'colores.azulClaro',
-                        'textColor' => 'colores.textoGris',
+                        'color' => '#ADD9F4',
+                        'textColor' => '#9c9c9c',
                         'startingDay' => true,
                         'endingDay' => true
                     ]
