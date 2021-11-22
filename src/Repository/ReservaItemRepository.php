@@ -17,4 +17,19 @@ class ReservaItemRepository extends ServiceEntityRepository
         $this->space = $space;
     }
 
+    public function apiLista($codigoPanal)
+    {
+        $em = $this->getEntityManager();
+        $queryBuilder = $em->createQueryBuilder()->from(ReservaItem::class, 'ri')
+            ->select('ri.codigoReservaItemPk')
+            ->addSelect('ri.nombre')
+            ->where("ri.codigoPanalFk = {$codigoPanal}")
+            ->setMaxResults(20);
+        $arReservasItem = $queryBuilder->getQuery()->getResult();
+        $respuesta = [
+            'error' => false,
+            'reservasItemes' => $arReservasItem
+        ];
+        return $respuesta;
+    }
 }

@@ -6,6 +6,7 @@ namespace App\Controller\Api;
 use App\Entity\Entrega;
 use App\Entity\Publicacion;
 use App\Entity\Reserva;
+use App\Entity\ReservaItem;
 use App\Entity\Usuario;
 use App\Entity\Visita;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -32,5 +33,22 @@ class ReservaController extends AbstractFOSRestController
         return $respuesta;
     }
 
+    /**
+     * @Rest\Post("/api/reserva/listaitem")
+     */
+    public function listaItem(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoPanal = $raw['codigoPanal']?? null;
+        if($codigoPanal) {
+            $respuesta = $em->getRepository(ReservaItem::class)->apiLista($codigoPanal);
+        } else {
+            $respuesta = [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
+        }
+        return $respuesta;
+    }
 
 }

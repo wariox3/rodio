@@ -60,6 +60,11 @@ class Panal
     private $votacionesPanalRel;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ReservaItem", mappedBy="panalRel")
+     */
+    private $reservasItemesPanalRel;
+
+    /**
      * @return mixed
      */
     public function getCodigoPanalPk()
@@ -201,6 +206,22 @@ class Panal
     public function setVotacionesPanalRel($votacionesPanalRel): void
     {
         $this->votacionesPanalRel = $votacionesPanalRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReservasItemesPanalRel()
+    {
+        return $this->reservasItemesPanalRel;
+    }
+
+    /**
+     * @param mixed $reservasItemesPanalRel
+     */
+    public function setReservasItemesPanalRel($reservasItemesPanalRel): void
+    {
+        $this->reservasItemesPanalRel = $reservasItemesPanalRel;
     }
 
 

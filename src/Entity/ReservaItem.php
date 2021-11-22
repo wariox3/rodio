@@ -24,6 +24,17 @@ class ReservaItem
     private $nombre;
 
     /**
+     * @ORM\Column(name="codigo_panal_fk", type="integer")
+     */
+    private $codigoPanalFk;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Panal", inversedBy="reservasItemesPanalRel")
+     * @ORM\JoinColumn(name="codigo_panal_fk", referencedColumnName="codigo_panal_pk")
+     */
+    private $panalRel;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Reserva", mappedBy="reservaItemRel")
      */
     private $reservasReservaItemRel;
@@ -74,6 +85,38 @@ class ReservaItem
     public function setReservasReservaItemRel($reservasReservaItemRel): void
     {
         $this->reservasReservaItemRel = $reservasReservaItemRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodigoPanalFk()
+    {
+        return $this->codigoPanalFk;
+    }
+
+    /**
+     * @param mixed $codigoPanalFk
+     */
+    public function setCodigoPanalFk($codigoPanalFk): void
+    {
+        $this->codigoPanalFk = $codigoPanalFk;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPanalRel()
+    {
+        return $this->panalRel;
+    }
+
+    /**
+     * @param mixed $panalRel
+     */
+    public function setPanalRel($panalRel): void
+    {
+        $this->panalRel = $panalRel;
     }
 
 

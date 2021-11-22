@@ -19,7 +19,7 @@ class Celda
     private $codigoCeldaPk;
 
     /**
-     * @ORM\Column(name="codigo_panal_fk", type="integer", nullable=true)
+     * @ORM\Column(name="codigo_panal_fk", type="integer")
      */
     private $codigoPanalFk;
 
