@@ -134,6 +134,11 @@ class Usuario
     private $votacionesCeldasUsuarioRel;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Anotacion", mappedBy="usuarioRel")
+     */
+    private $anotacionesUsuarioRel;
+
+    /**
      * @return mixed
      */
     public function getCodigoUsuarioPk()
@@ -500,5 +505,23 @@ class Usuario
     {
         $this->reportesUsuarioRel = $reportesUsuarioRel;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getAnotacionesUsuarioRel()
+    {
+        return $this->anotacionesUsuarioRel;
+    }
+
+    /**
+     * @param mixed $anotacionesUsuarioRel
+     */
+    public function setAnotacionesUsuarioRel($anotacionesUsuarioRel): void
+    {
+        $this->anotacionesUsuarioRel = $anotacionesUsuarioRel;
+    }
+
+
 
 }
