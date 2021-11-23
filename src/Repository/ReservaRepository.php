@@ -33,7 +33,7 @@ class ReservaRepository extends ServiceEntityRepository
             ->addSelect('ir.nombre as reservaItemNombre')
             ->leftJoin('r.reservaItemRel', 'ir')
             ->where("r.codigoCeldaFk = {$codigoCelda}")
-            ->setMaxResults(20);
+            ->orderBy('r.fecha', 'DESC');
         $arReservas = $queryBuilder->getQuery()->getResult();
         $respuesta = [
             'error' => false,
