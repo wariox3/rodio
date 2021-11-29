@@ -57,7 +57,7 @@ class AnotacionRepository extends ServiceEntityRepository
                     $em->persist($arArchivo);
                 }
             }
-            //$em->flush();
+            $em->flush();
             return [
                 'error' => false,
                 'codigoAnotacion' => $arAnotacion->getCodigoAnotacionPk()
