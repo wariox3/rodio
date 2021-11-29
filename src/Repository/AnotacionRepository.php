@@ -46,6 +46,7 @@ class AnotacionRepository extends ServiceEntityRepository
             $arAnotacion->setCodigoPuestoFk($codigoPuesto);
             $arAnotacion->setComentario($comentario);
             $em->persist($arAnotacion);
+            $em->flush();
             if($arrArchivos) {
                 foreach ($arrArchivos as $arrArchivo) {
                     $arArchivo = new Archivo();
