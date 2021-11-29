@@ -29,9 +29,9 @@ class Archivo
     private $codigoModeloFk;
 
     /**
-     * @ORM\Column(name="extension", type="string", length=50, nullable=true)
+     * @ORM\Column(name="codigo", type="integer")
      */
-    private $extension;
+    private $codigo;
 
     /**
      * @ORM\Column(name="nombre", type="string", length=500, nullable=true)
@@ -39,7 +39,7 @@ class Archivo
     private $nombre;
 
     /**
-     * @ORM\Column(name="ruta", type="string", length=100, nullable=true)
+     * @ORM\Column(name="ruta", type="string", length=500, nullable=true)
      */
     private $ruta;
 
@@ -78,33 +78,17 @@ class Archivo
     /**
      * @return mixed
      */
-    public function getCodigoModeloFk()
+    public function getCodigo()
     {
-        return $this->codigoModeloFk;
+        return $this->codigo;
     }
 
     /**
-     * @param mixed $codigoModeloFk
+     * @param mixed $codigo
      */
-    public function setCodigoModeloFk($codigoModeloFk): void
+    public function setCodigo($codigo): void
     {
-        $this->codigoModeloFk = $codigoModeloFk;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getExtension()
-    {
-        return $this->extension;
-    }
-
-    /**
-     * @param mixed $extension
-     */
-    public function setExtension($extension): void
-    {
-        $this->extension = $extension;
+        $this->codigo = $codigo;
     }
 
     /**
@@ -137,6 +121,22 @@ class Archivo
     public function setRuta($ruta): void
     {
         $this->ruta = $ruta;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodigoModeloFk()
+    {
+        return $this->codigoModeloFk;
+    }
+
+    /**
+     * @param mixed $codigoModeloFk
+     */
+    public function setCodigoModeloFk($codigoModeloFk): void
+    {
+        $this->codigoModeloFk = $codigoModeloFk;
     }
 
 

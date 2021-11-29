@@ -4,6 +4,7 @@
 namespace App\Repository;
 
 use App\Entity\Anotacion;
+use App\Entity\Archivo;
 use App\Entity\Usuario;
 use App\Utilidades\SpaceDO;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -34,7 +35,7 @@ class AnotacionRepository extends ServiceEntityRepository
         return $respuesta;
     }
 
-    public function apiNuevo($codigoUsuario, $codigoPuesto)
+    public function apiNuevo($codigoUsuario, $codigoPuesto, $comentario, $arrArchivos)
     {
         $em = $this->getEntityManager();
         $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
@@ -43,8 +44,20 @@ class AnotacionRepository extends ServiceEntityRepository
             $arAnotacion->setUsuarioRel($arUsuario);
             $arAnotacion->setFecha(new \DateTime('now'));
             $arAnotacion->setCodigoPuestoFk($codigoPuesto);
+            $arAnotacion->setComentario($comentario);
             $em->persist($arAnotacion);
-            $em->flush();
+            if($arrArchivos) {
+                foreach ($arrArchivos as $arrArchivo) {
+                    $arArchivo = new Archivo();
+                    $arArchivo->setCodigoArchivoTipoFk($arrArchivo['tipo']);
+                    $arArchivo->setCodigoModeloFk('Anotacion');
+                    $arArchivo->setCodigo($arAnotacion->getCodigoAnotacionPk());
+                    $arArchivo->setNombre($arrArchivo['nombre']);
+                    $arArchivo->setRuta($this->space->subir("anotacion/{$arrArchivo['tipo']}", $arrArchivo['nombre'], $arrArchivo['base64']));
+                    $em->persist($arArchivo);
+                }
+            }
+            //$em->flush();
             return [
                 'error' => false,
                 'codigoAnotacion' => $arAnotacion->getCodigoAnotacionPk()
