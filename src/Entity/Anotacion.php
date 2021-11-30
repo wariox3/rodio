@@ -39,10 +39,21 @@ class Anotacion
     private $codigoUsuarioFk;
 
     /**
+     * @ORM\Column(name="codigo_anotacion_tipo_fk", type="string", length=10)
+     */
+    private $codigoAnotacionTipoFk;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Usuario", inversedBy="anotacionesUsuarioRel")
      * @ORM\JoinColumn(name="codigo_usuario_fk", referencedColumnName="codigo_usuario_pk")
      */
     private $usuarioRel;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\AnotacionTipo", inversedBy="anotacionesAnotacionTipoRel")
+     * @ORM\JoinColumn(name="codigo_anotacion_tipo_fk", referencedColumnName="codigo_anotacion_tipo_pk")
+     */
+    private $anotacionTipoRel;
 
     /**
      * @return mixed
