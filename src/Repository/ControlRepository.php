@@ -82,19 +82,21 @@ class ControlRepository extends ServiceEntityRepository
         $em = $this->getEntityManager();
         $usuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
         if ($usuario) {
-            $queryBuilder = $em->createQueryBuilder()->from(Control::class, 'c')
-                ->select('c.codigoControlPk')
-                ->addSelect('c.fecha')
-                ->andWhere("c.estadoRepote = 'p'")
-                ->andWhere("c.codigoOperadorFk = {$usuario->getCodigoOperadorFk()} ")
-                ->andWhere("c.codigoPuestoFk = {$usuario->getCodigoPuestoFk()} ")
-                ->orderBy("c.codigoControlPk", "DESC");
+            if($usuario->getCodigoPuestoFk()){
+                $queryBuilder = $em->createQueryBuilder()->from(Control::class, 'c')
+                    ->select('c.codigoControlPk')
+                    ->addSelect('c.fecha')
+                    ->andWhere("c.estadoRepote = 'p'")
+                    ->andWhere("c.codigoOperadorFk = {$usuario->getCodigoOperadorFk()} ")
+                    ->andWhere("c.codigoPuestoFk = {$usuario->getCodigoPuestoFk()} ")
+                    ->orderBy("c.codigoControlPk", "DESC");
 
-            $arControles = $queryBuilder->getQuery()->getResult();
-            return [
-                'error' => false,
-                'controles' => $arControles
-            ];
+                $arControles = $queryBuilder->getQuery()->getResult();
+                return [
+                    'error' => false,
+                    'controles' => $arControles
+                ];
+            }
         } else {
             return [
                 'error' => true,
