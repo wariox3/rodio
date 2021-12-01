@@ -54,7 +54,7 @@ class EventoRepository extends ServiceEntityRepository
                     $arArchivo->setCodigoModeloFk('Evento');
                     $arArchivo->setCodigo($arEvento->getCodigoEventoPk());
                     $arArchivo->setNombre($arrArchivo['nombre']);
-                    $arArchivo->setRuta($this->space->subir("anotacion/{$arrArchivo['tipo']}", $arrArchivo['nombre'], $arrArchivo['base64']));
+                    $arArchivo->setRuta($this->space->subir("evento/{$arrArchivo['tipo']}", $arrArchivo['nombre'], $arrArchivo['base64']));
                     $em->persist($arArchivo);
                 }
             }
