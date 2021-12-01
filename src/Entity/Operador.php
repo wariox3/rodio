@@ -24,9 +24,19 @@ class Operador
     private $nombre;
 
     /**
-     * @ORM\Column(name="punto_servicio_semantica", type="string", length=200, nullable=true)
+     * @ORM\Column(name="sincronizar", type="boolean", options={"default" : false}, nullable=true)
      */
-    private $puntoServicioSemantica;
+    private $sincronizar = false;
+
+    /**
+     * @ORM\Column(name="punto_servicio_cromo", type="string", length=200, nullable=true)
+     */
+    private $puntoServicioCromo;
+
+    /**
+     * @ORM\Column(name="token", type="string", length=100, nullable=true)
+     */
+    private $token;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Usuario", mappedBy="operadorRel")
@@ -42,6 +52,11 @@ class Operador
      * @ORM\OneToMany(targetEntity="App\Entity\Formulario", mappedBy="operadorRel")
      */
     private $formulariosOperadorRel;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Evento", mappedBy="operadorRel")
+     */
+    private $eventosOperadorRel;
 
     /**
      * @return mixed
@@ -76,19 +91,35 @@ class Operador
     }
 
     /**
-     * @return mixed
+     * @return bool
      */
-    public function getPuntoServicioSemantica()
+    public function isSincronizar(): bool
     {
-        return $this->puntoServicioSemantica;
+        return $this->sincronizar;
     }
 
     /**
-     * @param mixed $puntoServicioSemantica
+     * @param bool $sincronizar
      */
-    public function setPuntoServicioSemantica($puntoServicioSemantica): void
+    public function setSincronizar(bool $sincronizar): void
     {
-        $this->puntoServicioSemantica = $puntoServicioSemantica;
+        $this->sincronizar = $sincronizar;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPuntoServicioCromo()
+    {
+        return $this->puntoServicioCromo;
+    }
+
+    /**
+     * @param mixed $puntoServicioCromo
+     */
+    public function setPuntoServicioCromo($puntoServicioCromo): void
+    {
+        $this->puntoServicioCromo = $puntoServicioCromo;
     }
 
     /**
@@ -137,6 +168,38 @@ class Operador
     public function setFormulariosOperadorRel($formulariosOperadorRel): void
     {
         $this->formulariosOperadorRel = $formulariosOperadorRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEventosOperadorRel()
+    {
+        return $this->eventosOperadorRel;
+    }
+
+    /**
+     * @param mixed $eventosOperadorRel
+     */
+    public function setEventosOperadorRel($eventosOperadorRel): void
+    {
+        $this->eventosOperadorRel = $eventosOperadorRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
+     * @param mixed $token
+     */
+    public function setToken($token): void
+    {
+        $this->token = $token;
     }
 
 

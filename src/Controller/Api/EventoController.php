@@ -38,12 +38,15 @@ class EventoController extends AbstractFOSRestController
     {
         $em = $this->getDoctrine()->getManager();
         $raw = json_decode($request->getContent(), true);
+        $operador = $raw['operador']?? null;
+        $codigoTipo = $raw['codigoTipo']?? null;
+        $codigoEfecto = $raw['codigoEfecto']?? null;
         $codigoUsuario = $raw['codigoUsuario']?? null;
         $codigoPuesto = $raw['codigoPuesto']?? null;
         $comentario = $raw['comentario']?? null;
         $arrArchivos = $raw['archivos']?? null;
-        if($codigoUsuario && $codigoPuesto) {
-            return $em->getRepository(Evento::class)->apiNuevo($codigoUsuario, $codigoPuesto, $comentario, $arrArchivos);
+        if($operador && $codigoUsuario && $codigoPuesto && $codigoTipo && $codigoEfecto) {
+            return $em->getRepository(Evento::class)->apiNuevo($operador, $codigoTipo, $codigoEfecto, $codigoUsuario, $codigoPuesto, $comentario, $arrArchivos);
         } else {
             return [
                 'error' => true,
