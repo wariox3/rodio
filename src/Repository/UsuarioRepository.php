@@ -33,10 +33,10 @@ class UsuarioRepository extends ServiceEntityRepository
                 $em->flush();
             }
             $operador = "";
-            $puntoServicioSemantica = "";
+            $puntoServicio = "";
             if($arUsuario->getOperadorRel()) {
                 $operador = $arUsuario->getOperadorRel()->getNombre();
-                $puntoServicioSemantica = $arUsuario->getOperadorRel()->getPuntoServicioSemantica();
+                $puntoServicio = $arUsuario->getOperadorRel()->getPuntoServicioCromo();
             }
             return [
                 'error' => false,
@@ -50,7 +50,7 @@ class UsuarioRepository extends ServiceEntityRepository
                     'codigoCiudad' => $arUsuario->getCodigoCiudadFk(),
                     'codigoPuesto' => $arUsuario->getCodigoPuestoFk(),
                     'operador' => $operador,
-                    'puntoServicio' => $puntoServicioSemantica
+                    'puntoServicio' => $puntoServicio
                 ],
             ];
         } else {
