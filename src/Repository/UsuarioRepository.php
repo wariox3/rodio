@@ -49,6 +49,7 @@ class UsuarioRepository extends ServiceEntityRepository
                     'codigoPanal' => $arUsuario->getCodigoPanalFk(),
                     'codigoCiudad' => $arUsuario->getCodigoCiudadFk(),
                     'codigoPuesto' => $arUsuario->getCodigoPuestoFk(),
+                    'codigoOperador' => $arUsuario->getCodigoOperadorFk(),
                     'operador' => $operador,
                     'puntoServicio' => $puntoServicio
                 ],

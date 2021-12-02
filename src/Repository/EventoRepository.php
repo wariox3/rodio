@@ -42,67 +42,59 @@ class EventoRepository extends ServiceEntityRepository
         return $respuesta;
     }
 
-    public function apiNuevo($operador, $codigoTipo, $codigoEfecto, $codigoUsuario, $codigoPuesto, $comentario, $arrArchivos)
+    public function apiNuevo($codigoTipo, $codigoEfecto, $codigoUsuario, $codigoPuesto, $comentario, $arrArchivos)
     {
         $em = $this->getEntityManager();
         $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
         if($arUsuario) {
-            $arOperador = $em->getRepository(Operador::class)->find($operador);
-            if($arOperador) {
-                $arEventoTipo = $em->getRepository(EventoTipo::class)->find($codigoTipo);
-                if($arEventoTipo) {
-                    $arEfecto = $em->getRepository(Efecto::class)->find($codigoEfecto);
-                    if($arEfecto) {
-                        $arEvento = new Evento();
-                        $arEvento->setFecha(new \DateTime('now'));
-                        $arEvento->setCodigoPuestoFk($codigoPuesto);
-                        $arEvento->setComentario($comentario);
-                        $arEvento->setOperadorRel($arOperador);
-                        $arEvento->setEventoTipoRel($arEventoTipo);
-                        $arEvento->setEfectoRel($arEfecto);
-                        $em->persist($arEvento);
-                        $em->flush();
-                        if($arrArchivos) {
-                            foreach ($arrArchivos as $arrArchivo) {
-                                $arArchivo = new Archivo();
-                                $arArchivo->setCodigoArchivoTipoFk($arrArchivo['tipo']);
-                                $arArchivo->setCodigoModeloFk('Evento');
-                                $arArchivo->setCodigo($arEvento->getCodigoEventoPk());
-                                $arArchivo->setNombre($arrArchivo['nombre']);
-                                $arArchivo->setRuta($this->space->subir("evento/{$arrArchivo['tipo']}", $arrArchivo['nombre'], $arrArchivo['base64']));
-                                $em->persist($arArchivo);
-                            }
+            $arEventoTipo = $em->getRepository(EventoTipo::class)->find($codigoTipo);
+            if($arEventoTipo) {
+                $arEfecto = $em->getRepository(Efecto::class)->find($codigoEfecto);
+                if($arEfecto) {
+                    $arEvento = new Evento();
+                    $arEvento->setFecha(new \DateTime('now'));
+                    $arEvento->setCodigoPuestoFk($codigoPuesto);
+                    $arEvento->setComentario($comentario);
+                    $arEvento->setOperadorRel($arUsuario->getOperadorRel());
+                    $arEvento->setEventoTipoRel($arEventoTipo);
+                    $arEvento->setEfectoRel($arEfecto);
+                    $em->persist($arEvento);
+                    $em->flush();
+                    if($arrArchivos) {
+                        foreach ($arrArchivos as $arrArchivo) {
+                            $arArchivo = new Archivo();
+                            $arArchivo->setCodigoArchivoTipoFk($arrArchivo['tipo']);
+                            $arArchivo->setCodigoModeloFk('Evento');
+                            $arArchivo->setCodigo($arEvento->getCodigoEventoPk());
+                            $arArchivo->setNombre($arrArchivo['nombre']);
+                            $arArchivo->setRuta($this->space->subir("evento/{$arrArchivo['tipo']}", $arrArchivo['nombre'], $arrArchivo['base64']));
+                            $em->persist($arArchivo);
                         }
-                        $em->flush();
-                        if($arOperador->isSincronizar()) {
-                            $arrPuesto = explode("_", $codigoPuesto);
-                            $arr = [
-                                "efecto" => $codigoEfecto,
-                                "puesto" => $arrPuesto[1],
-                                "tipo" => $codigoTipo,
-                            ];
-                            $this->cromo->post($arOperador, '/api/turno/evento/nuevo', $arr);
-                        }
-                        return [
-                            'error' => false,
-                            'codigoEvento' => $arEvento->getCodigoEventoPk()
-                        ];
-                    } else {
-                        return [
-                            'error' => true,
-                            'errorMensaje' => "No existe el efecto"
-                        ];
                     }
+                    $em->flush();
+                    if($arUsuario->getOperadorRel()->isSincronizar()) {
+                        $arrPuesto = explode("_", $codigoPuesto);
+                        $arr = [
+                            "efecto" => $codigoEfecto,
+                            "puesto" => $arrPuesto[1],
+                            "tipo" => $codigoTipo,
+                        ];
+                        $this->cromo->post($arUsuario->getOperadorRel(), '/api/turno/evento/nuevo', $arr);
+                    }
+                    return [
+                        'error' => false,
+                        'codigoEvento' => $arEvento->getCodigoEventoPk()
+                    ];
                 } else {
                     return [
                         'error' => true,
-                        'errorMensaje' => "No existe el tipo"
+                        'errorMensaje' => "No existe el efecto"
                     ];
                 }
             } else {
                 return [
                     'error' => true,
-                    'errorMensaje' => "No existe el operador"
+                    'errorMensaje' => "No existe el tipo"
                 ];
             }
         } else {
