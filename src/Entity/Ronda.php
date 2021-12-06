@@ -29,6 +29,11 @@ class Ronda
     private $codigoPuestoFk;
 
     /**
+     * @ORM\Column(name="puntos", type="integer", options={"default" : 0})
+     */
+    private $puntos = 0;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Puesto", inversedBy="rondasPuestoRel")
      * @ORM\JoinColumn(name="codigo_puesto_fk", referencedColumnName="codigo_puesto_pk")
      */
@@ -117,6 +122,22 @@ class Ronda
     public function setPuntosRondaRel($puntosRondaRel): void
     {
         $this->puntosRondaRel = $puntosRondaRel;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPuntos(): int
+    {
+        return $this->puntos;
+    }
+
+    /**
+     * @param int $puntos
+     */
+    public function setPuntos(int $puntos): void
+    {
+        $this->puntos = $puntos;
     }
 
 

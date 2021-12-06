@@ -3,8 +3,8 @@
 
 namespace App\Repository;
 
-use App\Entity\Operador;
 use App\Entity\Puesto;
+use App\Entity\Punto;
 use App\Entity\Ronda;
 use App\Entity\Usuario;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -28,10 +28,10 @@ class RondaRepository extends ServiceEntityRepository
                     ->select('r.codigoRondaPk')
                     ->addSelect('r.nombre')
                     ->where("r.codigoPuestoFk = {$arPuesto->getCodigoPuestoPk()}");
-                $arPanales = $queryBuilder->getQuery()->getResult();
+                $arRondas = $queryBuilder->getQuery()->getResult();
                 return [
                     'error' => false,
-                    'rondas' => $arPanales
+                    'rondas' => $arRondas
                 ];
             } else {
                 return [
@@ -42,11 +42,31 @@ class RondaRepository extends ServiceEntityRepository
         } else {
             return [
                 'error' => true,
-                'errorMensaje' => "El usuario"
+                'errorMensaje' => "El usuario no existe"
             ];
         }
+    }
 
-
+    public function apiPunto($codigoRonda)
+    {
+        $em = $this->getEntityManager();
+        $arRonda = $em->getRepository(Ronda::class)->find($codigoRonda);
+        if($arRonda) {
+            $queryBuilder = $em->createQueryBuilder()->from(Punto::class, 'p')
+                ->select('p.codigoPuntoPk')
+                ->addSelect('p.nombre')
+                ->where("p.codigoRondaFk = {$codigoRonda}");
+            $arPuntos = $queryBuilder->getQuery()->getResult();
+            return [
+                'error' => false,
+                'puntos' => $arPuntos
+            ];
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "La ronda no existe"
+            ];
+        }
     }
 
 }
