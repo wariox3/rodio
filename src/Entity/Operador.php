@@ -59,6 +59,11 @@ class Operador
     private $eventosOperadorRel;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Puesto", mappedBy="operadorRel")
+     */
+    private $puestosOperadorRel;
+
+    /**
      * @return mixed
      */
     public function getCodigoOperadorPk()
@@ -200,6 +205,22 @@ class Operador
     public function setToken($token): void
     {
         $this->token = $token;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPuestosOperadorRel()
+    {
+        return $this->puestosOperadorRel;
+    }
+
+    /**
+     * @param mixed $puestosOperadorRel
+     */
+    public function setPuestosOperadorRel($puestosOperadorRel): void
+    {
+        $this->puestosOperadorRel = $puestosOperadorRel;
     }
 
 

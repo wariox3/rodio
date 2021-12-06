@@ -65,7 +65,7 @@ class Usuario
     private $tokenFirebase;
 
     /**
-     * @ORM\Column(name="codigo_puesto_fk", type="integer", nullable=true)
+     * @ORM\Column(name="codigo_puesto_fk", type="string", length=10, nullable=true)
      */
     private $codigoPuestoFk;
 
@@ -189,33 +189,17 @@ class Usuario
     /**
      * @return mixed
      */
-    public function getPublicacionesUsuarioRel()
+    public function getCodigoPanalFk()
     {
-        return $this->publicacionesUsuarioRel;
+        return $this->codigoPanalFk;
     }
 
     /**
-     * @param mixed $publicacionesUsuarioRel
+     * @param mixed $codigoPanalFk
      */
-    public function setPublicacionesUsuarioRel($publicacionesUsuarioRel): void
+    public function setCodigoPanalFk($codigoPanalFk): void
     {
-        $this->publicacionesUsuarioRel = $publicacionesUsuarioRel;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCeldasUsuarioRel()
-    {
-        return $this->celdasUsuarioRel;
-    }
-
-    /**
-     * @param mixed $celdasUsuarioRel
-     */
-    public function setCeldasUsuarioRel($celdasUsuarioRel): void
-    {
-        $this->celdasUsuarioRel = $celdasUsuarioRel;
+        $this->codigoPanalFk = $codigoPanalFk;
     }
 
     /**
@@ -237,65 +221,17 @@ class Usuario
     /**
      * @return mixed
      */
-    public function getCeldaRel()
+    public function getCodigoOperadorFk()
     {
-        return $this->celdaRel;
+        return $this->codigoOperadorFk;
     }
 
     /**
-     * @param mixed $celdaRel
+     * @param mixed $codigoOperadorFk
      */
-    public function setCeldaRel($celdaRel): void
+    public function setCodigoOperadorFk($codigoOperadorFk): void
     {
-        $this->celdaRel = $celdaRel;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getVisitasUsuarioAutorizaRel()
-    {
-        return $this->visitasUsuarioAutorizaRel;
-    }
-
-    /**
-     * @param mixed $visitasUsuarioAutorizaRel
-     */
-    public function setVisitasUsuarioAutorizaRel($visitasUsuarioAutorizaRel): void
-    {
-        $this->visitasUsuarioAutorizaRel = $visitasUsuarioAutorizaRel;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getComentariosUsuarioRel()
-    {
-        return $this->comentariosUsuarioRel;
-    }
-
-    /**
-     * @param mixed $comentariosUsuarioRel
-     */
-    public function setComentariosUsuarioRel($comentariosUsuarioRel): void
-    {
-        $this->comentariosUsuarioRel = $comentariosUsuarioRel;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUrlImagen()
-    {
-        return $this->urlImagen;
-    }
-
-    /**
-     * @param mixed $urlImagen
-     */
-    public function setUrlImagen($urlImagen): void
-    {
-        $this->urlImagen = $urlImagen;
+        $this->codigoOperadorFk = $codigoOperadorFk;
     }
 
     /**
@@ -317,49 +253,33 @@ class Usuario
     /**
      * @return mixed
      */
-    public function getCodigoPanalFk()
+    public function getCodigoCiudadFk()
     {
-        return $this->codigoPanalFk;
+        return $this->codigoCiudadFk;
     }
 
     /**
-     * @param mixed $codigoPanalFk
+     * @param mixed $codigoCiudadFk
      */
-    public function setCodigoPanalFk($codigoPanalFk): void
+    public function setCodigoCiudadFk($codigoCiudadFk): void
     {
-        $this->codigoPanalFk = $codigoPanalFk;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPanalRel()
-    {
-        return $this->panalRel;
-    }
-
-    /**
-     * @param mixed $panalRel
-     */
-    public function setPanalRel($panalRel): void
-    {
-        $this->panalRel = $panalRel;
+        $this->codigoCiudadFk = $codigoCiudadFk;
     }
 
     /**
      * @return mixed
      */
-    public function getReaccionesUsuarioRel()
+    public function getUrlImagen()
     {
-        return $this->reaccionesUsuarioRel;
+        return $this->urlImagen;
     }
 
     /**
-     * @param mixed $reaccionesUsuarioRel
+     * @param mixed $urlImagen
      */
-    public function setReaccionesUsuarioRel($reaccionesUsuarioRel): void
+    public function setUrlImagen($urlImagen): void
     {
-        $this->reaccionesUsuarioRel = $reaccionesUsuarioRel;
+        $this->urlImagen = $urlImagen;
     }
 
     /**
@@ -381,17 +301,49 @@ class Usuario
     /**
      * @return mixed
      */
-    public function getCodigoCiudadFk()
+    public function getCodigoPuestoFk()
     {
-        return $this->codigoCiudadFk;
+        return $this->codigoPuestoFk;
     }
 
     /**
-     * @param mixed $codigoCiudadFk
+     * @param mixed $codigoPuestoFk
      */
-    public function setCodigoCiudadFk($codigoCiudadFk): void
+    public function setCodigoPuestoFk($codigoPuestoFk): void
     {
-        $this->codigoCiudadFk = $codigoCiudadFk;
+        $this->codigoPuestoFk = $codigoPuestoFk;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPanalRel()
+    {
+        return $this->panalRel;
+    }
+
+    /**
+     * @param mixed $panalRel
+     */
+    public function setPanalRel($panalRel): void
+    {
+        $this->panalRel = $panalRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCeldaRel()
+    {
+        return $this->celdaRel;
+    }
+
+    /**
+     * @param mixed $celdaRel
+     */
+    public function setCeldaRel($celdaRel): void
+    {
+        $this->celdaRel = $celdaRel;
     }
 
     /**
@@ -413,38 +365,6 @@ class Usuario
     /**
      * @return mixed
      */
-    public function getCeldasUsuariosUsuarioRel()
-    {
-        return $this->celdasUsuariosUsuarioRel;
-    }
-
-    /**
-     * @param mixed $celdasUsuariosUsuarioRel
-     */
-    public function setCeldasUsuariosUsuarioRel($celdasUsuariosUsuarioRel): void
-    {
-        $this->celdasUsuariosUsuarioRel = $celdasUsuariosUsuarioRel;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCodigoOperadorFk()
-    {
-        return $this->codigoOperadorFk;
-    }
-
-    /**
-     * @param mixed $codigoOperadorFk
-     */
-    public function setCodigoOperadorFk($codigoOperadorFk): void
-    {
-        $this->codigoOperadorFk = $codigoOperadorFk;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getOperadorRel()
     {
         return $this->operadorRel;
@@ -461,33 +381,17 @@ class Usuario
     /**
      * @return mixed
      */
-    public function getVotacionesCeldasUsuarioRel()
+    public function getPublicacionesUsuarioRel()
     {
-        return $this->votacionesCeldasUsuarioRel;
+        return $this->publicacionesUsuarioRel;
     }
 
     /**
-     * @param mixed $votacionesCeldasUsuarioRel
+     * @param mixed $publicacionesUsuarioRel
      */
-    public function setVotacionesCeldasUsuarioRel($votacionesCeldasUsuarioRel): void
+    public function setPublicacionesUsuarioRel($publicacionesUsuarioRel): void
     {
-        $this->votacionesCeldasUsuarioRel = $votacionesCeldasUsuarioRel;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCodigoPuestoFk()
-    {
-        return $this->codigoPuestoFk;
-    }
-
-    /**
-     * @param mixed $codigoPuestoFk
-     */
-    public function setCodigoPuestoFk($codigoPuestoFk): void
-    {
-        $this->codigoPuestoFk = $codigoPuestoFk;
+        $this->publicacionesUsuarioRel = $publicacionesUsuarioRel;
     }
 
     /**
@@ -504,6 +408,102 @@ class Usuario
     public function setReportesUsuarioRel($reportesUsuarioRel): void
     {
         $this->reportesUsuarioRel = $reportesUsuarioRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getComentariosUsuarioRel()
+    {
+        return $this->comentariosUsuarioRel;
+    }
+
+    /**
+     * @param mixed $comentariosUsuarioRel
+     */
+    public function setComentariosUsuarioRel($comentariosUsuarioRel): void
+    {
+        $this->comentariosUsuarioRel = $comentariosUsuarioRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReaccionesUsuarioRel()
+    {
+        return $this->reaccionesUsuarioRel;
+    }
+
+    /**
+     * @param mixed $reaccionesUsuarioRel
+     */
+    public function setReaccionesUsuarioRel($reaccionesUsuarioRel): void
+    {
+        $this->reaccionesUsuarioRel = $reaccionesUsuarioRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCeldasUsuarioRel()
+    {
+        return $this->celdasUsuarioRel;
+    }
+
+    /**
+     * @param mixed $celdasUsuarioRel
+     */
+    public function setCeldasUsuarioRel($celdasUsuarioRel): void
+    {
+        $this->celdasUsuarioRel = $celdasUsuarioRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVisitasUsuarioAutorizaRel()
+    {
+        return $this->visitasUsuarioAutorizaRel;
+    }
+
+    /**
+     * @param mixed $visitasUsuarioAutorizaRel
+     */
+    public function setVisitasUsuarioAutorizaRel($visitasUsuarioAutorizaRel): void
+    {
+        $this->visitasUsuarioAutorizaRel = $visitasUsuarioAutorizaRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCeldasUsuariosUsuarioRel()
+    {
+        return $this->celdasUsuariosUsuarioRel;
+    }
+
+    /**
+     * @param mixed $celdasUsuariosUsuarioRel
+     */
+    public function setCeldasUsuariosUsuarioRel($celdasUsuariosUsuarioRel): void
+    {
+        $this->celdasUsuariosUsuarioRel = $celdasUsuariosUsuarioRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVotacionesCeldasUsuarioRel()
+    {
+        return $this->votacionesCeldasUsuarioRel;
+    }
+
+    /**
+     * @param mixed $votacionesCeldasUsuarioRel
+     */
+    public function setVotacionesCeldasUsuarioRel($votacionesCeldasUsuarioRel): void
+    {
+        $this->votacionesCeldasUsuarioRel = $votacionesCeldasUsuarioRel;
     }
 
     /**
