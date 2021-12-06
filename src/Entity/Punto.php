@@ -34,6 +34,11 @@ class Punto
     private $codigoPuntoInterface;
 
     /**
+     * @ORM\Column(name="token", type="string", length=60)
+     */
+    private $token;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Ronda", inversedBy="puntosRondaRel")
      * @ORM\JoinColumn(name="codigo_ronda_fk", referencedColumnName="codigo_ronda_pk")
      */
@@ -117,6 +122,22 @@ class Punto
     public function setRondaRel($rondaRel): void
     {
         $this->rondaRel = $rondaRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
+     * @param mixed $token
+     */
+    public function setToken($token): void
+    {
+        $this->token = $token;
     }
 
 

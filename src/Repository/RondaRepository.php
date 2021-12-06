@@ -55,6 +55,7 @@ class RondaRepository extends ServiceEntityRepository
             $queryBuilder = $em->createQueryBuilder()->from(Punto::class, 'p')
                 ->select('p.codigoPuntoPk')
                 ->addSelect('p.nombre')
+                ->addSelect('p.token')
                 ->where("p.codigoRondaFk = {$codigoRonda}");
             $arPuntos = $queryBuilder->getQuery()->getResult();
             return [
