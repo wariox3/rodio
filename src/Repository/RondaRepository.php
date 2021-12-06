@@ -6,6 +6,7 @@ namespace App\Repository;
 use App\Entity\Operador;
 use App\Entity\Puesto;
 use App\Entity\Ronda;
+use App\Entity\Usuario;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,12 +17,12 @@ class RondaRepository extends ServiceEntityRepository
         parent::__construct($registry, Ronda::class);
     }
 
-    public function apiLista($codigoOperador, $codigoPuesto)
+    public function apiLista($codigoUsuario)
     {
         $em = $this->getEntityManager();
-        $arOperador = $em->getRepository(Operador::class)->find($codigoOperador);
-        if($arOperador) {
-            $arPuesto = $em->getRepository(Puesto::class)->findOneBy(['codigoOperadorFk' => $codigoOperador, 'codigoPuestoInterface' => $codigoPuesto]);
+        $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
+        if($arUsuario) {
+            $arPuesto = $em->getRepository(Puesto::class)->find($arUsuario->getCodigoPuestoFk());
             if($arPuesto) {
                 $queryBuilder = $em->createQueryBuilder()->from(Ronda::class, 'r')
                     ->select('r.codigoRondaPk')
@@ -41,7 +42,7 @@ class RondaRepository extends ServiceEntityRepository
         } else {
             return [
                 'error' => true,
-                'errorMensaje' => "El operador no existe"
+                'errorMensaje' => "El usuario"
             ];
         }
 

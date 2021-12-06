@@ -35,6 +35,11 @@ class Ronda
     private $puestoRel;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Punto", mappedBy="rondaRel")
+     */
+    private $puntosRondaRel;
+
+    /**
      * @return mixed
      */
     public function getCodigoRondaPk()
@@ -96,6 +101,22 @@ class Ronda
     public function setPuestoRel($puestoRel): void
     {
         $this->puestoRel = $puestoRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPuntosRondaRel()
+    {
+        return $this->puntosRondaRel;
+    }
+
+    /**
+     * @param mixed $puntosRondaRel
+     */
+    public function setPuntosRondaRel($puntosRondaRel): void
+    {
+        $this->puntosRondaRel = $puntosRondaRel;
     }
 
 

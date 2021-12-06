@@ -21,10 +21,9 @@ class RondaController extends AbstractFOSRestController
     {
         $em = $this->getDoctrine()->getManager();
         $raw = json_decode($request->getContent(), true);
-        $codigoPuesto = $raw['codigoPuesto']?? null;
-        $codigoOperador = $raw['codigoOperador']?? null;
-        if($codigoPuesto && $codigoOperador) {
-            return $em->getRepository(Ronda::class)->apiLista($codigoOperador, $codigoPuesto);
+        $codigoUsuario = $raw['codigoUsuario']?? null;
+        if($codigoUsuario) {
+            return $em->getRepository(Ronda::class)->apiLista($codigoUsuario);
         } else {
             return [
                 'error' => true,
