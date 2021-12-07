@@ -39,9 +39,9 @@ class Punto
     private $token;
 
     /**
-     * @ORM\Column(name="tiempo", type="time", nullable=true)
+     * @ORM\Column(name="minutos", type="integer", options={"default" : 0})
      */
-    private $tiempo;
+    private $minutos = 0;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Ronda", inversedBy="puntosRondaRel")
@@ -146,19 +146,19 @@ class Punto
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getTiempo()
+    public function getMinutos(): int
     {
-        return $this->tiempo;
+        return $this->minutos;
     }
 
     /**
-     * @param mixed $tiempo
+     * @param int $minutos
      */
-    public function setTiempo($tiempo): void
+    public function setMinutos(int $minutos): void
     {
-        $this->tiempo = $tiempo;
+        $this->minutos = $minutos;
     }
 
 
