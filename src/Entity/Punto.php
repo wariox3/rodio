@@ -39,6 +39,11 @@ class Punto
     private $token;
 
     /**
+     * @ORM\Column(name="tiempo", type="time", nullable=true)
+     */
+    private $tiempo;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Ronda", inversedBy="puntosRondaRel")
      * @ORM\JoinColumn(name="codigo_ronda_fk", referencedColumnName="codigo_ronda_pk")
      */
@@ -138,6 +143,22 @@ class Punto
     public function setToken($token): void
     {
         $this->token = $token;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTiempo()
+    {
+        return $this->tiempo;
+    }
+
+    /**
+     * @param mixed $tiempo
+     */
+    public function setTiempo($tiempo): void
+    {
+        $this->tiempo = $tiempo;
     }
 
 

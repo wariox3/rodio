@@ -56,6 +56,7 @@ class RondaRepository extends ServiceEntityRepository
                 ->select('p.codigoPuntoPk')
                 ->addSelect('p.nombre')
                 ->addSelect('p.token')
+                ->addSelect('p.tiempo')
                 ->where("p.codigoRondaFk = {$codigoRonda}");
             $arPuntos = $queryBuilder->getQuery()->getResult();
             return [
