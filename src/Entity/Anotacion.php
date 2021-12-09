@@ -151,5 +151,36 @@ class Anotacion
         $this->usuarioRel = $usuarioRel;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getCodigoAnotacionTipoFk()
+    {
+        return $this->codigoAnotacionTipoFk;
+    }
+
+    /**
+     * @param mixed $codigoAnotacionTipoFk
+     */
+    public function setCodigoAnotacionTipoFk($codigoAnotacionTipoFk): void
+    {
+        $this->codigoAnotacionTipoFk = $codigoAnotacionTipoFk;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAnotacionTipoRel()
+    {
+        return $this->anotacionTipoRel;
+    }
+
+    /**
+     * @param mixed $anotacionTipoRel
+     */
+    public function setAnotacionTipoRel($anotacionTipoRel): void
+    {
+        $this->anotacionTipoRel = $anotacionTipoRel;
+    }
 
 }

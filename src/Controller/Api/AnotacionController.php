@@ -41,8 +41,9 @@ class AnotacionController extends AbstractFOSRestController
         $codigoPuesto = $raw['codigoPuesto']?? null;
         $comentario = $raw['comentario']?? null;
         $arrArchivos = $raw['archivos']?? null;
+        $tipo = $raw['tipo']?? null;
         if($codigoUsuario && $codigoPuesto) {
-            return $em->getRepository(Anotacion::class)->apiNuevo($codigoUsuario, $codigoPuesto, $comentario, $arrArchivos);
+            return $em->getRepository(Anotacion::class)->apiNuevo($codigoUsuario, $codigoPuesto, $comentario, $tipo, $arrArchivos);
         } else {
             return [
                 'error' => true,
