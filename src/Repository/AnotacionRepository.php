@@ -37,6 +37,25 @@ class AnotacionRepository extends ServiceEntityRepository
         return $respuesta;
     }
 
+    public function apiDetalle($codigoAnotacion)
+    {
+        $em = $this->getEntityManager();
+        $queryBuilder = $em->createQueryBuilder()->from(Anotacion::class, 'a')
+            ->select('a.codigoAnotacionPk')
+            ->addSelect('a.fecha')
+            ->addSelect('a.comentario')
+            ->addSelect('a.comentario')
+            ->addSelect('at.nombre as tipo')
+            ->leftJoin('a.anotacionTipoRel', 'at')
+            ->where("a.codigoAnotacionPk = {$codigoAnotacion}");
+        $arAnotaciones = $queryBuilder->getQuery()->getResult();
+        $respuesta = [
+            'error' => false,
+            'anotacion' => $arAnotaciones
+        ];
+        return $respuesta;
+    }
+
     public function apiNuevo($codigoUsuario, $codigoPuesto, $comentario, $tipo, $arrArchivos)
     {
         $em = $this->getEntityManager();

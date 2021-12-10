@@ -52,5 +52,22 @@ class AnotacionController extends AbstractFOSRestController
         }
     }
 
+    /**
+     * @Rest\Post("/api/anotacion/detalle")
+     */
+    public function detalle(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoAnotacion = $raw['codigoAnotacion']?? null;
+        if($codigoAnotacion) {
+            $respuesta = $em->getRepository(Anotacion::class)->apiDetalle($codigoAnotacion);
+        } else {
+            $respuesta = [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
+        }
+        return $respuesta;
+    }
 
 }
