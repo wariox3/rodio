@@ -49,9 +49,21 @@ class AnotacionRepository extends ServiceEntityRepository
             ->leftJoin('a.anotacionTipoRel', 'at')
             ->where("a.codigoAnotacionPk = {$codigoAnotacion}");
         $arAnotaciones = $queryBuilder->getQuery()->getResult();
+
+        $queryBuilder = $em->createQueryBuilder()->from(Archivo::class, 'a')
+            ->select('a.codigoArchivoPk')
+            ->addSelect('a.nombre')
+            ->addSelect('a.ruta')
+            ->addSelect('a.codigoArchivoTipoFk as tipo')
+            ->where("a.codigoModeloFk = 'Anotacion' ")
+            ->andWhere("a.codigo = {$codigoAnotacion}");
+        $arArchivos = $queryBuilder->getQuery()->getResult();
+
+
         $respuesta = [
             'error' => false,
-            'anotacion' => $arAnotaciones
+            'anotacion' => $arAnotaciones,
+            'archivos' => $arArchivos
         ];
         return $respuesta;
     }
