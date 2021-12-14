@@ -75,6 +75,11 @@ class Celda
     private $celdasUsuariosCeldaRel;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Atencion", mappedBy="celdaRel")
+     */
+    private $atencionesCeldaRel;
+
+    /**
      * @return mixed
      */
     public function getCodigoCeldaPk()
@@ -264,6 +269,22 @@ class Celda
     public function setReservasCeldaRel($reservasCeldaRel): void
     {
         $this->reservasCeldaRel = $reservasCeldaRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAtencionesCeldaRel()
+    {
+        return $this->atencionesCeldaRel;
+    }
+
+    /**
+     * @param mixed $atencionesCeldaRel
+     */
+    public function setAtencionesCeldaRel($atencionesCeldaRel): void
+    {
+        $this->atencionesCeldaRel = $atencionesCeldaRel;
     }
 
 
