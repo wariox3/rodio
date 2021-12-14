@@ -139,6 +139,11 @@ class Usuario
     private $anotacionesUsuarioRel;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Soporte", mappedBy="usuarioRel")
+     */
+    private $soportesUsuarioRel;
+
+    /**
      * @return mixed
      */
     public function getCodigoUsuarioPk()
@@ -520,6 +525,22 @@ class Usuario
     public function setAnotacionesUsuarioRel($anotacionesUsuarioRel): void
     {
         $this->anotacionesUsuarioRel = $anotacionesUsuarioRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSoportesUsuarioRel()
+    {
+        return $this->soportesUsuarioRel;
+    }
+
+    /**
+     * @param mixed $soportesUsuarioRel
+     */
+    public function setSoportesUsuarioRel($soportesUsuarioRel): void
+    {
+        $this->soportesUsuarioRel = $soportesUsuarioRel;
     }
 
 
