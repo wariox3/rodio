@@ -40,7 +40,6 @@ class AtencionRepository extends ServiceEntityRepository
         return $respuesta;
     }
 
-
     public function apiNuevo($codigoUsuario, $codigoCelda, $descripcion)
     {
         $em = $this->getEntityManager();
@@ -73,4 +72,44 @@ class AtencionRepository extends ServiceEntityRepository
             ];
         }
     }
+
+    public function apiPendiente($codigoPanal, $celda)
+    {
+        $em = $this->getEntityManager();
+        $queryBuilder = $em->createQueryBuilder()->from(Atencion::class, 'a')
+            ->select('a.codigoAtencionPk')
+            ->addSelect('a.fecha')
+            ->addSelect('a.descripcion')
+            ->leftJoin('a.celdaRel', 'c')
+            ->where("c.codigoPanalFk = {$codigoPanal}")
+            ->andWhere("a.estadoAtendido = 0")
+            ->addOrderBy("a.fecha", "ASC");
+        $arAtencion = $queryBuilder->getQuery()->getResult();
+        if($celda) {
+            $queryBuilder->andWhere("c.celda = '{$celda}'");
+        }
+        return [
+            'error' => false,
+            'atencion' => $arAtencion
+        ];
+    }
+
+    public function apiAtendido($codigoAtencion)
+    {
+        $em = $this->getEntityManager();
+        $arAtencion = $em->getRepository(Atencion::class)->find($codigoAtencion);
+        if($arAtencion){
+            $arAtencion->setEstadoAtendido(true);
+            $em->persist($arAtencion);
+            $em->flush();
+            return ['error' => false];
+        }else{
+            return [
+                'error' => true,
+                'errorMensaje' => "No existe la atención"
+            ];
+        }
+    }
+
+
 }

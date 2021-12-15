@@ -51,4 +51,41 @@ class AtencionController extends AbstractFOSRestController
         }
     }
 
+    /**
+     * @Rest\Post("/api/atencion/pendiente")
+     */
+    public function pendiente(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoPanal = $raw['codigoPanal']?? null;
+        $celda = $raw['celda']?? null;
+        if($codigoPanal) {
+            return $em->getRepository(Atencion::class)->apiPendiente($codigoPanal, $celda);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'
+            ];
+        }
+    }
+
+    /**
+     * @Rest\Post("/api/atencion/atendido")
+     */
+    public function atendido(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoAtencion = $raw['codigoAtencion']?? null;
+        if($codigoAtencion) {
+            return $em->getRepository(Atencion::class)->apiAtendido($codigoAtencion);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'
+            ];
+        }
+    }
+
 }
