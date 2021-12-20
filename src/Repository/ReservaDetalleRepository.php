@@ -39,29 +39,29 @@ class ReservaDetalleRepository extends ServiceEntityRepository
         return $respuesta;
     }
 
-    public function apiNuevo($codigoCelda, $codigoItem, $fecha)
+    public function apiNuevo($codigoCelda, $codigoReserva, $fecha)
     {
         $em = $this->getEntityManager();
         $arCelda = $em->getRepository(Celda::class)->find($codigoCelda);
         if($arCelda) {
-            $arItem = $em->getRepository(ReservaItem::class)->find($codigoItem);
-            if($arItem) {
-                $queryBuilder = $em->createQueryBuilder()->from(Reserva::class, 'r')
-                    ->select('r.codigoReservaPk')
-                    ->where("r.codigoReservaItemFk = {$codigoItem}")
-                    ->andWhere("r.fecha >= '{$fecha} 00:00:00'")
-                    ->andWhere("r.fecha <= '{$fecha} 23:59:59'");
-                $arReservas = $queryBuilder->getQuery()->getResult();
-                if(!$arReservas) {
-                    $arReserva = new Reserva();
-                    $arReserva->setCeldaRel($arCelda);
-                    $arReserva->setReservaItemRel($arItem);
-                    $arReserva->setFecha(date_create($fecha));
-                    $em->persist($arReserva);
+            $arReserva = $em->getRepository(Reserva::class)->find($codigoReserva);
+            if($arReserva) {
+                $queryBuilder = $em->createQueryBuilder()->from(ReservaDetalle::class, 'rd')
+                    ->select('rd.codigoReservaDetallePk')
+                    ->where("rd.codigoReservaFk = {$codigoReserva}")
+                    ->andWhere("rd.fecha >= '{$fecha} 00:00:00'")
+                    ->andWhere("rd.fecha <= '{$fecha} 23:59:59'");
+                $arReservaDetalles = $queryBuilder->getQuery()->getResult();
+                if(!$arReservaDetalles) {
+                    $arReservaDetalle = new ReservaDetalle();
+                    $arReservaDetalle->setCeldaRel($arCelda);
+                    $arReservaDetalle->setReservaRel($arReserva);
+                    $arReservaDetalle->setFecha(date_create($fecha));
+                    $em->persist($arReservaDetalle);
                     $em->flush();
                     return [
                         'error' => false,
-                        'codigoReserva' => $arReserva->getCodigoReservaPk()
+                        'codigoReservaDetalle' => $arReservaDetalle->getCodigoReservaDetallePk()
                     ];
                 } else {
                     return [
@@ -72,7 +72,7 @@ class ReservaDetalleRepository extends ServiceEntityRepository
             } else {
                 return [
                     'error' => true,
-                    'errorMensaje' => "No existe el item"
+                    'errorMensaje' => "No existe la reserva"
                 ];
             }
         } else {
@@ -83,27 +83,27 @@ class ReservaDetalleRepository extends ServiceEntityRepository
         }
     }
 
-    public function apiReserva($codigoItem, $anio, $mes)
+    public function apiReserva($codigoReserva, $anio, $mes)
     {
         $em = $this->getEntityManager();
         $ultimoDia = date("d", (mktime(0, 0, 0, $mes + 1, 1, $anio) - 1));
         $fechaDesde = "{$anio}-{$mes}-01";
         $fechaHasta = "{$anio}-{$mes}-{$ultimoDia}";
-        $queryBuilder = $em->createQueryBuilder()->from(Reserva::class, 'r')
-            ->select('r.codigoReservaPk')
-            ->addSelect('r.codigoReservaItemFk')
-            ->addSelect('r.fecha')
-            ->addSelect('r.comentario')
-            ->where("r.codigoReservaItemFk = {$codigoItem}")
-            ->andWhere("r.fecha >= '{$fechaDesde}'")
-            ->andWhere("r.fecha <= '{$fechaHasta}'")
+        $queryBuilder = $em->createQueryBuilder()->from(ReservaDetalle::class, 'rd')
+            ->select('rd.codigoReservaDetallePk')
+            ->addSelect('rd.codigoReservaFk')
+            ->addSelect('rd.fecha')
+            ->addSelect('rd.comentario')
+            ->where("rd.codigoReservaFk = {$codigoReserva}")
+            ->andWhere("rd.fecha >= '{$fechaDesde}'")
+            ->andWhere("rd.fecha <= '{$fechaHasta}'")
             ->setMaxResults(20);
-        $arReservas = $queryBuilder->getQuery()->getResult();
+        $arReservasDetalles = $queryBuilder->getQuery()->getResult();
         $arregloFechas = [];
-        foreach ($arReservas as $arReserva) {
+        foreach ($arReservasDetalles as $arReservaDetalle) {
             $arregloFechas[] =
                 [
-                    $arReserva['fecha']->format('Y-m-d') => [
+                    $arReservaDetalle['fecha']->format('Y-m-d') => [
                         'disabled' => true,
                         'color' => '#ADD9F4',
                         'textColor' => '#9c9c9c',
@@ -114,7 +114,7 @@ class ReservaDetalleRepository extends ServiceEntityRepository
         }
         $respuesta = [
             'error' => false,
-            'reservas' => $arReservas,
+            'reservasDetalles' => $arReservasDetalles,
             'arregloFechas' => $arregloFechas
         ];
         return $respuesta;
