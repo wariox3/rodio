@@ -39,9 +39,9 @@ class Celda
     private $correo;
 
     /**
-     * @ORM\Column(name="propietario", type="string", length=200, nullable=true)
+     * @ORM\Column(name="responsable", type="string", length=200, nullable=true)
      */
-    private $propietario;
+    private $responsable;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Panal", inversedBy="celdasPanalRel")
@@ -162,6 +162,22 @@ class Celda
     /**
      * @return mixed
      */
+    public function getResponsable()
+    {
+        return $this->responsable;
+    }
+
+    /**
+     * @param mixed $responsable
+     */
+    public function setResponsable($responsable): void
+    {
+        $this->responsable = $responsable;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getPanalRel()
     {
         return $this->panalRel;
@@ -226,38 +242,6 @@ class Celda
     /**
      * @return mixed
      */
-    public function getCeldasUsuariosCeldaRel()
-    {
-        return $this->celdasUsuariosCeldaRel;
-    }
-
-    /**
-     * @param mixed $celdasUsuariosCeldaRel
-     */
-    public function setCeldasUsuariosCeldaRel($celdasUsuariosCeldaRel): void
-    {
-        $this->celdasUsuariosCeldaRel = $celdasUsuariosCeldaRel;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPropietario()
-    {
-        return $this->propietario;
-    }
-
-    /**
-     * @param mixed $propietario
-     */
-    public function setPropietario($propietario): void
-    {
-        $this->propietario = $propietario;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getReservasCeldaRel()
     {
         return $this->reservasCeldaRel;
@@ -269,6 +253,22 @@ class Celda
     public function setReservasCeldaRel($reservasCeldaRel): void
     {
         $this->reservasCeldaRel = $reservasCeldaRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCeldasUsuariosCeldaRel()
+    {
+        return $this->celdasUsuariosCeldaRel;
+    }
+
+    /**
+     * @param mixed $celdasUsuariosCeldaRel
+     */
+    public function setCeldasUsuariosCeldaRel($celdasUsuariosCeldaRel): void
+    {
+        $this->celdasUsuariosCeldaRel = $celdasUsuariosCeldaRel;
     }
 
     /**
@@ -286,6 +286,7 @@ class Celda
     {
         $this->atencionesCeldaRel = $atencionesCeldaRel;
     }
+
 
 
 }

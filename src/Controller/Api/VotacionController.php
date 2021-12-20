@@ -3,6 +3,7 @@
 
 namespace App\Controller\Api;
 
+use App\Entity\Celda;
 use App\Entity\Entrega;
 use App\Entity\Publicacion;
 use App\Entity\Usuario;
@@ -50,6 +51,62 @@ class VotacionController extends AbstractFOSRestController
                 'error' => true,
                 'errorMensaje' => 'Faltan parametros para el consumo de la api'
             ];
+        }
+    }
+
+    /**
+     * @Rest\Post("/api/admin/votacion/lista")
+     */
+    public function adminLista(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoPanal = $raw['codigoPanal']?? null;
+        if($codigoPanal) {
+            return $em->getRepository(Votacion::class)->apiAdminLista($codigoPanal);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'
+            ];
+        }
+    }
+
+    /**
+     * @Rest\Post("/api/admin/votacion/nuevo")
+     */
+    public function adminNuevo(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $id = $raw['id']?? null;
+        $codigoPanal = $raw['codigoPanal']?? null;
+        $fechaHasta = $raw['fechaHasta']?? null;
+        $descripcion = $raw['descripcion']?? null;
+        if($codigoPanal && $fechaHasta && $descripcion) {
+            return $em->getRepository(Votacion::class)->apiAdminNuevo($codigoPanal, $id, $fechaHasta, $descripcion);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'
+            ];
+        }
+    }
+
+    /**
+     * @Rest\Post("/api/admin/votacion/detalle")
+     */
+    public function adminDetalle(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoVotacion = $raw['codigoVotacion']?? null;
+        if($codigoVotacion) {
+            return $em->getRepository(Votacion::class)->apiAdminDetalle($codigoVotacion);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
         }
     }
 
