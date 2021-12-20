@@ -65,9 +65,9 @@ class Celda
     private $visitasCeldaRel;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Reserva", mappedBy="celdaRel")
+     * @ORM\OneToMany(targetEntity="App\Entity\ReservaDetalle", mappedBy="celdaRel")
      */
-    private $reservasCeldaRel;
+    private $reservasDetallesCeldaRel;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\CeldaUsuario", mappedBy="celdaRel")
@@ -242,17 +242,17 @@ class Celda
     /**
      * @return mixed
      */
-    public function getReservasCeldaRel()
+    public function getReservasDetallesCeldaRel()
     {
-        return $this->reservasCeldaRel;
+        return $this->reservasDetallesCeldaRel;
     }
 
     /**
-     * @param mixed $reservasCeldaRel
+     * @param mixed $reservasDetallesCeldaRel
      */
-    public function setReservasCeldaRel($reservasCeldaRel): void
+    public function setReservasDetallesCeldaRel($reservasDetallesCeldaRel): void
     {
-        $this->reservasCeldaRel = $reservasCeldaRel;
+        $this->reservasDetallesCeldaRel = $reservasDetallesCeldaRel;
     }
 
     /**
@@ -286,7 +286,6 @@ class Celda
     {
         $this->atencionesCeldaRel = $atencionesCeldaRel;
     }
-
 
 
 }

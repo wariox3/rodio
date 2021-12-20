@@ -60,9 +60,9 @@ class Panal
     private $votacionesPanalRel;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ReservaItem", mappedBy="panalRel")
+     * @ORM\OneToMany(targetEntity="App\Entity\Reserva", mappedBy="panalRel")
      */
-    private $reservasItemesPanalRel;
+    private $reservasPanalRel;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Contenido", mappedBy="panalRel")
@@ -104,38 +104,6 @@ class Panal
     /**
      * @return mixed
      */
-    public function getCeldasPanalRel()
-    {
-        return $this->celdasPanalRel;
-    }
-
-    /**
-     * @param mixed $celdasPanalRel
-     */
-    public function setCeldasPanalRel($celdasPanalRel): void
-    {
-        $this->celdasPanalRel = $celdasPanalRel;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUsuariosPanalRel()
-    {
-        return $this->usuariosPanalRel;
-    }
-
-    /**
-     * @param mixed $usuariosPanalRel
-     */
-    public function setUsuariosPanalRel($usuariosPanalRel): void
-    {
-        $this->usuariosPanalRel = $usuariosPanalRel;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getCodigoCiudadFk()
     {
         return $this->codigoCiudadFk;
@@ -163,6 +131,38 @@ class Panal
     public function setCiudadRel($ciudadRel): void
     {
         $this->ciudadRel = $ciudadRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCeldasPanalRel()
+    {
+        return $this->celdasPanalRel;
+    }
+
+    /**
+     * @param mixed $celdasPanalRel
+     */
+    public function setCeldasPanalRel($celdasPanalRel): void
+    {
+        $this->celdasPanalRel = $celdasPanalRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUsuariosPanalRel()
+    {
+        return $this->usuariosPanalRel;
+    }
+
+    /**
+     * @param mixed $usuariosPanalRel
+     */
+    public function setUsuariosPanalRel($usuariosPanalRel): void
+    {
+        $this->usuariosPanalRel = $usuariosPanalRel;
     }
 
     /**
@@ -216,17 +216,17 @@ class Panal
     /**
      * @return mixed
      */
-    public function getReservasItemesPanalRel()
+    public function getReservasPanalRel()
     {
-        return $this->reservasItemesPanalRel;
+        return $this->reservasPanalRel;
     }
 
     /**
-     * @param mixed $reservasItemesPanalRel
+     * @param mixed $reservasPanalRel
      */
-    public function setReservasItemesPanalRel($reservasItemesPanalRel): void
+    public function setReservasPanalRel($reservasPanalRel): void
     {
-        $this->reservasItemesPanalRel = $reservasItemesPanalRel;
+        $this->reservasPanalRel = $reservasPanalRel;
     }
 
     /**

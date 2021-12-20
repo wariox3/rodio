@@ -19,36 +19,25 @@ class Reserva
     private $codigoReservaPk;
 
     /**
-     * @ORM\Column(name="fecha", type="datetime", nullable=true)
+     * @ORM\Column(name="nombre", type="string", length=200, nullable=true)
      */
-    private $fecha;
+    private $nombre;
 
     /**
-     * @ORM\Column(name="codigo_reserva_item_fk", type="integer", nullable=false)
+     * @ORM\Column(name="codigo_panal_fk", type="integer")
      */
-    private $codigoReservaItemFk;
+    private $codigoPanalFk;
 
     /**
-     * @ORM\Column(name="codigo_celda_fk", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Panal", inversedBy="reservasPanalRel")
+     * @ORM\JoinColumn(name="codigo_panal_fk", referencedColumnName="codigo_panal_pk")
      */
-    private $codigoCeldaFk;
+    private $panalRel;
 
     /**
-     * @ORM\Column(name="comentario", type="string", length=250, nullable=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\ReservaDetalle", mappedBy="reservaRel")
      */
-    private $comentario;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ReservaItem", inversedBy="reservasReservaItemRel")
-     * @ORM\JoinColumn(name="codigo_reserva_item_fk", referencedColumnName="codigo_reserva_item_pk")
-     */
-    private $reservaItemRel;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Celda", inversedBy="reservasCeldaRel")
-     * @ORM\JoinColumn(name="codigo_celda_fk", referencedColumnName="codigo_celda_pk")
-     */
-    private $celdaRel;
+    private $reservasDetallesReservaRel;
 
     /**
      * @return mixed
@@ -69,99 +58,66 @@ class Reserva
     /**
      * @return mixed
      */
-    public function getFecha()
+    public function getNombre()
     {
-        return $this->fecha;
+        return $this->nombre;
     }
 
     /**
-     * @param mixed $fecha
+     * @param mixed $nombre
      */
-    public function setFecha($fecha): void
+    public function setNombre($nombre): void
     {
-        $this->fecha = $fecha;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCodigoReservaItemFk()
-    {
-        return $this->codigoReservaItemFk;
-    }
-
-    /**
-     * @param mixed $codigoReservaItemFk
-     */
-    public function setCodigoReservaItemFk($codigoReservaItemFk): void
-    {
-        $this->codigoReservaItemFk = $codigoReservaItemFk;
+        $this->nombre = $nombre;
     }
 
     /**
      * @return mixed
      */
-    public function getComentario()
+    public function getCodigoPanalFk()
     {
-        return $this->comentario;
+        return $this->codigoPanalFk;
     }
 
     /**
-     * @param mixed $comentario
+     * @param mixed $codigoPanalFk
      */
-    public function setComentario($comentario): void
+    public function setCodigoPanalFk($codigoPanalFk): void
     {
-        $this->comentario = $comentario;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getReservaItemRel()
-    {
-        return $this->reservaItemRel;
-    }
-
-    /**
-     * @param mixed $reservaItemRel
-     */
-    public function setReservaItemRel($reservaItemRel): void
-    {
-        $this->reservaItemRel = $reservaItemRel;
+        $this->codigoPanalFk = $codigoPanalFk;
     }
 
     /**
      * @return mixed
      */
-    public function getCodigoCeldaFk()
+    public function getPanalRel()
     {
-        return $this->codigoCeldaFk;
+        return $this->panalRel;
     }
 
     /**
-     * @param mixed $codigoCeldaFk
+     * @param mixed $panalRel
      */
-    public function setCodigoCeldaFk($codigoCeldaFk): void
+    public function setPanalRel($panalRel): void
     {
-        $this->codigoCeldaFk = $codigoCeldaFk;
+        $this->panalRel = $panalRel;
     }
 
     /**
      * @return mixed
      */
-    public function getCeldaRel()
+    public function getReservasDetallesReservaRel()
     {
-        return $this->celdaRel;
+        return $this->reservasDetallesReservaRel;
     }
 
     /**
-     * @param mixed $celdaRel
+     * @param mixed $reservasDetallesReservaRel
      */
-    public function setCeldaRel($celdaRel): void
+    public function setReservasDetallesReservaRel($reservasDetallesReservaRel): void
     {
-        $this->celdaRel = $celdaRel;
+        $this->reservasDetallesReservaRel = $reservasDetallesReservaRel;
     }
-
 
 
 

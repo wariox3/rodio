@@ -184,6 +184,7 @@ class VotacionRepository extends ServiceEntityRepository
                 $arVotacion->setFecha(new \DateTime('now'));
                 $arVotacion->setFechaHasta(date_create($fechaHasta));
                 $arVotacion->setDescripcion($descripcion);
+                $arVotacion->setTitulo($titulo);
                 $em->persist($arVotacion);
                 $em->flush();
                 return [
@@ -209,6 +210,7 @@ class VotacionRepository extends ServiceEntityRepository
             ->addSelect('v.descripcion')
             ->addSelect('v.titulo')
             ->addSelect('v.cantidad')
+            ->addSelect('v.estadoPublicado')
             ->where("v.codigoVotacionPk = {$codigoVotacion}");
         $arVotacion = $queryBuilder->getQuery()->getResult();
         if($arVotacion) {
