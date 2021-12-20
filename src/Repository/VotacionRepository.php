@@ -35,10 +35,12 @@ class VotacionRepository extends ServiceEntityRepository
                 ->select('v.codigoVotacionPk')
                 ->addSelect('v.fecha')
                 ->addSelect('v.fechaHasta')
+                ->addSelect('v.titulo')
                 ->addSelect('v.descripcion')
                 ->addSelect('v.cantidad')
                 ->addSelect('v.estadoCerrado')
                 ->where("v.codigoPanalFk = {$arCelda->getCodigoPanalFk()}")
+                ->andWhere("v.estadoPublicado = 1")
                 ->orderBy('v.fecha', 'DESC');
             $arVotaciones = $queryBuilder->getQuery()->getResult();
             $indice = 0;
@@ -138,9 +140,11 @@ class VotacionRepository extends ServiceEntityRepository
             ->select('v.codigoVotacionPk')
             ->addSelect('v.fecha')
             ->addSelect('v.fechaHasta')
+            ->addSelect('v.titulo')
             ->addSelect('v.descripcion')
             ->addSelect('v.cantidad')
             ->addSelect('v.estadoCerrado')
+            ->addSelect('v.estadoPublicado')
             ->where("v.codigoPanalFk = {$codigoPanal}")
             ->orderBy('v.fecha', 'DESC');
         $arVotaciones = $queryBuilder->getQuery()->getResult();
@@ -151,7 +155,7 @@ class VotacionRepository extends ServiceEntityRepository
 
     }
 
-    public function apiAdminNuevo($codigoPanal, $id, $fechaHasta, $descripcion)
+    public function apiAdminNuevo($codigoPanal, $id, $fechaHasta, $titulo, $descripcion)
     {
         $em = $this->getEntityManager();
         $arPanal = $em->getRepository(Panal::class)->find($codigoPanal);
@@ -161,6 +165,7 @@ class VotacionRepository extends ServiceEntityRepository
                 if($arVotacion) {
                     $arVotacion->setFechaHasta(date_create($fechaHasta));
                     $arVotacion->setDescripcion($descripcion);
+                    $arVotacion->setTitulo($titulo);
                     $em->persist($arVotacion);
                     $em->flush();
                     return [
@@ -202,6 +207,7 @@ class VotacionRepository extends ServiceEntityRepository
             ->addSelect('v.fecha')
             ->addSelect('v.fechaHasta')
             ->addSelect('v.descripcion')
+            ->addSelect('v.titulo')
             ->addSelect('v.cantidad')
             ->where("v.codigoVotacionPk = {$codigoVotacion}");
         $arVotacion = $queryBuilder->getQuery()->getResult();
@@ -260,6 +266,32 @@ class VotacionRepository extends ServiceEntityRepository
             return [
                 'error' => true,
                 'errorMensaje' => "No existe la votacion detalle"
+            ];
+        }
+    }
+
+    public function apiAdminPublicar($id)
+    {
+        $em = $this->getEntityManager();
+        $arVotacion = $em->getRepository(Votacion::class)->find($id);
+        if($arVotacion) {
+            if($arVotacion->isEstadoPublicado() == 0) {
+                $arVotacion->setEstadoPublicado(1);
+                $em->persist($arVotacion);
+                $em->flush();
+                return [
+                    'error' => false
+                ];
+            } else {
+                return [
+                    'error' => true,
+                    'errorMensaje' => "La votacion ya fue publicada"
+                ];
+            }
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "No existe la votacion"
             ];
         }
     }

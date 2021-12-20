@@ -83,8 +83,9 @@ class VotacionController extends AbstractFOSRestController
         $codigoPanal = $raw['codigoPanal']?? null;
         $fechaHasta = $raw['fechaHasta']?? null;
         $descripcion = $raw['descripcion']?? null;
-        if($codigoPanal && $fechaHasta && $descripcion) {
-            return $em->getRepository(Votacion::class)->apiAdminNuevo($codigoPanal, $id, $fechaHasta, $descripcion);
+        $titulo = $raw['titulo']?? null;
+        if($codigoPanal && $fechaHasta && $titulo && $descripcion) {
+            return $em->getRepository(Votacion::class)->apiAdminNuevo($codigoPanal, $id, $fechaHasta, $titulo, $descripcion);
         } else {
             return [
                 'error' => true,
@@ -144,6 +145,23 @@ class VotacionController extends AbstractFOSRestController
                 'error' => true,
                 'errorMensaje' => 'Faltan parametros para el consumo de la api'
             ];
+        }
+    }
+
+    /**
+     * @Rest\Post("/api/admin/votacion/publicar")
+     */
+    public function adminPublicar(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoVotacion = $raw['codigoVotacion']?? null;
+        if($codigoVotacion) {
+            return $em->getRepository(Votacion::class)->apiAdminPublicar($codigoVotacion);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
         }
     }
 }

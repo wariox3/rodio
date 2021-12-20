@@ -34,6 +34,11 @@ class Votacion
     private $fechaHasta;
 
     /**
+     * @ORM\Column(name="titulo", type="string", length=80)
+     */
+    private $titulo;
+
+    /**
      * @ORM\Column(name="descripcion", type="string", length=200)
      */
     private $descripcion;
@@ -47,6 +52,11 @@ class Votacion
      * @ORM\Column(name="estado_cerrado", type="boolean", options={"default" : false}, nullable=true)
      */
     private $estadoCerrado = false;
+
+    /**
+     * @ORM\Column(name="estado_publicado", type="boolean", options={"default" : false}, nullable=true)
+     */
+    private $estadoPublicado = false;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Panal", inversedBy="votacionesPanalRel")
@@ -222,6 +232,38 @@ class Votacion
     public function setPanalRel($panalRel): void
     {
         $this->panalRel = $panalRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTitulo()
+    {
+        return $this->titulo;
+    }
+
+    /**
+     * @param mixed $titulo
+     */
+    public function setTitulo($titulo): void
+    {
+        $this->titulo = $titulo;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEstadoPublicado(): bool
+    {
+        return $this->estadoPublicado;
+    }
+
+    /**
+     * @param bool $estadoPublicado
+     */
+    public function setEstadoPublicado(bool $estadoPublicado): void
+    {
+        $this->estadoPublicado = $estadoPublicado;
     }
 
 
