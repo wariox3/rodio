@@ -110,6 +110,8 @@ class ReservaRepository extends ServiceEntityRepository
                 ->addSelect('rd.codigoCeldaFk')
                 ->addSelect('rd.fecha')
                 ->addSelect('rd.comentario')
+                ->addSelect('c.celda')
+                ->leftJoin('rd.celdaRel', 'c')
                 ->where("rd.codigoReservaFk = {$codigoReserva}");
             $arReservaDetalles = $queryBuilder->getQuery()->getResult();
             return [
