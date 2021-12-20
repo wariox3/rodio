@@ -99,23 +99,9 @@ class ReservaDetalleRepository extends ServiceEntityRepository
             ->andWhere("rd.fecha <= '{$fechaHasta}'")
             ->setMaxResults(20);
         $arReservasDetalles = $queryBuilder->getQuery()->getResult();
-        $arregloFechas = [];
-        foreach ($arReservasDetalles as $arReservaDetalle) {
-            $arregloFechas[] =
-                [
-                    $arReservaDetalle['fecha']->format('Y-m-d') => [
-                        'disabled' => true,
-                        'color' => '#ADD9F4',
-                        'textColor' => '#9c9c9c',
-                        'startingDay' => true,
-                        'endingDay' => true
-                    ]
-                ];
-        }
         $respuesta = [
             'error' => false,
-            'reservasDetalles' => $arReservasDetalles,
-            'arregloFechas' => $arregloFechas
+            'reservasDetalles' => $arReservasDetalles
         ];
         return $respuesta;
     }

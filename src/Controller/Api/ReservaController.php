@@ -93,4 +93,60 @@ class ReservaController extends AbstractFOSRestController
         return $respuesta;
     }
 
+    /**
+     * @Rest\Post("/api/admin/reserva/lista")
+     */
+    public function adminLista(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoPanal = $raw['codigoPanal']?? null;
+        if($codigoPanal) {
+            return $em->getRepository(Reserva::class)->apiAdminLista($codigoPanal);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'
+            ];
+        }
+    }
+
+    /**
+     * @Rest\Post("/api/admin/reserva/nuevo")
+     */
+    public function adminNuevo(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $id = $raw['id']?? null;
+        $codigoPanal = $raw['codigoPanal']?? null;
+        $nombre = $raw['nombre']?? null;
+        $descripcion = $raw['descripcion']?? null;
+        if($codigoPanal && $nombre) {
+            return $em->getRepository(Reserva::class)->apiAdminNuevo($codigoPanal, $id, $nombre, $descripcion);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'
+            ];
+        }
+    }
+
+    /**
+     * @Rest\Post("/api/admin/reserva/detalle")
+     */
+    public function adminDetalle(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoReserva = $raw['codigoReserva']?? null;
+        if($codigoReserva) {
+            return $em->getRepository(Reserva::class)->apiAdminDetalle($codigoReserva);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
+        }
+    }
+
 }

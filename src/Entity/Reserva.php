@@ -24,6 +24,11 @@ class Reserva
     private $nombre;
 
     /**
+     * @ORM\Column(name="descripcion", type="string", length=1000, nullable=true)
+     */
+    private $descripcion;
+
+    /**
      * @ORM\Column(name="codigo_panal_fk", type="integer")
      */
     private $codigoPanalFk;
@@ -117,6 +122,22 @@ class Reserva
     public function setReservasDetallesReservaRel($reservasDetallesReservaRel): void
     {
         $this->reservasDetallesReservaRel = $reservasDetallesReservaRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
+    }
+
+    /**
+     * @param mixed $descripcion
+     */
+    public function setDescripcion($descripcion): void
+    {
+        $this->descripcion = $descripcion;
     }
 
 
