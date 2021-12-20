@@ -22,19 +22,20 @@ class ReservaDetalleRepository extends ServiceEntityRepository
     public function apiLista($codigoCelda)
     {
         $em = $this->getEntityManager();
-        $queryBuilder = $em->createQueryBuilder()->from(Reserva::class, 'r')
-            ->select('r.codigoReservaPk')
-            ->addSelect('r.codigoReservaItemFk')
-            ->addSelect('r.fecha')
-            ->addSelect('r.comentario')
-            ->addSelect('ir.nombre as reservaItemNombre')
-            ->leftJoin('r.reservaItemRel', 'ir')
-            ->where("r.codigoCeldaFk = {$codigoCelda}")
-            ->orderBy('r.fecha', 'DESC');
-        $arReservas = $queryBuilder->getQuery()->getResult();
+        $queryBuilder = $em->createQueryBuilder()->from(ReservaDetalle::class, 'rd')
+            ->select('rd.codigoReservaDetallePk')
+            ->addSelect('rd.codigoReservaFk')
+            ->addSelect('rd.fecha')
+            ->addSelect('rd.comentario')
+            ->addSelect('r.nombre as reservaNombre')
+            ->addSelect('r.descripcion as reservaDescripcion')
+            ->leftJoin('rd.reservaRel', 'r')
+            ->where("rd.codigoCeldaFk = {$codigoCelda}")
+            ->orderBy('rd.fecha', 'DESC');
+        $arReservaDetalles = $queryBuilder->getQuery()->getResult();
         $respuesta = [
             'error' => false,
-            'reservas' => $arReservas
+            'reservaDetalles' => $arReservaDetalles
         ];
         return $respuesta;
     }

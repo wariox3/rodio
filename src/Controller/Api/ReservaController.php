@@ -44,7 +44,7 @@ class ReservaController extends AbstractFOSRestController
         $raw = json_decode($request->getContent(), true);
         $codigoCelda = $raw['codigoCelda']?? null;
         if($codigoCelda) {
-            $respuesta = $em->getRepository(Reserva::class)->apiLista($codigoCelda);
+            $respuesta = $em->getRepository(ReservaDetalle::class)->apiLista($codigoCelda);
         } else {
             $respuesta = [
                 'error' => true,
