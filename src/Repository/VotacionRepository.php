@@ -223,4 +223,44 @@ class VotacionRepository extends ServiceEntityRepository
             ];
         }
     }
+
+    public function apiAdminDetalleNuevo($id, $descripcion)
+    {
+        $em = $this->getEntityManager();
+        $arVotacion = $em->getRepository(Votacion::class)->find($id);
+        if($arVotacion) {
+            $arVotacionDetalle = new VotacionDetalle();
+            $arVotacionDetalle->setVotacionRel($arVotacion);
+            $arVotacionDetalle->setDescripcion($descripcion);
+            $em->persist($arVotacionDetalle);
+            $em->flush();
+            return [
+                'error' => false,
+                'codigoVotacionDetalle' => $arVotacionDetalle->getCodigoVotacionDetallePk()
+            ];
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "No existe la votacion"
+            ];
+        }
+    }
+
+    public function apiAdminDetalleEliminar($id)
+    {
+        $em = $this->getEntityManager();
+        $arVotacionDetalle = $em->getRepository(VotacionDetalle::class)->find($id);
+        if($arVotacionDetalle) {
+            $em->remove($arVotacionDetalle);
+            $em->flush();
+            return [
+                'error' => false
+            ];
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "No existe la votacion detalle"
+            ];
+        }
+    }
 }

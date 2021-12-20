@@ -110,4 +110,40 @@ class VotacionController extends AbstractFOSRestController
         }
     }
 
+    /**
+     * @Rest\Post("/api/admin/votacion/detallenuevo")
+     */
+    public function adminDetalleNuevo(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $id = $raw['id']?? null;
+        $descripcion = $raw['descripcion']?? null;
+        if($id && $descripcion) {
+            return $em->getRepository(Votacion::class)->apiAdminDetalleNuevo($id, $descripcion);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'
+            ];
+        }
+    }
+
+    /**
+     * @Rest\Post("/api/admin/votacion/detalleeliminar")
+     */
+    public function adminDetalleEliminar(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $id = $raw['id']?? null;
+        if($id) {
+            return $em->getRepository(Votacion::class)->apiAdminDetalleEliminar($id);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'
+            ];
+        }
+    }
 }
