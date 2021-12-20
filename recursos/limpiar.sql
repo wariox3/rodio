@@ -8,6 +8,8 @@ DELETE FROM soporte;
 DELETE FROM atencion;
 DELETE FROM visita;
 DELETE FROM celda_usuario;
+DELETE FROM comentario;
+DELETE FROM publicacion;
 DELETE FROM usuario;
 DELETE FROM entrega;
 DELETE FROM celda;
