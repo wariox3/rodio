@@ -63,8 +63,9 @@ class ReservaController extends AbstractFOSRestController
         $codigoCelda = $raw['codigoCelda']?? null;
         $codigoReserva = $raw['codigoReserva']?? null;
         $fecha = $raw['fecha']?? null;
+        $comentario = $raw['comentario']?? null;
         if($codigoCelda && $codigoReserva && $fecha) {
-            return $em->getRepository(ReservaDetalle::class)->apiNuevo($codigoCelda, $codigoReserva, $fecha);
+            return $em->getRepository(ReservaDetalle::class)->apiNuevo($codigoCelda, $codigoReserva, $fecha, $comentario);
         } else {
             return [
                 'error' => true,

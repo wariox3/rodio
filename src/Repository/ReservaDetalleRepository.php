@@ -40,7 +40,7 @@ class ReservaDetalleRepository extends ServiceEntityRepository
         return $respuesta;
     }
 
-    public function apiNuevo($codigoCelda, $codigoReserva, $fecha)
+    public function apiNuevo($codigoCelda, $codigoReserva, $fecha, $comentario)
     {
         $em = $this->getEntityManager();
         $arCelda = $em->getRepository(Celda::class)->find($codigoCelda);
@@ -58,6 +58,7 @@ class ReservaDetalleRepository extends ServiceEntityRepository
                     $arReservaDetalle->setCeldaRel($arCelda);
                     $arReservaDetalle->setReservaRel($arReserva);
                     $arReservaDetalle->setFecha(date_create($fecha));
+                    $arReservaDetalle->setComentario($comentario);
                     $em->persist($arReservaDetalle);
                     $em->flush();
                     return [
