@@ -39,7 +39,7 @@ class EntregaRepository extends ServiceEntityRepository
             ->addSelect('e.urlImagenIngreso')
             ->where("e.codigoCeldaFk = {$codigoCelda}")
             ->orderBy('e.estadoCerrado', 'ASC')
-            ->orderBy('e.estadoAutorizado', 'ASC')
+            ->addOrderBy('e.estadoAutorizado', 'ASC')
             ->setMaxResults(20);
         $arEntregas = $queryBuilder->getQuery()->getResult();
         $respuesta = [
