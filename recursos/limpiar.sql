@@ -1,7 +1,7 @@
 DELETE FROM votacion_celda;
 DELETE FROM votacion_detalle;
 DELETE FROM votacion;
-DELETE FROM reserva_item;
+DELETE FROM reserva_detalle;
 DELETE FROM reserva;
 DELETE FROM contenido;
 DELETE FROM soporte;
