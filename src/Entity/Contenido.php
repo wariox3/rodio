@@ -29,6 +29,11 @@ class Contenido
     private $nombre;
 
     /**
+     * @ORM\Column(name="nombre_archivo", type="string", length=200, nullable=true)
+     */
+    private $nombreArchivo;
+
+    /**
      * @ORM\Column(name="url", type="string", length=500, nullable=true)
      */
     private $url;
@@ -117,6 +122,22 @@ class Contenido
     public function setPanalRel($panalRel): void
     {
         $this->panalRel = $panalRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNombreArchivo()
+    {
+        return $this->nombreArchivo;
+    }
+
+    /**
+     * @param mixed $nombreArchivo
+     */
+    public function setNombreArchivo($nombreArchivo): void
+    {
+        $this->nombreArchivo = $nombreArchivo;
     }
 
 

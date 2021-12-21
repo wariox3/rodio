@@ -4,6 +4,7 @@
 namespace App\Repository;
 
 use App\Entity\Contenido;
+use App\Entity\Panal;
 use App\Utilidades\Firebase;
 use App\Utilidades\SpaceDO;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -27,6 +28,7 @@ class ContenidoRepository extends ServiceEntityRepository
         $queryBuilder = $em->createQueryBuilder()->from(Contenido::class, 'c')
             ->select('c.codigoContenidoPk')
             ->addSelect('c.nombre')
+            ->addSelect('c.nombreArchivo')
             ->addSelect('c.url')
             ->where("c.codigoPanalFk = {$codigoPanal}");
         $arContenidos = $queryBuilder->getQuery()->getResult();
@@ -35,6 +37,86 @@ class ContenidoRepository extends ServiceEntityRepository
             'contenidos' => $arContenidos
         ];
         return $respuesta;
+    }
+
+    public function apiAdminLista($codigoPanal)
+    {
+        $em = $this->getEntityManager();
+        $queryBuilder = $em->createQueryBuilder()->from(Contenido::class, 'c')
+            ->select('c.codigoContenidoPk')
+            ->addSelect('c.nombre')
+            ->addSelect('c.nombreArchivo')
+            ->addSelect('c.url')
+            ->where("c.codigoPanalFk = {$codigoPanal}")
+            ->setMaxResults(20);
+        $arContenidos = $queryBuilder->getQuery()->getResult();
+        $respuesta = [
+            'error' => false,
+            'contenidos' => $arContenidos
+        ];
+        return $respuesta;
+    }
+
+    public function apiAdminNuevo($codigoPanal, $id, $nombre)
+    {
+        $em = $this->getEntityManager();
+        $arPanal = $em->getRepository(Panal::class)->find($codigoPanal);
+        if($arPanal) {
+            if($id) {
+                $arContenido = $em->getRepository(Contenido::class)->find($id);
+                if($arContenido) {
+                    $arContenido->setNombre($nombre);
+                    $em->persist($arContenido);
+                    $em->flush();
+                    return [
+                        'error' => false,
+                        'codigoContenido' => $arContenido->getCodigoContenidoPk()
+                    ];
+                } else {
+                    return [
+                        'error' => true,
+                        'errorMensaje' => "El id de contenido no existe"
+                    ];
+                }
+            } else {
+                $arContenido = new Contenido();
+                $arContenido->setPanalRel($arPanal);
+                $arContenido->setNombre($nombre);
+                $em->persist($arContenido);
+                $em->flush();
+                return [
+                    'error' => false,
+                    'codigoContenido' => $arContenido->getCodigoContenidoPk()
+                ];
+            }
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "No existe el panal"
+            ];
+        }
+    }
+
+    public function apiAdminDetalle($codigoContenido)
+    {
+        $em = $this->getEntityManager();
+        $queryBuilder = $em->createQueryBuilder()->from(Contenido::class, 'c')
+            ->select('c.codigoContenidoPk')
+            ->addSelect('c.nombre')
+            ->addSelect('c.nombreArchivo')
+            ->where("c.codigoContenidoPk = {$codigoContenido}");
+        $arContenido = $queryBuilder->getQuery()->getResult();
+        if($arContenido) {
+            return [
+                'error' => false,
+                'contenido' => $arContenido[0]
+            ];
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'No existe el contenido'
+            ];
+        }
     }
 
 }

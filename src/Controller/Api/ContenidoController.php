@@ -30,4 +30,59 @@ class ContenidoController extends AbstractFOSRestController
         return $respuesta;
     }
 
+    /**
+     * @Rest\Post("/api/admin/contenido/lista")
+     */
+    public function adminLista(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoPanal = $raw['codigoPanal']?? null;
+        if($codigoPanal) {
+            return $em->getRepository(Contenido::class)->apiAdminLista($codigoPanal);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'
+            ];
+        }
+    }
+
+    /**
+     * @Rest\Post("/api/admin/contenido/nuevo")
+     */
+    public function adminNuevo(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $id = $raw['id']?? null;
+        $codigoPanal = $raw['codigoPanal']?? null;
+        $nombre = $raw['nombre']?? null;
+        if($codigoPanal && $nombre) {
+            return $em->getRepository(Contenido::class)->apiAdminNuevo($codigoPanal, $id, $nombre);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'
+            ];
+        }
+    }
+
+    /**
+     * @Rest\Post("/api/admin/contendio/detalle")
+     */
+    public function adminDetalle(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoContenido = $raw['codigoContenido']?? null;
+        if($codigoContenido) {
+            return $em->getRepository(Contenido::class)->apiAdminDetalle($codigoContenido);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
+        }
+    }
+
 }
