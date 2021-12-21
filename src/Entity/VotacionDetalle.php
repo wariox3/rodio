@@ -35,6 +35,11 @@ class VotacionDetalle
     private $votacionRel;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\VotacionCelda", mappedBy="votacionDetalleRel")
+     */
+    private $votacionesCeldasVotacionDetalleRel;
+
+    /**
      * @return mixed
      */
     public function getCodigoVotacionDetallePk()
@@ -96,6 +101,22 @@ class VotacionDetalle
     public function setVotacionRel($votacionRel): void
     {
         $this->votacionRel = $votacionRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVotacionesCeldasVotacionDetalleRel()
+    {
+        return $this->votacionesCeldasVotacionDetalleRel;
+    }
+
+    /**
+     * @param mixed $votacionesCeldasVotacionDetalleRel
+     */
+    public function setVotacionesCeldasVotacionDetalleRel($votacionesCeldasVotacionDetalleRel): void
+    {
+        $this->votacionesCeldasVotacionDetalleRel = $votacionesCeldasVotacionDetalleRel;
     }
 
 

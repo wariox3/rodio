@@ -90,27 +90,36 @@ class VotacionRepository extends ServiceEntityRepository
             if($arUsuario) {
                 $arCelda = $em->getRepository(Celda::class)->find($codigoCelda);
                 if ($arCelda) {
-                    $queryBuilder = $em->createQueryBuilder()->from(VotacionCelda::class, 'vc')
-                        ->select('vc.codigoVotacionCeldaPk')
-                        ->addSelect('vc.codigoVotacionDetalleFk')
-                        ->where("vc.codigoVotacionFk = {$codigoVotacion}")
-                        ->andWhere("vc.codigoCeldaFk = {$codigoCelda}");
-                    $arVotacionesCelda = $queryBuilder->getQuery()->getResult();
-                    if(!$arVotacionesCelda) {
-                        $arVotacionCelda = new VotacionCelda();
-                        $arVotacionCelda->setCeldaRel($arCelda);
-                        $arVotacionCelda->setVotacionRel($arVotacion);
-                        $arVotacionCelda->setUsuarioRel($arUsuario);
-                        $arVotacionCelda->setCodigoVotacionDetalleFk($codigoVotacionDetalle);
-                        $em->persist($arVotacionCelda);
-                        $em->flush();
-                        return [
-                            'error' => false
-                        ];
+                    $arVotacionDetalle = $em->getRepository(VotacionDetalle::class)->find($codigoVotacionDetalle);
+                    if($arVotacionDetalle) {
+                        $queryBuilder = $em->createQueryBuilder()->from(VotacionCelda::class, 'vc')
+                            ->select('vc.codigoVotacionCeldaPk')
+                            ->addSelect('vc.codigoVotacionDetalleFk')
+                            ->where("vc.codigoVotacionFk = {$codigoVotacion}")
+                            ->andWhere("vc.codigoCeldaFk = {$codigoCelda}");
+                        $arVotacionesCelda = $queryBuilder->getQuery()->getResult();
+                        if(!$arVotacionesCelda) {
+                            $arVotacionCelda = new VotacionCelda();
+                            $arVotacionCelda->setCeldaRel($arCelda);
+                            $arVotacionCelda->setVotacionRel($arVotacion);
+                            $arVotacionCelda->setUsuarioRel($arUsuario);
+                            $arVotacionCelda->setVotacionDetalleRel($arVotacionDetalle);
+                            $em->persist($arVotacionCelda);
+                            $em->flush();
+                            $em->createQueryBuilder()->update(Votacion::class, 'v')->set('v.cantidad', 'v.cantidad+1')->getQuery()->execute();
+                            return [
+                                'error' => false
+                            ];
+                        } else {
+                            return [
+                                'error' => true,
+                                'errorMensaje' => "La celda ya voto"
+                            ];
+                        }
                     } else {
                         return [
                             'error' => true,
-                            'errorMensaje' => "La celda ya voto"
+                            'errorMensaje' => "La opcion no existe"
                         ];
                     }
                 } else {
@@ -219,10 +228,27 @@ class VotacionRepository extends ServiceEntityRepository
                 ->addSelect('vd.descripcion')
                 ->where("vd.codigoVotacionFk = {$codigoVotacion}");
             $arVotacionDetalles = $queryBuilder->getQuery()->getResult();
+            $queryBuilder = $em->createQueryBuilder()->from(VotacionCelda::class, 'vc')
+                ->select('vc.codigoVotacionCeldaPk')
+                ->addSelect('c.celda')
+                ->addSelect('vd.descripcion as votacionDetalleDescripcion')
+                ->leftJoin('vc.celdaRel', 'c')
+                ->leftJoin('vc.votacionDetalleRel', 'vd')
+                ->where("vc.codigoVotacionFk = {$codigoVotacion}");
+            $arVotacionCeldas = $queryBuilder->getQuery()->getResult();
+            $queryBuilder = $em->createQueryBuilder()->from(VotacionCelda::class, 'vc')
+                ->select('COUNT(vc.codigoVotacionCeldaPk) as cantidad')
+                ->addSelect('vd.descripcion as votacionDetalleDescripcion')
+                ->leftJoin('vc.votacionDetalleRel', 'vd')
+                ->where("vc.codigoVotacionFk = {$codigoVotacion}")
+                ->groupBy('vc.codigoVotacionDetalleFk');
+            $arVotacionResumen = $queryBuilder->getQuery()->getResult();
             return [
                 'error' => false,
                 'votacion' => $arVotacion[0],
-                'votacionDetalles' => $arVotacionDetalles
+                'votacionDetalles' => $arVotacionDetalles,
+                'votacionCeldas' => $arVotacionCeldas,
+                'votacionResumen' => $arVotacionResumen
             ];
         } else {
             return [
@@ -278,12 +304,27 @@ class VotacionRepository extends ServiceEntityRepository
         $arVotacion = $em->getRepository(Votacion::class)->find($id);
         if($arVotacion) {
             if($arVotacion->isEstadoPublicado() == 0) {
-                $arVotacion->setEstadoPublicado(1);
-                $em->persist($arVotacion);
-                $em->flush();
-                return [
-                    'error' => false
-                ];
+                $arVotacionDetalles = $em->getRepository(VotacionDetalle::class)->findBy(['codigoVotacionFk' => $id]);
+                if($arVotacionDetalles) {
+                    if(count($arVotacionDetalles) >= 2) {
+                        $arVotacion->setEstadoPublicado(1);
+                        $em->persist($arVotacion);
+                        $em->flush();
+                        return [
+                            'error' => false
+                        ];
+                    } else {
+                        return [
+                            'error' => true,
+                            'errorMensaje' => "La votacion debe tener mas de 1 opcion"
+                        ];
+                    }
+                } else {
+                    return [
+                        'error' => true,
+                        'errorMensaje' => "La votacion no tiene opciones"
+                    ];
+                }
             } else {
                 return [
                     'error' => true,

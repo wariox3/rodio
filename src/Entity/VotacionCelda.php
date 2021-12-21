@@ -57,6 +57,12 @@ class VotacionCelda
     private $usuarioRel;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\VotacionDetalle", inversedBy="votacionesCeldasVotacionDetalleRel")
+     * @ORM\JoinColumn(name="codigo_votacion_detalle_fk", referencedColumnName="codigo_votacion_detalle_pk")
+     */
+    private $votacionDetalleRel;
+
+    /**
      * @return mixed
      */
     public function getCodigoVotacionCeldaPk()
@@ -182,6 +188,22 @@ class VotacionCelda
     public function setUsuarioRel($usuarioRel): void
     {
         $this->usuarioRel = $usuarioRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVotacionDetalleRel()
+    {
+        return $this->votacionDetalleRel;
+    }
+
+    /**
+     * @param mixed $votacionDetalleRel
+     */
+    public function setVotacionDetalleRel($votacionDetalleRel): void
+    {
+        $this->votacionDetalleRel = $votacionDetalleRel;
     }
 
 
