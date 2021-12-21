@@ -57,7 +57,7 @@ class ContenidoRepository extends ServiceEntityRepository
         return $respuesta;
     }
 
-    public function apiAdminNuevo($codigoPanal, $id, $nombre)
+    public function apiAdminNuevo($codigoPanal, $id, $nombre, $nombreArchivo, $base64)
     {
         $em = $this->getEntityManager();
         $arPanal = $em->getRepository(Panal::class)->find($codigoPanal);
@@ -82,6 +82,8 @@ class ContenidoRepository extends ServiceEntityRepository
                 $arContenido = new Contenido();
                 $arContenido->setPanalRel($arPanal);
                 $arContenido->setNombre($nombre);
+                $arContenido->setNombreArchivo($nombreArchivo);
+                $arContenido->setUrl($this->space->subir('contenido', $nombreArchivo, $base64));
                 $em->persist($arContenido);
                 $em->flush();
                 return [

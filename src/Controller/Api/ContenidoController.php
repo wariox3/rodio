@@ -58,8 +58,10 @@ class ContenidoController extends AbstractFOSRestController
         $id = $raw['id']?? null;
         $codigoPanal = $raw['codigoPanal']?? null;
         $nombre = $raw['nombre']?? null;
-        if($codigoPanal && $nombre) {
-            return $em->getRepository(Contenido::class)->apiAdminNuevo($codigoPanal, $id, $nombre);
+        $nombreArchivo = $raw['nombreArchivo']?? null;
+        $base64 = $raw['base64']?? null;
+        if($codigoPanal && $nombre && $nombreArchivo && $base64) {
+            return $em->getRepository(Contenido::class)->apiAdminNuevo($codigoPanal, $id, $nombre, $nombreArchivo, $base64);
         } else {
             return [
                 'error' => true,

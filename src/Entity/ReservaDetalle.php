@@ -34,7 +34,7 @@ class ReservaDetalle
     private $codigoCeldaFk;
 
     /**
-     * @ORM\Column(name="comentario", type="string", length=250, nullable=true)
+     * @ORM\Column(name="comentario", type="string", length=1000, nullable=true)
      */
     private $comentario;
 
