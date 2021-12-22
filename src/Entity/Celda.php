@@ -44,6 +44,11 @@ class Celda
     private $responsable;
 
     /**
+     * @ORM\Column(name="limitar_anuncio", type="boolean", options={"default" : false}, nullable=true)
+     */
+    private $limitarAnuncio = false;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Panal", inversedBy="celdasPanalRel")
      * @ORM\JoinColumn(name="codigo_panal_fk", referencedColumnName="codigo_panal_pk")
      */
@@ -286,6 +291,23 @@ class Celda
     {
         $this->atencionesCeldaRel = $atencionesCeldaRel;
     }
+
+    /**
+     * @return bool
+     */
+    public function isLimitarAnuncio(): bool
+    {
+        return $this->limitarAnuncio;
+    }
+
+    /**
+     * @param bool $limitarAnuncio
+     */
+    public function setLimitarAnuncio(bool $limitarAnuncio): void
+    {
+        $this->limitarAnuncio = $limitarAnuncio;
+    }
+
 
 
 }

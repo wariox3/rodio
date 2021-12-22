@@ -30,91 +30,13 @@ class CeldaRepository extends ServiceEntityRepository
             ->addSelect('c.celular')
             ->addSelect('c.correo')
             ->addSelect('c.responsable')
+            ->addSelect('c.limitarAnuncio')
             ->where("c.codigoPanalFk = {$codigoPanal}");
         $arCeldas = $queryBuilder->getQuery()->getResult();
         return [
             'error' => false,
             'celdas' => $arCeldas
         ];
-
-    }
-
-    public function apiNuevo($codigoPanal, $id, $celda, $responsable, $correo, $celular)
-    {
-        $em = $this->getEntityManager();
-        $arPanal = $em->getRepository(Panal::class)->find($codigoPanal);
-        if($arPanal) {
-            if($id) {
-                $arCelda = $em->getRepository(Celda::class)->find($id);
-                if($arCelda) {
-                    $arCelda->setResponsable($responsable);
-                    $arCelda->setCorreo($correo);
-                    $arCelda->setCelular($celular);
-                    $em->persist($arCelda);
-                    $em->flush();
-                    return [
-                        'error' => false,
-                        'codigoCelda' => $arCelda->getCodigoCeldaPk()
-                    ];
-                } else {
-                    return [
-                        'error' => true,
-                        'errorMensaje' => "el id de celda no existe"
-                    ];
-                }
-            } else {
-                $arCeldaValidacion = $em->getRepository(Celda::class)->findOneBy(['codigoPanalFk' => $codigoPanal, 'celda' => $celda]);
-                if(!$arCeldaValidacion) {
-                    $arCelda = new Celda();
-                    $arCelda->setPanalRel($arPanal);
-                    $arCelda->setCelda($celda);
-                    $arCelda->setResponsable($responsable);
-                    $arCelda->setCorreo($correo);
-                    $arCelda->setCelular($celular);
-                    $em->persist($arCelda);
-                    $em->flush();
-                    return [
-                        'error' => false,
-                        'codigoCelda' => $arCelda->getCodigoCeldaPk()
-                    ];
-                } else {
-                    return [
-                        'error' => true,
-                        'errorMensaje' => "Ya existe una celda con la numeracion {$celda}"
-                    ];
-                }
-            }
-        } else {
-            return [
-                'error' => true,
-                'errorMensaje' => "No existe el panal"
-            ];
-        }
-    }
-
-    public function apiDetalle($codigoCelda)
-    {
-        $em = $this->getEntityManager();
-        $queryBuilder = $em->createQueryBuilder()->from(Celda::class, 'c')
-            ->select('c.codigoCeldaPk')
-            ->addSelect('c.celda')
-            ->addSelect('c.celular')
-            ->addSelect('c.correo')
-            ->addSelect('c.responsable')
-            ->where("c.codigoCeldaPk = {$codigoCelda}");
-        $arCelda = $queryBuilder->getQuery()->getResult();
-        if($arCelda) {
-            return [
-                'error' => false,
-                'celda' => $arCelda[0]
-            ];
-        } else {
-            return [
-                'error' => true,
-                'errorMensaje' => 'No existe la celda'
-            ];
-        }
-
 
     }
 
@@ -223,6 +145,107 @@ class CeldaRepository extends ServiceEntityRepository
                 'errorMensaje' => "El usuario no existe"
             ];
         }
+    }
+
+    public function apiAdminLista($codigoPanal)
+    {
+        $em = $this->getEntityManager();
+        $queryBuilder = $em->createQueryBuilder()->from(Celda::class, 'c')
+            ->select('c.codigoCeldaPk')
+            ->addSelect('c.celda')
+            ->addSelect('c.celular')
+            ->addSelect('c.correo')
+            ->addSelect('c.responsable')
+            ->addSelect('c.limitarAnuncio')
+            ->where("c.codigoPanalFk = {$codigoPanal}");
+        $arCeldas = $queryBuilder->getQuery()->getResult();
+        return [
+            'error' => false,
+            'celdas' => $arCeldas
+        ];
+
+    }
+
+    public function apiAdminNuevo($codigoPanal, $id, $celda, $responsable, $correo, $celular, $limitarAnuncio)
+    {
+        $em = $this->getEntityManager();
+        $arPanal = $em->getRepository(Panal::class)->find($codigoPanal);
+        if($arPanal) {
+            if($id) {
+                $arCelda = $em->getRepository(Celda::class)->find($id);
+                if($arCelda) {
+                    $arCelda->setResponsable($responsable);
+                    $arCelda->setCorreo($correo);
+                    $arCelda->setCelular($celular);
+                    $arCelda->setLimitarAnuncio($limitarAnuncio);
+                    $em->persist($arCelda);
+                    $em->flush();
+                    return [
+                        'error' => false,
+                        'codigoCelda' => $arCelda->getCodigoCeldaPk()
+                    ];
+                } else {
+                    return [
+                        'error' => true,
+                        'errorMensaje' => "el id de celda no existe"
+                    ];
+                }
+            } else {
+                $arCeldaValidacion = $em->getRepository(Celda::class)->findOneBy(['codigoPanalFk' => $codigoPanal, 'celda' => $celda]);
+                if(!$arCeldaValidacion) {
+                    $arCelda = new Celda();
+                    $arCelda->setPanalRel($arPanal);
+                    $arCelda->setCelda($celda);
+                    $arCelda->setResponsable($responsable);
+                    $arCelda->setCorreo($correo);
+                    $arCelda->setCelular($celular);
+                    $arCelda->setLimitarAnuncio($limitarAnuncio);
+                    $em->persist($arCelda);
+                    $em->flush();
+                    return [
+                        'error' => false,
+                        'codigoCelda' => $arCelda->getCodigoCeldaPk()
+                    ];
+                } else {
+                    return [
+                        'error' => true,
+                        'errorMensaje' => "Ya existe una celda con la numeracion {$celda}"
+                    ];
+                }
+            }
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "No existe el panal"
+            ];
+        }
+    }
+
+    public function apiAdminDetalle($codigoCelda)
+    {
+        $em = $this->getEntityManager();
+        $queryBuilder = $em->createQueryBuilder()->from(Celda::class, 'c')
+            ->select('c.codigoCeldaPk')
+            ->addSelect('c.celda')
+            ->addSelect('c.celular')
+            ->addSelect('c.correo')
+            ->addSelect('c.responsable')
+            ->addSelect('c.limitarAnuncio')
+            ->where("c.codigoCeldaPk = {$codigoCelda}");
+        $arCelda = $queryBuilder->getQuery()->getResult();
+        if($arCelda) {
+            return [
+                'error' => false,
+                'celda' => $arCelda[0]
+            ];
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'No existe la celda'
+            ];
+        }
+
+
     }
 
 }

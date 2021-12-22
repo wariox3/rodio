@@ -34,46 +34,6 @@ class CeldaController extends AbstractFOSRestController
     }
 
     /**
-     * @Rest\Post("/api/celda/nuevo")
-     */
-    public function nuevo(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $raw = json_decode($request->getContent(), true);
-        $id = $raw['id']?? null;
-        $codigoPanal = $raw['codigoPanal']?? null;
-        $celda = $raw['celda']?? null;
-        $responsable = $raw['responsable']?? null;
-        $correo = $raw['correo']?? null;
-        $celular = $raw['celular']?? null;
-        if($codigoPanal && $celda && $responsable && $correo && $celular) {
-            return $em->getRepository(Celda::class)->apiNuevo($codigoPanal, $id, $celda, $responsable, $correo, $celular);
-        } else {
-            return [
-                'error' => true,
-                'errorMensaje' => 'Faltan parametros para el consumo de la api'
-            ];
-        }
-    }
-
-    /**
-     * @Rest\Post("/api/celda/detalle")
-     */
-    public function detalle(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $raw = json_decode($request->getContent(), true);
-        $codigoCelda = $raw['codigoCelda']?? null;
-        if($codigoCelda) {
-            return $em->getRepository(Celda::class)->apiDetalle($codigoCelda);
-        } else {
-            return [
-                'error' => true,
-                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
-        }
-    }
-
-    /**
      * @Rest\Post("/api/celda/llave")
      */
     public function llave(Request $request)
@@ -105,6 +65,64 @@ class CeldaController extends AbstractFOSRestController
         $llave = $raw['llave']?? null;
         if($codigoUsuario && $codigoPanal && $celda && $llave) {
             return $em->getRepository(Celda::class)->apiAsignarCelda($codigoUsuario, $codigoPanal, $celda, $llave);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
+        }
+    }
+
+    /**
+     * @Rest\Post("/api/admin/celda/lista")
+     */
+    public function adminLista(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoPanal = $raw['codigoPanal']?? null;
+        if($codigoPanal) {
+            return $em->getRepository(Celda::class)->apiAdminLista($codigoPanal);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
+        }
+    }
+
+    /**
+     * @Rest\Post("/api/admin/celda/nuevo")
+     */
+    public function adminNuevo(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $id = $raw['id']?? null;
+        $codigoPanal = $raw['codigoPanal']?? null;
+        $celda = $raw['celda']?? null;
+        $responsable = $raw['responsable']?? null;
+        $correo = $raw['correo']?? null;
+        $celular = $raw['celular']?? null;
+        $limitarAnuncio = $raw['limitarAnuncio']?? 0;
+        if($codigoPanal && $celda && $responsable && $correo && $celular) {
+            return $em->getRepository(Celda::class)->apiAdminNuevo($codigoPanal, $id, $celda, $responsable, $correo, $celular, $limitarAnuncio);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'
+            ];
+        }
+    }
+
+    /**
+     * @Rest\Post("/api/admin/celda/detalle")
+     */
+    public function adminDetalle(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoCelda = $raw['codigoCelda']?? null;
+        if($codigoCelda) {
+            return $em->getRepository(Celda::class)->apiAdminDetalle($codigoCelda);
         } else {
             return [
                 'error' => true,
