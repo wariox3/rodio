@@ -33,4 +33,62 @@ class PanalRepository extends ServiceEntityRepository
             'panales' => $arPanales
         ];
     }
+
+    public function apiAdminLista($codigoPanal)
+    {
+        $em = $this->getEntityManager();
+        $queryBuilder = $em->createQueryBuilder()->from(Panal::class, 'p')
+            ->select('p.codigoPanalPk')
+            ->addSelect('p.nombre')
+            ->addSelect('p.publicacionAprobar')
+            ->where("p.codigoPanalPk = {$codigoPanal}");
+        $arPanales = $queryBuilder->getQuery()->getResult();
+        return [
+            'error' => false,
+            'panales' => $arPanales
+        ];
+
+    }
+
+    public function apiAdminDetalle($codigoPanal)
+    {
+        $em = $this->getEntityManager();
+        $queryBuilder = $em->createQueryBuilder()->from(Panal::class, 'p')
+            ->select('p.codigoPanalPk')
+            ->addSelect('p.nombre')
+            ->addSelect('p.publicacionAprobar')
+            ->where("p.codigoPanalPk = {$codigoPanal}");
+        $arPanal = $queryBuilder->getQuery()->getResult();
+        if($arPanal) {
+            return [
+                'error' => false,
+                'panal' => $arPanal[0]
+            ];
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'El panal no existe'
+            ];
+        }
+    }
+
+    public function apiAdminNuevo($codigoPanal, $nombre, $publicacionAprobar) {
+        $em = $this->getEntityManager();
+        $arPanal = $em->getRepository(Panal::class)->find($codigoPanal);
+        if($arPanal) {
+            $arPanal->setNombre($nombre);
+            $arPanal->setPublicacionAprobar($publicacionAprobar);
+            $em->persist($arPanal);
+            $em->flush();
+            return [
+                'error' => false,
+                'codigoPanal' => $arPanal->getCodigoPanalPk()
+            ];
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "No existe el panal"
+            ];
+        }
+    }
 }

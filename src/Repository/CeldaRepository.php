@@ -58,7 +58,7 @@ class CeldaRepository extends ServiceEntityRepository
                     $arCeldaUsuario->setLlave($llave);
                     $em->persist($arCeldaUsuario);
                     $em->flush();
-                    $mensaje = "El usuario {$arUsuario->getCodigoUsuarioPk()} genero un codigo para vincularse a la celda {$celda} debe proporcionarle este codigo para verificar su autorizacion: {$llave}";
+                    $mensaje = "El usuario {$arUsuario->getUsuario()} genero un codigo para conectarse a la celda {$celda} debe proporcionarle este codigo para verificar su autorizacion: {$llave}";
                     $this->dubnio->enviarCorreo("Se ha generado un codigo de validacion para Veci", $mensaje, $arCelda->getCorreo());
                     return [
                         'error' => false,

@@ -54,6 +54,11 @@ class Publicacion
     private $comentarios = 0;
 
     /**
+     * @ORM\Column(name="estado_aprobado", type="boolean", options={"default" : true}, nullable=true)
+     */
+    private $estadoAprobado = true;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Panal", inversedBy="publicacionesPanalRel")
      * @ORM\JoinColumn(name="codigo_panal_fk", referencedColumnName="codigo_panal_pk")
      */
@@ -267,6 +272,20 @@ class Publicacion
         $this->reaccionesPublicacionRel = $reaccionesPublicacionRel;
     }
 
+    /**
+     * @return bool
+     */
+    public function isEstadoAprobado(): bool
+    {
+        return $this->estadoAprobado;
+    }
 
+    /**
+     * @param bool $estadoAprobado
+     */
+    public function setEstadoAprobado(bool $estadoAprobado): void
+    {
+        $this->estadoAprobado = $estadoAprobado;
+    }
 
 }

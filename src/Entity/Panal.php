@@ -29,6 +29,11 @@ class Panal
     private $codigoCiudadFk;
 
     /**
+     * @ORM\Column(name="publicacion_aprobar", type="boolean", options={"default" : true}, nullable=true)
+     */
+    private $publicacionAprobar = true;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Ciudad", inversedBy="panalesCiudadRel")
      * @ORM\JoinColumn(name="codigo_ciudad_fk", referencedColumnName="codigo_ciudad_pk")
      */
@@ -243,6 +248,22 @@ class Panal
     public function setContenidosPanalRel($contenidosPanalRel): void
     {
         $this->contenidosPanalRel = $contenidosPanalRel;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPublicacionAprobar(): bool
+    {
+        return $this->publicacionAprobar;
+    }
+
+    /**
+     * @param bool $publicacionAprobar
+     */
+    public function setPublicacionAprobar(bool $publicacionAprobar): void
+    {
+        $this->publicacionAprobar = $publicacionAprobar;
     }
 
 

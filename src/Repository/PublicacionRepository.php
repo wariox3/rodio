@@ -76,6 +76,7 @@ class PublicacionRepository extends ServiceEntityRepository
                     ->addSelect('u.usuario as usuario')
                     ->leftJoin('p.usuarioRel', 'u')
                     ->where("p.codigoPanalFk = {$arUsuario->getCodigoPanalFk()}")
+                    ->andWhere("p.estadoAprobado = 1")
                     ->orderBy('p.fecha', 'DESC');
                 $arPublicaciones = $queryBuilder->getQuery()->getResult();
                 return [
@@ -103,6 +104,7 @@ class PublicacionRepository extends ServiceEntityRepository
         $arPublicacion->setPanalRel($arUsuario->getPanalRel());
         $arPublicacion->setComentario($comentario);
         $arPublicacion->setFecha(new \DateTime('now'));
+        $arPublicacion->setEstadoAprobado($arUsuario->getPanalRel()->isPublicacionAprobar());
         $arPublicacion->setUrlImagen($this->space->subir('publicacion', $nombreImagen, $imagenBase64));
         $em->persist($arPublicacion);
         $em->flush();
