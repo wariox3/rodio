@@ -13,3 +13,4 @@ DELETE FROM publicacion;
 DELETE FROM usuario;
 DELETE FROM entrega;
 DELETE FROM celda;
+DELETE FROM soporte;
