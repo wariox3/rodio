@@ -4,6 +4,7 @@
 namespace App\Repository;
 
 use App\Entity\Celda;
+use App\Entity\CeldaUsuario;
 use App\Entity\Panal;
 use App\Entity\Usuario;
 use App\Entity\Votacion;
@@ -310,6 +311,17 @@ class VotacionRepository extends ServiceEntityRepository
                         $arVotacion->setEstadoPublicado(1);
                         $em->persist($arVotacion);
                         $em->flush();
+
+                        $queryBuilder = $em->createQueryBuilder()->from(CeldaUsuario::class, 'cu')
+                            ->select('cu.codigoCeldaUaurioPk')
+                            ->addSelect('u.tokenFirebase')
+                            ->leftJoin('cu.celdaRel', 'c')
+                            ->leftJoin('cu.usuarioRel', 'u')
+                            ->where("c.codigoPanalFk = {$arVotacion->getCodigoPanalFk()}");
+                        $arUsuarios = $queryBuilder->getQuery()->getResult();
+                        foreach ($arUsuarios as $arUsuario) {
+                            $this->firebase->publicarVotacion($arUsuario['tokenFirebase']);
+                        }
                         return [
                             'error' => false
                         ];

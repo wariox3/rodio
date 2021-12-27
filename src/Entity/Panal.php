@@ -75,6 +75,11 @@ class Panal
     private $contenidosPanalRel;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Caso", mappedBy="panalRel")
+     */
+    private $casosPanalRel;
+
+    /**
      * @return mixed
      */
     public function getCodigoPanalPk()
@@ -264,6 +269,22 @@ class Panal
     public function setPublicacionAprobar(bool $publicacionAprobar): void
     {
         $this->publicacionAprobar = $publicacionAprobar;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCasosPanalRel()
+    {
+        return $this->casosPanalRel;
+    }
+
+    /**
+     * @param mixed $casosPanalRel
+     */
+    public function setCasosPanalRel($casosPanalRel): void
+    {
+        $this->casosPanalRel = $casosPanalRel;
     }
 
 

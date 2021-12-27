@@ -149,6 +149,11 @@ class Usuario
     private $atencionesUsuarioRel;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Caso", mappedBy="usuarioRel")
+     */
+    private $casosUsuarioRel;
+
+    /**
      * @return mixed
      */
     public function getCodigoUsuarioPk()
@@ -562,6 +567,22 @@ class Usuario
     public function setAtencionesUsuarioRel($atencionesUsuarioRel): void
     {
         $this->atencionesUsuarioRel = $atencionesUsuarioRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCasosUsuarioRel()
+    {
+        return $this->casosUsuarioRel;
+    }
+
+    /**
+     * @param mixed $casosUsuarioRel
+     */
+    public function setCasosUsuarioRel($casosUsuarioRel): void
+    {
+        $this->casosUsuarioRel = $casosUsuarioRel;
     }
 
 

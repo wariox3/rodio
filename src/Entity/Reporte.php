@@ -11,7 +11,7 @@ class Reporte
 {
     /**
      * @ORM\Id
-     * @ORM\Column(name="codigo_Reporte_pk", type="integer")
+     * @ORM\Column(name="codigo_reporte_pk", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $codigoReportePk;
@@ -24,7 +24,7 @@ class Reporte
     /**
      * @ORM\Column(name="comentario", type="string", length=250, nullable=true)
      */
-    private $tipo;
+    private $comentario;
 
     /**
      * @ORM\Column(name="fecha", type="datetime", nullable=true)
@@ -72,17 +72,17 @@ class Reporte
     /**
      * @return mixed
      */
-    public function getTipo()
+    public function getComentario()
     {
-        return $this->tipo;
+        return $this->comentario;
     }
 
     /**
-     * @param mixed $tipo
+     * @param mixed $comentario
      */
-    public function setTipo($tipo): void
+    public function setComentario($comentario): void
     {
-        $this->tipo = $tipo;
+        $this->comentario = $comentario;
     }
 
     /**
@@ -104,22 +104,6 @@ class Reporte
     /**
      * @return mixed
      */
-    public function getComentario()
-    {
-        return $this->comentario;
-    }
-
-    /**
-     * @param mixed $comentario
-     */
-    public function setComentario($comentario): void
-    {
-        $this->comentario = $comentario;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getUsuarioRel()
     {
         return $this->usuarioRel;
@@ -132,7 +116,6 @@ class Reporte
     {
         $this->usuarioRel = $usuarioRel;
     }
-
 
 
 
