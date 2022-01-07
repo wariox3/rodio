@@ -22,7 +22,7 @@ class Caso
     private $fecha;
 
     /**
-     * @ORM\Column(name="codigo_caso_tipo_fk", type="string", length=10)
+     * @ORM\Column(name="codigo_caso_tipo_fk", type="string", length=20)
      */
     private $codigoCasoTipoFk;
 

@@ -13,7 +13,7 @@ class CasoTipo
 
     /**
      * @ORM\Id
-     * @ORM\Column(name="codigo_caso_tipo_pk", type="string", length=10)
+     * @ORM\Column(name="codigo_caso_tipo_pk", type="string", length=20)
      */
     private $codigoCasoTipoPk;
 
