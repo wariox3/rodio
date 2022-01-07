@@ -106,7 +106,12 @@ class CasoRepository  extends ServiceEntityRepository
             ->addSelect('c.codigoCasoTipoFk')
             ->addSelect('c.codigoUsuarioFk')
             ->addSelect('c.fecha')
+            ->addSelect('c.fechaAtendido')
+            ->addSelect('c.fechaRespuesta')
             ->addSelect('c.comentario')
+            ->addSelect('c.respuesta')
+            ->addSelect('c.estadoAtendido')
+            ->addSelect('c.estadoRespuesta')
             ->where("c.codigoCasoPk = {$codigoCaso}");
         $arCaso = $queryBuilder->getQuery()->getResult();
         if($arCaso) {
@@ -122,5 +127,52 @@ class CasoRepository  extends ServiceEntityRepository
         }
 
 
+    }
+
+    public function apiAdminAtender($id)
+    {
+        $em = $this->getEntityManager();
+        $arCaso = $em->getRepository(Caso::class)->find($id);
+        if($arCaso) {
+            if($arCaso->isEstadoAtendido() == 0) {
+                $arCaso->setEstadoAtendido(1);
+                $arCaso->setFechaAtendido(new \DateTime('now'));
+                $em->persist($arCaso);
+                $em->flush();
+                return [
+                    'error' => false
+                ];
+            } else {
+                return [
+                    'error' => true,
+                    'errorMensaje' => "El caso ya fue atendido"
+                ];
+            }
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "No existe el caso"
+            ];
+        }
+    }
+
+    public function apiAdminRespuestaNuevo($id, $respuesta)
+    {
+        $em = $this->getEntityManager();
+        $arCaso = $em->getRepository(Caso::class)->find($id);
+        if($arCaso) {
+            $arCaso->setEstadoRespuesta(1);
+            $arCaso->setRespuesta($respuesta);
+            $em->persist($arCaso);
+            $em->flush();
+            return [
+                'error' => false,
+            ];
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "No existe el caso"
+            ];
+        }
     }
 }
