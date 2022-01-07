@@ -22,6 +22,16 @@ class Caso
     private $fecha;
 
     /**
+     * @ORM\Column(name="fecha_atendido", type="datetime", nullable=true)
+     */
+    private $fechaAtendido;
+
+    /**
+     * @ORM\Column(name="fecha_respuesta", type="datetime", nullable=true)
+     */
+    private $fechaRespuesta;
+
+    /**
      * @ORM\Column(name="codigo_caso_tipo_fk", type="string", length=20)
      */
     private $codigoCasoTipoFk;
@@ -37,9 +47,24 @@ class Caso
     private $comentario;
 
     /**
+     * @ORM\Column(name="respuesta", type="text", nullable=true)
+     */
+    private $respuesta;
+
+    /**
      * @ORM\Column(name="codigo_panal_fk", type="integer")
      */
     private $codigoPanalFk;
+
+    /**
+     * @ORM\Column(name="estado_atendido", type="boolean", options={"default" : false}, nullable=true)
+     */
+    private $estadoAtendido = false;
+
+    /**
+     * @ORM\Column(name="estado_respuesta", type="boolean", options={"default" : false}, nullable=true)
+     */
+    private $estadoRespuesta = false;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CasoTipo", inversedBy="casosCasoTipoRel")
@@ -201,6 +226,86 @@ class Caso
     public function setCasoTipoRel($casoTipoRel): void
     {
         $this->casoTipoRel = $casoTipoRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFechaAtendido()
+    {
+        return $this->fechaAtendido;
+    }
+
+    /**
+     * @param mixed $fechaAtendido
+     */
+    public function setFechaAtendido($fechaAtendido): void
+    {
+        $this->fechaAtendido = $fechaAtendido;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFechaRespuesta()
+    {
+        return $this->fechaRespuesta;
+    }
+
+    /**
+     * @param mixed $fechaRespuesta
+     */
+    public function setFechaRespuesta($fechaRespuesta): void
+    {
+        $this->fechaRespuesta = $fechaRespuesta;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRespuesta()
+    {
+        return $this->respuesta;
+    }
+
+    /**
+     * @param mixed $respuesta
+     */
+    public function setRespuesta($respuesta): void
+    {
+        $this->respuesta = $respuesta;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEstadoAtendido(): bool
+    {
+        return $this->estadoAtendido;
+    }
+
+    /**
+     * @param bool $estadoAtendido
+     */
+    public function setEstadoAtendido(bool $estadoAtendido): void
+    {
+        $this->estadoAtendido = $estadoAtendido;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEstadoRespuesta(): bool
+    {
+        return $this->estadoRespuesta;
+    }
+
+    /**
+     * @param bool $estadoRespuesta
+     */
+    public function setEstadoRespuesta(bool $estadoRespuesta): void
+    {
+        $this->estadoRespuesta = $estadoRespuesta;
     }
 
 

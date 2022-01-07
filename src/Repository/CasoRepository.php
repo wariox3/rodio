@@ -52,15 +52,43 @@ class CasoRepository  extends ServiceEntityRepository
         }
     }
 
+    public function apiLista($codigoPanal)
+    {
+        $em = $this->getEntityManager();
+        $queryBuilder = $em->createQueryBuilder()->from(Caso::class, 'c')
+            ->select('c.codigoCasoPk')
+            ->addSelect('c.fecha')
+            ->addSelect('c.fechaAtendido')
+            ->addSelect('c.fechaRespuesta')
+            ->addSelect('c.codigoCasoTipoFk')
+            ->addSelect('c.comentario')
+            ->addSelect('c.respuesta')
+            ->addSelect('c.codigoUsuarioFk')
+            ->addSelect('c.estadoAtendido')
+            ->addSelect('c.estadoRespuesta')
+            ->where("c.codigoPanalFk = {$codigoPanal}");
+        $arCasos = $queryBuilder->getQuery()->getResult();
+        return [
+            'error' => false,
+            'casos' => $arCasos
+        ];
+
+    }
+
     public function apiAdminLista($codigoPanal)
     {
         $em = $this->getEntityManager();
         $queryBuilder = $em->createQueryBuilder()->from(Caso::class, 'c')
             ->select('c.codigoCasoPk')
             ->addSelect('c.fecha')
+            ->addSelect('c.fechaAtendido')
+            ->addSelect('c.fechaRespuesta')
             ->addSelect('c.codigoCasoTipoFk')
             ->addSelect('c.comentario')
+            ->addSelect('c.respuesta')
             ->addSelect('c.codigoUsuarioFk')
+            ->addSelect('c.estadoAtendido')
+            ->addSelect('c.estadoRespuesta')
             ->where("c.codigoPanalFk = {$codigoPanal}");
         $arCasos = $queryBuilder->getQuery()->getResult();
         return [
