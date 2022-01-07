@@ -4,12 +4,6 @@
 namespace App\Controller\Api;
 
 use App\Entity\Caso;
-use App\Entity\Celda;
-use App\Entity\Entrega;
-use App\Entity\Publicacion;
-use App\Entity\Soporte;
-use App\Entity\Usuario;
-use App\Entity\Visita;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Symfony\Component\HttpFoundation\Request;

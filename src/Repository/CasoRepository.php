@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Caso;
+use App\Entity\CasoTipo;
 use App\Entity\Usuario;
 use App\Utilidades\Firebase;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -23,19 +24,26 @@ class CasoRepository  extends ServiceEntityRepository
         $em = $this->getEntityManager();
         $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
         if($arUsuario) {
-            $arCaso = new Caso();
-            $arCaso->setUsuarioRel($arUsuario);
-            $arCaso->setCodigoCasoTipoFk($tipo);
-            $arCaso->setComentario($comentario);
-            $arCaso->setFecha(new \DateTime('now'));
-            $arCaso->setPanalRel($arUsuario->getPanalRel());
-            $em->persist($arCaso);
-            $em->flush();
-            return [
-                'error' => false,
-                'codigoCaso' => $arCaso->getCodigoCasoPk(),
-            ];
-
+            $arCasoTipo = $em->getRepository(CasoTipo::class)->find($tipo);
+            if($arCasoTipo) {
+                $arCaso = new Caso();
+                $arCaso->setUsuarioRel($arUsuario);
+                $arCaso->setCasoTipoRel($arCasoTipo);
+                $arCaso->setComentario($comentario);
+                $arCaso->setFecha(new \DateTime('now'));
+                $arCaso->setPanalRel($arUsuario->getPanalRel());
+                $em->persist($arCaso);
+                $em->flush();
+                return [
+                    'error' => false,
+                    'codigoCaso' => $arCaso->getCodigoCasoPk(),
+                ];
+            } else {
+                return [
+                    'error' => true,
+                    'errorMensaje' => "No existe el tipo de caso"
+                ];
+            }
         } else {
             return [
                 'error' => true,

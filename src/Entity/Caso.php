@@ -22,7 +22,7 @@ class Caso
     private $fecha;
 
     /**
-     * @ORM\Column(name="codigo_caso_tipo_fk", type="string", length=10, nullable=false)
+     * @ORM\Column(name="codigo_caso_tipo_fk", type="string", length=10)
      */
     private $codigoCasoTipoFk;
 
@@ -40,6 +40,12 @@ class Caso
      * @ORM\Column(name="codigo_panal_fk", type="integer")
      */
     private $codigoPanalFk;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\CasoTipo", inversedBy="casosCasoTipoRel")
+     * @ORM\JoinColumn(name="codigo_caso_tipo_fk", referencedColumnName="codigo_caso_tipo_pk")
+     */
+    private $casoTipoRel;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Panal", inversedBy="casosPanalRel")
@@ -179,6 +185,22 @@ class Caso
     public function setPanalRel($panalRel): void
     {
         $this->panalRel = $panalRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCasoTipoRel()
+    {
+        return $this->casoTipoRel;
+    }
+
+    /**
+     * @param mixed $casoTipoRel
+     */
+    public function setCasoTipoRel($casoTipoRel): void
+    {
+        $this->casoTipoRel = $casoTipoRel;
     }
 
 
