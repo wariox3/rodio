@@ -25,6 +25,11 @@ class Usuario
     private $usuario;
 
     /**
+     * @ORM\Column(name="nombre", type="string", length=30, nullable=true)
+     */
+    private $nombre;
+
+    /**
      * @ORM\Column(name="clave", type="string", length=50)
      */
     private $clave;
@@ -583,6 +588,22 @@ class Usuario
     public function setCasosUsuarioRel($casosUsuarioRel): void
     {
         $this->casosUsuarioRel = $casosUsuarioRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    /**
+     * @param mixed $nombre
+     */
+    public function setNombre($nombre): void
+    {
+        $this->nombre = $nombre;
     }
 
 

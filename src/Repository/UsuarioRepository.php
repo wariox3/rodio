@@ -44,6 +44,7 @@ class UsuarioRepository extends ServiceEntityRepository
                 'usuario' => [
                     'codigo' => $arUsuario->getCodigoUsuarioPk(),
                     'usuario' => $arUsuario->getUsuario(),
+                    'nombre' => $arUsuario->getNombre(),
                     'urlImagen' => $arUsuario->getUrlImagen(),
                     'codigoCelda' => $arUsuario->getCodigoCeldaFk(),
                     'codigoPanal' => $arUsuario->getCodigoPanalFk(),
@@ -70,8 +71,10 @@ class UsuarioRepository extends ServiceEntityRepository
             ->where("u.usuario = '{$usuario}'");
         $arUsuario = $queryBuilder->getQuery()->getResult();
         if (!$arUsuario) {
+            $usuarioSeparado = explode('@', $usuario);
             $arUsuario = new Usuario();
             $arUsuario->setUsuario($usuario);
+            $arUsuario->setNombre($usuarioSeparado[0]);
             $arUsuario->setClave($clave);
             $arUsuario->setCelular($celular);
             $arUsuario->setUrlImagen('https://semantica.sfo3.digitaloceanspaces.com/rodio/perfil/general.png');
@@ -218,6 +221,7 @@ class UsuarioRepository extends ServiceEntityRepository
             }
             return [
                 'error' => false,
+                'nombre' => $arUsuario->getNombre(),
                 'codigoPanalFk' => $arUsuario->getCodigoPanalFk(),
                 'codigoCeldaFk' => $arUsuario->getCodigoCeldaFk(),
                 'celular' => $arUsuario->getCelular(),
