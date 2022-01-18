@@ -61,6 +61,7 @@ class VisitaRepository extends ServiceEntityRepository
             if($arCelda || $arPanal->isExigeCelda() == 0) {
                 $codigo = rand(10000, 99999);
                 $arVisita = new Visita();
+                $arVisita->setPanalRel($arPanal);
                 $arVisita->setCeldaRel($arCelda);
                 $arVisita->setCelda($celda);
                 $arVisita->setFecha(new \DateTime('now'));
@@ -114,14 +115,14 @@ class VisitaRepository extends ServiceEntityRepository
             ->addSelect('v.estadoAutorizado')
             ->addSelect('v.estadoCerrado')
             ->addSelect('v.urlImagen')
-            ->addSelect('c.celda')
+            ->addSelect('v.celda')
             ->addSelect('c.celular')
             ->addSelect('c.correo')
             ->leftJoin('v.celdaRel', 'c')
-            ->where("c.codigoPanalFk = {$codigoPanal}")
+            ->where("v.codigoPanalFk = {$codigoPanal}")
             ->andWhere('v.estadoCerrado = 0');
         if($celda) {
-            $queryBuilder->andWhere("c.celda = '{$celda}'");
+            $queryBuilder->andWhere("v.celda = '{$celda}'");
         }
         if($estadoAutorizado) {
             $queryBuilder->andWhere("v.estadoAutorizado = '{$estadoAutorizado}'");

@@ -174,4 +174,18 @@ class UsuarioController extends AbstractFOSRestController
         }
     }
 
+    /**
+     * @Rest\Post("/api/usuario/editarinformacion")
+     */
+    public function editarInformacion(Request  $request)
+    {
+        $raw = json_decode($request->getContent(), true);
+        $codigoUsuario = $raw['codigoUsuario']?? null;
+        $nombre = $raw['nombre']?? null;
+        if($codigoUsuario && $nombre) {
+            $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
+
+        }
+    }
+
 }

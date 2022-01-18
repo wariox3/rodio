@@ -44,6 +44,11 @@ class Visita
     private $codigoCeldaFk;
 
     /**
+     * @ORM\Column(name="codigo_panal_fk", type="integer", nullable=true)
+     */
+    private $codigoPanalFk;
+
+    /**
      * @ORM\Column(name="codigo_usuario_autoriza_fk", type="integer", nullable=true)
      */
     private $codigoUsuarioAutorizaFk;
@@ -78,6 +83,12 @@ class Visita
      * @ORM\JoinColumn(name="codigo_celda_fk", referencedColumnName="codigo_celda_pk")
      */
     private $celdaRel;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Panal", inversedBy="visitasPanalRel")
+     * @ORM\JoinColumn(name="codigo_panal_fk", referencedColumnName="codigo_panal_pk")
+     */
+    private $panalRel;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Usuario", inversedBy="visitasUsuarioAutorizaRel")
@@ -308,6 +319,38 @@ class Visita
     public function setCelda($celda): void
     {
         $this->celda = $celda;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodigoPanalFk()
+    {
+        return $this->codigoPanalFk;
+    }
+
+    /**
+     * @param mixed $codigoPanalFk
+     */
+    public function setCodigoPanalFk($codigoPanalFk): void
+    {
+        $this->codigoPanalFk = $codigoPanalFk;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPanalRel()
+    {
+        return $this->panalRel;
+    }
+
+    /**
+     * @param mixed $panalRel
+     */
+    public function setPanalRel($panalRel): void
+    {
+        $this->panalRel = $panalRel;
     }
 
 

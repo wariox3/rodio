@@ -85,6 +85,11 @@ class Panal
     private $casosPanalRel;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Visita", mappedBy="panalRel")
+     */
+    private $visitasPanalRel;
+
+    /**
      * @return mixed
      */
     public function getCodigoPanalPk()
@@ -306,6 +311,22 @@ class Panal
     public function setExigeCelda(bool $exigeCelda): void
     {
         $this->exigeCelda = $exigeCelda;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVisitasPanalRel()
+    {
+        return $this->visitasPanalRel;
+    }
+
+    /**
+     * @param mixed $visitasPanalRel
+     */
+    public function setVisitasPanalRel($visitasPanalRel): void
+    {
+        $this->visitasPanalRel = $visitasPanalRel;
     }
 
 
