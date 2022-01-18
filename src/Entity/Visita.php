@@ -39,7 +39,7 @@ class Visita
     private $placa;
 
     /**
-     * @ORM\Column(name="codigo_celda_fk", type="integer", nullable=false)
+     * @ORM\Column(name="codigo_celda_fk", type="integer", nullable=true)
      */
     private $codigoCeldaFk;
 
@@ -67,6 +67,11 @@ class Visita
      * @ORM\Column(name="url_imagen", type="string", length=500, nullable=true)
      */
     private $urlImagen;
+
+    /**
+     * @ORM\Column(name="celda", type="string", length=20, nullable=true)
+     */
+    private $celda;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Celda", inversedBy="visitasCeldaRel")
@@ -287,6 +292,22 @@ class Visita
     public function setUrlImagen($urlImagen): void
     {
         $this->urlImagen = $urlImagen;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCelda()
+    {
+        return $this->celda;
+    }
+
+    /**
+     * @param mixed $celda
+     */
+    public function setCelda($celda): void
+    {
+        $this->celda = $celda;
     }
 
 

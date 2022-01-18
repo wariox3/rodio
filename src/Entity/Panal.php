@@ -34,6 +34,11 @@ class Panal
     private $publicacionAprobar = true;
 
     /**
+     * @ORM\Column(name="exige_celda", type="boolean", options={"default" : true})
+     */
+    private $exigeCelda = true;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Ciudad", inversedBy="panalesCiudadRel")
      * @ORM\JoinColumn(name="codigo_ciudad_fk", referencedColumnName="codigo_ciudad_pk")
      */
@@ -285,6 +290,22 @@ class Panal
     public function setCasosPanalRel($casosPanalRel): void
     {
         $this->casosPanalRel = $casosPanalRel;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isExigeCelda(): bool
+    {
+        return $this->exigeCelda;
+    }
+
+    /**
+     * @param bool $exigeCelda
+     */
+    public function setExigeCelda(bool $exigeCelda): void
+    {
+        $this->exigeCelda = $exigeCelda;
     }
 
 

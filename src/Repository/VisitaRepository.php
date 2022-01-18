@@ -58,10 +58,11 @@ class VisitaRepository extends ServiceEntityRepository
             } else {
                 $arCelda = $em->getRepository(Celda::class)->findOneBy(['codigoPanalFk' => $codigoPanal, 'celda' => $celda]);
             }
-            if($arCelda) {
+            if($arCelda || $arPanal->isExigeCelda() == 0) {
                 $codigo = rand(10000, 99999);
                 $arVisita = new Visita();
                 $arVisita->setCeldaRel($arCelda);
+                $arVisita->setCelda($celda);
                 $arVisita->setFecha(new \DateTime('now'));
                 $arVisita->setNumeroIdentificacion($numeroIdentificacion);
                 $arVisita->setNombre($nombre);
@@ -75,9 +76,11 @@ class VisitaRepository extends ServiceEntityRepository
                 $em->persist($arVisita);
                 $em->flush();
                 //Usuarios a los que se debe notificar
-                $arCeldaUsuarios = $em->getRepository(CeldaUsuario::class)->findBy(['codigoCeldaFk' => $arCelda->getCodigoCeldaPk()]);
-                foreach ($arCeldaUsuarios as $arCeldaUsuario) {
-                    $this->firebase->nuevaVisita($arCeldaUsuario->getUsuarioRel()->getTokenFirebase(), $arVisita->getCodigoVisitaPk(), $nombre, 0);
+                if($arCelda) {
+                    $arCeldaUsuarios = $em->getRepository(CeldaUsuario::class)->findBy(['codigoCeldaFk' => $arCelda->getCodigoCeldaPk()]);
+                    foreach ($arCeldaUsuarios as $arCeldaUsuario) {
+                        $this->firebase->nuevaVisita($arCeldaUsuario->getUsuarioRel()->getTokenFirebase(), $arVisita->getCodigoVisitaPk(), $nombre, 0);
+                    }
                 }
                 return [
                     'error' => false,
