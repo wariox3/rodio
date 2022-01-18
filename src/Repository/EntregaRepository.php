@@ -55,7 +55,7 @@ class EntregaRepository extends ServiceEntityRepository
         $arPanal = $em->getRepository(Panal::class)->find($codigoPanal);
         if($arPanal) {
             $arCelda = $em->getRepository(Celda::class)->findOneBy(['codigoPanalFk' => $codigoPanal, 'celda' => $celda]);
-            if($arCelda) {
+            if($arCelda || $arPanal->isExigeCelda() == 0) {
                 $arEntrega = new Entrega();
                 $arEntrega->setCeldaRel($arCelda);
                 $arEntrega->setFechaIngreso(new \DateTime('now'));
