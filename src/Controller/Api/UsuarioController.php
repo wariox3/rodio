@@ -179,12 +179,18 @@ class UsuarioController extends AbstractFOSRestController
      */
     public function editarInformacion(Request  $request)
     {
+        $em = $this->getDoctrine()->getManager();
         $raw = json_decode($request->getContent(), true);
         $codigoUsuario = $raw['codigoUsuario']?? null;
         $nombre = $raw['nombre']?? null;
-        if($codigoUsuario && $nombre) {
-            $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
+        $celular = $raw['celular']?? null;
 
+        if($codigoUsuario) {
+            return $em->getRepository(Usuario::class)->apiEditarInformacion($codigoUsuario, $nombre, $celular);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
         }
     }
 
