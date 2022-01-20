@@ -74,6 +74,7 @@ class PublicacionRepository extends ServiceEntityRepository
                     ->addSelect('p.comentarios')
                     ->addSelect('u.urlImagen as usuarioUrlImagen')
                     ->addSelect('u.usuario as usuario')
+                    ->addSelect('u.nombre as usuarioNombre')
                     ->leftJoin('p.usuarioRel', 'u')
                     ->where("p.codigoPanalFk = {$arUsuario->getCodigoPanalFk()}")
                     ->andWhere("p.estadoAprobado = 1")
