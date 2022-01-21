@@ -38,7 +38,7 @@ class UsuarioRepository extends ServiceEntityRepository
             if($arUsuario->getOperadorRel()) {
                 $operador = $arUsuario->getOperadorRel()->getNombre();
                 $puntoServicio = $arUsuario->getOperadorRel()->getPuntoServicioCromo();
-                $puntoServicioToken = $arUsuario->getOperadorRel()->getPuntoServicioCromoToken();
+                $puntoServicioToken = $arUsuario->getOperadorRel()->getToken();
             }
             return [
                 'error' => false,

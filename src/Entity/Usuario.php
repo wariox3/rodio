@@ -20,7 +20,7 @@ class Usuario
     private $codigoUsuarioPk;
 
     /**
-     * @ORM\Column(name="usuario", type="string", length=50)
+     * @ORM\Column(name="usuario", type="string", length=50, unique=true)
      */
     private $usuario;
 
