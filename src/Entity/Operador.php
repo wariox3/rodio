@@ -34,6 +34,11 @@ class Operador
     private $puntoServicioCromo;
 
     /**
+     * @ORM\Column(name="punto_servicio_cromo_token", type="string", length=100, nullable=true)
+     */
+    private $puntoServicioCromoToken;
+
+    /**
      * @ORM\Column(name="token", type="string", length=100, nullable=true)
      */
     private $token;
@@ -221,6 +226,22 @@ class Operador
     public function setPuestosOperadorRel($puestosOperadorRel): void
     {
         $this->puestosOperadorRel = $puestosOperadorRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPuntoServicioCromoToken()
+    {
+        return $this->puntoServicioCromoToken;
+    }
+
+    /**
+     * @param mixed $puntoServicioCromoToken
+     */
+    public function setPuntoServicioCromoToken($puntoServicioCromoToken): void
+    {
+        $this->puntoServicioCromoToken = $puntoServicioCromoToken;
     }
 
 

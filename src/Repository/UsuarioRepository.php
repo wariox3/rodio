@@ -34,9 +34,11 @@ class UsuarioRepository extends ServiceEntityRepository
             }
             $operador = "";
             $puntoServicio = "";
+            $puntoServicioToken = "";
             if($arUsuario->getOperadorRel()) {
                 $operador = $arUsuario->getOperadorRel()->getNombre();
                 $puntoServicio = $arUsuario->getOperadorRel()->getPuntoServicioCromo();
+                $puntoServicioToken = $arUsuario->getOperadorRel()->getPuntoServicioCromoToken();
             }
             return [
                 'error' => false,
@@ -52,7 +54,8 @@ class UsuarioRepository extends ServiceEntityRepository
                     'codigoPuesto' => $arUsuario->getCodigoPuestoFk(),
                     'codigoOperador' => $arUsuario->getCodigoOperadorFk(),
                     'operador' => $operador,
-                    'puntoServicio' => $puntoServicio
+                    'puntoServicio' => $puntoServicio,
+                    'puntoServicioToken' => $puntoServicioToken,
                 ],
             ];
         } else {
