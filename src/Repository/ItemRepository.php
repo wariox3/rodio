@@ -59,4 +59,37 @@ class ItemRepository extends ServiceEntityRepository
         ];
     }
 
+    public function apiBuscarItem($itemNombre)
+    {
+        $em = $this->getEntityManager();
+        $queryBuilder = $em->createQueryBuilder()->from(Item::class, 'i')
+            ->select('i.codigoItemPk')
+            ->addSelect('i.nombre')
+            ->addSelect('i.precio')
+            ->addSelect('i.codigoGrupoFk')
+            ->addSelect('g.nombre as grupoNombre')
+            ->leftJoin('i.grupoRel', 'g')
+            ->where("i.nombre like '%{$itemNombre}%' ")
+            ->orderBy("i.codigoGrupoFk");
+        $arItemes = $queryBuilder->getQuery()->getResult();
+        $grupos = [];
+        $codigoGrupo = null;
+        foreach ($arItemes as $arItem) {
+            if($arItem['codigoGrupoFk'] != $codigoGrupo) {
+                $grupos[$arItem['codigoGrupoFk']]['nombre'] = $arItem['grupoNombre'];
+
+                $codigoGrupo = $arItem['codigoGrupoFk'];
+            }
+            $grupos[$arItem['codigoGrupoFk']]['itemes'][] = [
+                'codigoItemPk' => $arItem['codigoItemPk'],
+                'nombre' => $arItem['nombre'],
+                'precio' => $arItem['precio']
+            ];
+        }
+        return [
+            'error' => false,
+            'itemes' => $grupos
+        ];
+    }
+
 }

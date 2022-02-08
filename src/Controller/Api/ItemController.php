@@ -33,4 +33,22 @@ class ItemController extends AbstractFOSRestController
         }
     }
 
+    /**
+     * @Rest\Post("/api/item/buscaritem")
+     */
+    public function buscarItem(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $itemNombre = $raw['itemNombre']?? null;
+        if($itemNombre) {
+            return $em->getRepository(Item::class)->apiBuscarItem($itemNombre);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'
+            ];
+        }
+    }
+
 }
