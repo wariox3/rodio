@@ -26,7 +26,7 @@ class ItemRepository extends ServiceEntityRepository
         $this->space = $space;
     }
 
-    public function apiLista($linea)
+    public function apiLista($linea, $orden)
     {
         $em = $this->getEntityManager();
         $queryBuilder = $em->createQueryBuilder()->from(Item::class, 'i')
@@ -38,6 +38,9 @@ class ItemRepository extends ServiceEntityRepository
             ->leftJoin('i.grupoRel', 'g')
             ->where("i.codigoLineaFk = '{$linea}'")
             ->orderBy("i.codigoGrupoFk");
+        if($orden){
+            $queryBuilder->addOrderBy('i.precio', $orden);
+        }
         $arItemes = $queryBuilder->getQuery()->getResult();
         $grupos = [];
         $codigoGrupo = null;

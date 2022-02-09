@@ -23,8 +23,9 @@ class ItemController extends AbstractFOSRestController
         $em = $this->getDoctrine()->getManager();
         $raw = json_decode($request->getContent(), true);
         $linea = $raw['linea']?? null;
+        $orden = $raw['orden']?? null;
         if($linea) {
-            return $em->getRepository(Item::class)->apiLista($linea);
+            return $em->getRepository(Item::class)->apiLista($linea, $orden);
         } else {
             return [
                 'error' => true,
