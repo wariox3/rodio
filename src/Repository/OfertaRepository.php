@@ -6,6 +6,7 @@ namespace App\Repository;
 use App\Entity\Categoria;
 use App\Entity\Oferta;
 use App\Entity\Panal;
+use App\Entity\Usuario;
 use App\Utilidades\SpaceDO;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -30,10 +31,12 @@ class OfertaRepository extends ServiceEntityRepository
             ->addSelect('o.precio')
             ->addSelect('o.urlImagen')
             ->addSelect('o.codigoCategoriaFk')
+            ->addSelect('o.codigoUsuarioFk')
             ->where("o.codigoPanalFk = {$codigoPanal}")
+            ->andWhere()
             ->orderBy("o.fecha", "DESC");
 
-        if($codigoCategoria) {
+        if ($codigoCategoria) {
             $queryBuilder->andWhere("o.codigoCategoriaFk = '{$codigoCategoria}' ");
         }
 
@@ -44,35 +47,43 @@ class OfertaRepository extends ServiceEntityRepository
         ];
     }
 
-    public function apiNuevo($codigoPanal, $descripcion, $precio, $imagen, $categoria)
+    public function apiNuevo($codigoPanal, $descripcion, $precio, $imagen, $categoria, $usuario)
     {
         $em = $this->getEntityManager();
         $arPanal = $em->getRepository(Panal::class)->find($codigoPanal);
+        $arUsuario = $em->getRepository(Usuario::class)->find($usuario);
         if ($arPanal) {
-            $arCategoria = $em->getRepository(Categoria::class)->find($categoria);
-            if ($arCategoria) {
-                $arOferta = new Oferta();
-                $arOferta->setPanalRel($arPanal);
-                $arOferta->setCategoriaRel($arCategoria);
-                $arOferta->setFecha(new \DateTime('now'));
-                $arOferta->setDescripcion($descripcion);
-                $arOferta->setPrecio($precio);
-                if ($imagen) {
-                    if ($imagen['nombre'] && $imagen['base64']) {
-                        $arOferta->setUrlImagen($this->space->subir('oferta', $imagen['nombre'], $imagen['base64']));
+            if ($arUsuario) {
+                $arCategoria = $em->getRepository(Categoria::class)->find($categoria);
+                if ($arCategoria) {
+                    $arOferta = new Oferta();
+                    $arOferta->setPanalRel($arPanal);
+                    $arOferta->setCategoriaRel($arCategoria);
+                    $arOferta->setUsuarioRel($arUsuario);
+                    $arOferta->setFecha(new \DateTime('now'));
+                    $arOferta->setDescripcion($descripcion);
+                    $arOferta->setPrecio($precio);
+                    if ($imagen) {
+                        if ($imagen['nombre'] && $imagen['base64']) {
+                            $arOferta->setUrlImagen($this->space->subir('oferta', $imagen['nombre'], $imagen['base64']));
+                        }
                     }
+                    $em->persist($arOferta);
+                    $em->flush();
+                    return [
+                        'error' => false,
+                        'codigoOferta' => $arOferta->getCodigoOfertaPk()
+                    ];
+                } else {
+                    return [
+                        'error' => true,
+                        'errorMensaje' => "No existe la categoria"
+                    ];
                 }
-                $em->persist($arOferta);
-                $em->flush();
-                return [
-                    'error' => false,
-                    'codigoOferta' => $arOferta->getCodigoOfertaPk()
-                ];
             } else {
                 return [
                     'error' => true,
-                    'errorMensaje' => "No existe la categoria"
-                ];
+                    'errorMensaje' => 'No existe el usuario'];
             }
         } else {
             return [

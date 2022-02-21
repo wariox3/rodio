@@ -164,6 +164,11 @@ class Usuario
     private $casosUsuarioRel;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Oferta", mappedBy="usuarioRel")
+     */
+    private $ofertasUsuarioRel;
+
+    /**
      * @return mixed
      */
     public function getCodigoUsuarioPk()
@@ -627,6 +632,20 @@ class Usuario
         $this->codigoTerceroFk = $codigoTerceroFk;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getOfertasUsuarioRel()
+    {
+        return $this->ofertasUsuarioRel;
+    }
 
+    /**
+     * @param mixed $ofertasUsuarioRel
+     */
+    public function setOfertasUsuarioRel($ofertasUsuarioRel): void
+    {
+        $this->ofertasUsuarioRel = $ofertasUsuarioRel;
+    }
 
 }

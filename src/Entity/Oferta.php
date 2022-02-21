@@ -44,6 +44,11 @@ class Oferta
     private $urlImagen;
 
     /**
+     * @ORM\Column(name="codigo_usuario_fk", type="integer", nullable=true)
+     */
+    private $codigoUsuarioFk;
+
+    /**
      * @ORM\Column(name="codigo_categoria_fk", type="string", length=10, nullable=true)
      */
     private $codigoCategoriaFk;
@@ -59,6 +64,13 @@ class Oferta
      * @ORM\JoinColumn(name="codigo_categoria_fk", referencedColumnName="codigo_catagoria_pk")
      */
     private $categoriaRel;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Usuario", inversedBy="ofertasUsuarioRel")
+     * @ORM\JoinColumn(name="codigo_usuario_fk", referencedColumnName="codigo_usuario_pk")
+     */
+    private $usuarioRel;
+
 
     /**
      * @return mixed
@@ -220,6 +232,35 @@ class Oferta
         $this->categoriaRel = $categoriaRel;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getCodigoUsuarioFk()
+    {
+        return $this->codigoUsuarioFk;
+    }
 
+    /**
+     * @param mixed $codigoUsuarioFk
+     */
+    public function setCodigoUsuarioFk($codigoUsuarioFk): void
+    {
+        $this->codigoUsuarioFk = $codigoUsuarioFk;
+    }
 
+    /**
+     * @return mixed
+     */
+    public function getUsuarioRel()
+    {
+        return $this->usuarioRel;
+    }
+
+    /**
+     * @param mixed $usuarioRel
+     */
+    public function setUsuarioRel($usuarioRel): void
+    {
+        $this->usuarioRel = $usuarioRel;
+    }
 }

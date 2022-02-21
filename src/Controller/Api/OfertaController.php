@@ -21,9 +21,9 @@ class OfertaController extends AbstractFOSRestController
     {
         $em = $this->getDoctrine()->getManager();
         $raw = json_decode($request->getContent(), true);
-        $codigoPanal = $raw['codigoPanal']?? null;
-        $codigoCategoria = $raw['codigoCategoria']?? null;
-        if($codigoPanal) {
+        $codigoPanal = $raw['codigoPanal'] ?? null;
+        $codigoCategoria = $raw['codigoCategoria'] ?? null;
+        if ($codigoPanal) {
             return $em->getRepository(Oferta::class)->apiLista($codigoPanal, $codigoCategoria);
         } else {
             return [
@@ -40,13 +40,14 @@ class OfertaController extends AbstractFOSRestController
     {
         $em = $this->getDoctrine()->getManager();
         $raw = json_decode($request->getContent(), true);
-        $codigoPanal = $raw['codigoPanal']?? null;
-        $descripcion = $raw['descripcion']?? null;
-        $precio = $raw['precio']?? null;
-        $imagen = $raw['imagen']?? null;
-        $categoria = $raw['categoria']?? null;
-        if($codigoPanal && $descripcion && $precio && $categoria) {
-            return $em->getRepository(Oferta::class)->apiNuevo($codigoPanal, $descripcion, $precio, $imagen, $categoria);
+        $codigoPanal = $raw['codigoPanal'] ?? null;
+        $descripcion = $raw['descripcion'] ?? null;
+        $precio = $raw['precio'] ?? null;
+        $imagen = $raw['imagen'] ?? null;
+        $categoria = $raw['categoria'] ?? null;
+        $codigoUsuario = $raw['codigoUsuario'] ?? null;
+        if ($codigoPanal && $descripcion && $precio && $categoria && $codigoUsuario) {
+            return $em->getRepository(Oferta::class)->apiNuevo($codigoPanal, $descripcion, $precio, $imagen, $categoria, $codigoUsuario);
         } else {
             return [
                 'error' => true,
