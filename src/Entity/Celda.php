@@ -54,6 +54,21 @@ class Celda
     private $limitarAnuncio = false;
 
     /**
+     * @ORM\Column(name="coeficiente", type="float", options={"default" : 0})
+     */
+    private $coeficiente = 0.0;
+
+    /**
+     * @ORM\Column(name="area", type="float", options={"default" : 0})
+     */
+    private $area = 0.0;
+
+    /**
+     * @ORM\Column(name="codigo_externo", type="string", length=100, nullable=true)
+     */
+    private $codigoExterno;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Panal", inversedBy="celdasPanalRel")
      * @ORM\JoinColumn(name="codigo_panal_fk", referencedColumnName="codigo_panal_pk")
      */
@@ -327,6 +342,54 @@ class Celda
     public function setLlave($llave): void
     {
         $this->llave = $llave;
+    }
+
+    /**
+     * @return float
+     */
+    public function getCoeficiente(): float
+    {
+        return $this->coeficiente;
+    }
+
+    /**
+     * @param float $coeficiente
+     */
+    public function setCoeficiente(float $coeficiente): void
+    {
+        $this->coeficiente = $coeficiente;
+    }
+
+    /**
+     * @return float
+     */
+    public function getArea(): float
+    {
+        return $this->area;
+    }
+
+    /**
+     * @param float $area
+     */
+    public function setArea(float $area): void
+    {
+        $this->area = $area;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodigoExterno()
+    {
+        return $this->codigoExterno;
+    }
+
+    /**
+     * @param mixed $codigoExterno
+     */
+    public function setCodigoExterno($codigoExterno): void
+    {
+        $this->codigoExterno = $codigoExterno;
     }
 
 
