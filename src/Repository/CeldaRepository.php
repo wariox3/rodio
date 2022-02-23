@@ -21,6 +21,26 @@ class CeldaRepository extends ServiceEntityRepository
         $this->dubnio = $dubnio;
     }
 
+    public function asignarLlave($codigoPanal)
+    {
+        $em = $this->getEntityManager();
+        $queryBuilder = $em->createQueryBuilder()->from(Celda::class, 'c')
+            ->select('c.codigoCeldaPk')
+            ->where("c.codigoPanalFk = {$codigoPanal}");
+        $arCeldas = $queryBuilder->getQuery()->getResult();
+        foreach ($arCeldas as $arCelda) {
+            $token = bin2hex(random_bytes((50 - (50 % 2)) / 2));
+            $arCeldaActualizar = $em->getRepository(Celda::class)->find($arCelda['codigoCeldaPk']);
+            $arCeldaActualizar->setLlave($token);
+            $em->persist($arCeldaActualizar);
+        }
+        $em->flush();
+        return [
+            'error' => false
+        ];
+
+    }
+
     public function apiLista($codigoPanal)
     {
         $em = $this->getEntityManager();

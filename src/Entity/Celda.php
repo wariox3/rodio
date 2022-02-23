@@ -44,6 +44,11 @@ class Celda
     private $responsable;
 
     /**
+     * @ORM\Column(name="llave", type="string", length=200, nullable=true)
+     */
+    private $llave;
+
+    /**
      * @ORM\Column(name="limitar_anuncio", type="boolean", options={"default" : false}, nullable=true)
      */
     private $limitarAnuncio = false;
@@ -307,6 +312,23 @@ class Celda
     {
         $this->limitarAnuncio = $limitarAnuncio;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getLlave()
+    {
+        return $this->llave;
+    }
+
+    /**
+     * @param mixed $llave
+     */
+    public function setLlave($llave): void
+    {
+        $this->llave = $llave;
+    }
+
 
 
 
