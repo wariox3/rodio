@@ -100,8 +100,8 @@ class UsuarioRepository extends ServiceEntityRepository
         $em = $this->getEntityManager();
         $arUsuario = $em->getRepository(Usuario::class)->findOneBy(['usuario' => $usuario]);
         if ($arUsuario) {
-            $asunto = "Veci! recuperamos tu clave";
-            $mensaje = "Tu clave para acceder a la app Veci! es {$arUsuario->getClave()}";
+            $asunto = "Veeci! recuperamos tu clave";
+            $mensaje = "Tu clave para acceder a la app Veeci! es {$arUsuario->getClave()}";
             $this->dubnio->enviarCorreo($asunto, $mensaje, $usuario);
             return [
                 'error' => false
