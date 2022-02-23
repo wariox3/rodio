@@ -130,4 +130,21 @@ class CeldaController extends AbstractFOSRestController
         }
     }
 
+    /**
+     * @Rest\Post("/api/admin/celda/listaimpresion")
+     */
+    public function adminListaImpresion(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoPanal = $raw['codigoPanal']?? null;
+        if($codigoPanal) {
+            return $em->getRepository(Celda::class)->apiAdminImpresion($codigoPanal);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
+        }
+    }
+
 }

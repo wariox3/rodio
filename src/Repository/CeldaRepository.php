@@ -268,4 +268,26 @@ class CeldaRepository extends ServiceEntityRepository
 
     }
 
+    public function apiAdminImpresion($codigoPanal)
+    {
+        $em = $this->getEntityManager();
+        $queryBuilder = $em->createQueryBuilder()->from(Celda::class, 'c')
+            ->select('c.codigoCeldaPk')
+            ->addSelect('c.celda')
+            ->addSelect('c.celular')
+            ->addSelect('c.correo')
+            ->addSelect('c.responsable')
+            ->addSelect('c.limitarAnuncio')
+            ->addSelect('c.llave')
+            ->addSelect('c.codigoPanalFk')
+            ->addSelect('p.nombre as panalNombre')
+            ->leftJoin('c.panalRel', 'p')
+            ->where("c.codigoPanalFk = {$codigoPanal}");
+        $arCeldas = $queryBuilder->getQuery()->getResult();
+        return [
+            'error' => false,
+            'celdas' => $arCeldas
+        ];
+
+    }
 }
