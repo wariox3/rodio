@@ -113,10 +113,18 @@ class CeldaRepository extends ServiceEntityRepository
             if(!$arUsuario->getCeldaRel()) {
                 $arCelda = $em->getRepository(Celda::class)->findOneBy(['codigoPanalFk' => $codigoPanal, 'celda' => $celda]);
                 if ($arCelda) {
+                    if($llave == $arCelda->getLlave()) {
+                        $arCeldaUsuario = new CeldaUsuario();
+                        $arCeldaUsuario->setCeldaRel($arCelda);
+                        $arCeldaUsuario->setUsuarioRel($arUsuario);
+                        $arCeldaUsuario->setLlave($llave);
+                        $em->persist($arCeldaUsuario);
+                        $em->flush();
+                    }
                     $arCeldaUsuario = $em->getRepository(CeldaUsuario::class)->findOneBy(['codigoCeldaFk' => $arCelda->getCodigoCeldaPk(), 'codigoUsuarioFk' => $arUsuario->getCodigoUsuarioPk()]);
                     if($arCeldaUsuario) {
                         if(!$arCeldaUsuario->isValidado()) {
-                            if($llave == $arCeldaUsuario->getLlave() || $llave == $arCelda->getLlave() || $llave == "7139") {
+                            if($llave == $arCeldaUsuario->getLlave() || $llave == "7139") {
                                 $arCeldaUsuario->setCeldaRel($arCelda);
                                 $arCeldaUsuario->setUsuarioRel($arUsuario);
                                 $arCeldaUsuario->setValidado(1);

@@ -34,7 +34,7 @@ class CeldaUsuario
     private $validado = false;
 
     /**
-     * @ORM\Column(name="llave", type="string", length=10, nullable=true)
+     * @ORM\Column(name="llave", type="string", length=200, nullable=true)
      */
     private $llave;
 
