@@ -34,7 +34,7 @@ class VotacionCelda
     private $codigoVotacionDetalleFk;
 
     /**
-     * @ORM\Column(name="codigo_usuario_fk", type="integer")
+     * @ORM\Column(name="codigo_usuario_fk", type="integer", nullable=true)
      */
     private $codigoUsuarioFk;
 

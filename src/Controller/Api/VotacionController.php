@@ -44,7 +44,7 @@ class VotacionController extends AbstractFOSRestController
         $codigoCelda = $raw['codigoCelda']?? null;
         $codigoUsuario = $raw['codigoUsuario']?? null;
         $codigoVotacionDetalle = $raw['codigoVotacionDetalle']?? null;
-        if($codigoCelda && $codigoVotacion && $codigoUsuario && $codigoVotacionDetalle) {
+        if($codigoCelda && $codigoVotacion && $codigoVotacionDetalle) {
             return $em->getRepository(Votacion::class)->apiVotar($codigoVotacion, $codigoCelda, $codigoUsuario, $codigoVotacionDetalle);
         } else {
             return [

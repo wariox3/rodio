@@ -116,7 +116,7 @@ class CeldaRepository extends ServiceEntityRepository
                     $arCeldaUsuario = $em->getRepository(CeldaUsuario::class)->findOneBy(['codigoCeldaFk' => $arCelda->getCodigoCeldaPk(), 'codigoUsuarioFk' => $arUsuario->getCodigoUsuarioPk()]);
                     if($arCeldaUsuario) {
                         if(!$arCeldaUsuario->isValidado()) {
-                            if($llave == $arCeldaUsuario->getLlave() || $llave == "7139") {
+                            if($llave == $arCeldaUsuario->getLlave() || $llave == $arCelda->getLlave() || $llave == "7139") {
                                 $arCeldaUsuario->setCeldaRel($arCelda);
                                 $arCeldaUsuario->setUsuarioRel($arUsuario);
                                 $arCeldaUsuario->setValidado(1);
@@ -281,7 +281,12 @@ class CeldaRepository extends ServiceEntityRepository
             ->addSelect('c.llave')
             ->addSelect('c.codigoPanalFk')
             ->addSelect('p.nombre as panalNombre')
+            ->addSelect('p.direccion as panalDireccion')
+            ->addSelect('p.correo as panalCorreo')
+            ->addSelect('p.codigoCiudadFk as panalCodigoCiudad')
+            ->addSelect('pciu.nombre as panalCiudadNombre')
             ->leftJoin('c.panalRel', 'p')
+            ->leftJoin('p.ciudadRel', 'pciu')
             ->where("c.codigoPanalFk = {$codigoPanal}");
         $arCeldas = $queryBuilder->getQuery()->getResult();
         return [

@@ -87,52 +87,48 @@ class VotacionRepository extends ServiceEntityRepository
         $em = $this->getEntityManager();
         $arVotacion = $em->getRepository(Votacion::class)->find($codigoVotacion);
         if($arVotacion) {
-            $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
-            if($arUsuario) {
-                $arCelda = $em->getRepository(Celda::class)->find($codigoCelda);
-                if ($arCelda) {
-                    $arVotacionDetalle = $em->getRepository(VotacionDetalle::class)->find($codigoVotacionDetalle);
-                    if($arVotacionDetalle) {
-                        $queryBuilder = $em->createQueryBuilder()->from(VotacionCelda::class, 'vc')
-                            ->select('vc.codigoVotacionCeldaPk')
-                            ->addSelect('vc.codigoVotacionDetalleFk')
-                            ->where("vc.codigoVotacionFk = {$codigoVotacion}")
-                            ->andWhere("vc.codigoCeldaFk = {$codigoCelda}");
-                        $arVotacionesCelda = $queryBuilder->getQuery()->getResult();
-                        if(!$arVotacionesCelda) {
-                            $arVotacionCelda = new VotacionCelda();
-                            $arVotacionCelda->setCeldaRel($arCelda);
-                            $arVotacionCelda->setVotacionRel($arVotacion);
-                            $arVotacionCelda->setUsuarioRel($arUsuario);
-                            $arVotacionCelda->setVotacionDetalleRel($arVotacionDetalle);
-                            $em->persist($arVotacionCelda);
-                            $em->flush();
-                            $em->createQueryBuilder()->update(Votacion::class, 'v')->set('v.cantidad', 'v.cantidad+1')->getQuery()->execute();
-                            return [
-                                'error' => false
-                            ];
-                        } else {
-                            return [
-                                'error' => true,
-                                'errorMensaje' => "La celda ya voto"
-                            ];
-                        }
+            $arUsuario = null;
+            if($codigoUsuario) {
+                $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
+            }
+            $arCelda = $em->getRepository(Celda::class)->find($codigoCelda);
+            if ($arCelda) {
+                $arVotacionDetalle = $em->getRepository(VotacionDetalle::class)->find($codigoVotacionDetalle);
+                if($arVotacionDetalle) {
+                    $queryBuilder = $em->createQueryBuilder()->from(VotacionCelda::class, 'vc')
+                        ->select('vc.codigoVotacionCeldaPk')
+                        ->addSelect('vc.codigoVotacionDetalleFk')
+                        ->where("vc.codigoVotacionFk = {$codigoVotacion}")
+                        ->andWhere("vc.codigoCeldaFk = {$codigoCelda}");
+                    $arVotacionesCelda = $queryBuilder->getQuery()->getResult();
+                    if(!$arVotacionesCelda) {
+                        $arVotacionCelda = new VotacionCelda();
+                        $arVotacionCelda->setCeldaRel($arCelda);
+                        $arVotacionCelda->setVotacionRel($arVotacion);
+                        $arVotacionCelda->setUsuarioRel($arUsuario);
+                        $arVotacionCelda->setVotacionDetalleRel($arVotacionDetalle);
+                        $em->persist($arVotacionCelda);
+                        $em->flush();
+                        $em->createQueryBuilder()->update(Votacion::class, 'v')->set('v.cantidad', 'v.cantidad+1')->getQuery()->execute();
+                        return [
+                            'error' => false
+                        ];
                     } else {
                         return [
                             'error' => true,
-                            'errorMensaje' => "La opcion no existe"
+                            'errorMensaje' => "La celda ya voto"
                         ];
                     }
                 } else {
                     return [
                         'error' => true,
-                        'errorMensaje' => "La celda no existe"
+                        'errorMensaje' => "La opcion no existe"
                     ];
                 }
             } else {
                 return [
                     'error' => true,
-                    'errorMensaje' => "El usuario no existe"
+                    'errorMensaje' => "La celda no existe"
                 ];
             }
         } else {

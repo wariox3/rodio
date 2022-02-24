@@ -24,6 +24,16 @@ class Panal
     private $nombre;
 
     /**
+     * @ORM\Column(name="direccion", type="string", length=300)
+     */
+    private $direccion;
+
+    /**
+     * @ORM\Column(name="correo", type="string", length=100)
+     */
+    private $correo;
+
+    /**
      * @ORM\Column(name="codigo_ciudad_fk", type="integer", nullable=true)
      */
     private $codigoCiudadFk;
@@ -327,6 +337,38 @@ class Panal
     public function setVisitasPanalRel($visitasPanalRel): void
     {
         $this->visitasPanalRel = $visitasPanalRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDireccion()
+    {
+        return $this->direccion;
+    }
+
+    /**
+     * @param mixed $direccion
+     */
+    public function setDireccion($direccion): void
+    {
+        $this->direccion = $direccion;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCorreo()
+    {
+        return $this->correo;
+    }
+
+    /**
+     * @param mixed $correo
+     */
+    public function setCorreo($correo): void
+    {
+        $this->correo = $correo;
     }
 
 
