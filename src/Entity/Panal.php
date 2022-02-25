@@ -48,6 +48,18 @@ class Panal
      */
     private $exigeCelda = true;
 
+
+    /**
+     * @ORM\Column(name="tienda", type="boolean", options={"default" : true})
+     */
+    private $tienda = true;
+
+
+    /**
+     * @ORM\Column(name="oferta", type="boolean", options={"default" : true})
+     */
+    private $oferta = true;
+
     /**
      * @ORM\Column(name="coeficiente", type="float", options={"default" : 0})
      */
@@ -413,6 +425,36 @@ class Panal
         $this->area = $area;
     }
 
+    /**
+     * @return bool
+     */
+    public function isTienda(): bool
+    {
+        return $this->tienda;
+    }
 
+    /**
+     * @param bool $tienda
+     */
+    public function setTienda(bool $tienda): void
+    {
+        $this->tienda = $tienda;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOferta(): bool
+    {
+        return $this->oferta;
+    }
+
+    /**
+     * @param bool $oferta
+     */
+    public function setOferta(bool $oferta): void
+    {
+        $this->oferta = $oferta;
+    }
 
 }
