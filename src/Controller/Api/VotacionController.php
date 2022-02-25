@@ -164,4 +164,21 @@ class VotacionController extends AbstractFOSRestController
                 'errorMensaje' => 'Faltan parametros para el consumo de la api'];
         }
     }
+
+    /**
+     * @Rest\Post("/api/admin/votacion/cerrar")
+     */
+    public function adminCerrar(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoVotacion = $raw['codigoVotacion']?? null;
+        if($codigoVotacion) {
+            return $em->getRepository(Votacion::class)->apiAdminCerrar($codigoVotacion);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
+        }
+    }
 }

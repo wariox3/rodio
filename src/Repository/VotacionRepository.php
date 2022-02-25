@@ -42,6 +42,7 @@ class VotacionRepository extends ServiceEntityRepository
                 ->addSelect('v.estadoCerrado')
                 ->where("v.codigoPanalFk = {$arCelda->getCodigoPanalFk()}")
                 ->andWhere("v.estadoPublicado = 1")
+                ->andWhere("v.estadoCerrado = 0")
                 ->orderBy('v.fecha', 'DESC');
             $arVotaciones = $queryBuilder->getQuery()->getResult();
             $indice = 0;
@@ -217,6 +218,10 @@ class VotacionRepository extends ServiceEntityRepository
             ->addSelect('v.titulo')
             ->addSelect('v.cantidad')
             ->addSelect('v.estadoPublicado')
+            ->addSelect('v.estadoCerrado')
+            ->addSelect('p.coeficiente as panalCoeficiente')
+            ->addSelect('p.area as panalArea')
+            ->leftJoin('v.panalRel', 'p')
             ->where("v.codigoVotacionPk = {$codigoVotacion}");
         $arVotacion = $queryBuilder->getQuery()->getResult();
         if($arVotacion) {
@@ -235,8 +240,10 @@ class VotacionRepository extends ServiceEntityRepository
             $arVotacionCeldas = $queryBuilder->getQuery()->getResult();
             $queryBuilder = $em->createQueryBuilder()->from(VotacionCelda::class, 'vc')
                 ->select('COUNT(vc.codigoVotacionCeldaPk) as cantidad')
+                ->addSelect('SUM(c.coeficiente) as coeficiente')
                 ->addSelect('vd.descripcion as votacionDetalleDescripcion')
                 ->leftJoin('vc.votacionDetalleRel', 'vd')
+                ->leftJoin('vc.celdaRel', 'c')
                 ->where("vc.codigoVotacionFk = {$codigoVotacion}")
                 ->groupBy('vc.codigoVotacionDetalleFk');
             $arVotacionResumen = $queryBuilder->getQuery()->getResult();
@@ -337,6 +344,39 @@ class VotacionRepository extends ServiceEntityRepository
                 return [
                     'error' => true,
                     'errorMensaje' => "La votacion ya fue publicada"
+                ];
+            }
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "No existe la votacion"
+            ];
+        }
+    }
+
+    public function apiAdminCerrar($id)
+    {
+        $em = $this->getEntityManager();
+        $arVotacion = $em->getRepository(Votacion::class)->find($id);
+        if($arVotacion) {
+            if($arVotacion->isEstadoPublicado() == 1) {
+                if($arVotacion->isEstadoCerrado() == 0) {
+                    $arVotacion->setEstadoCerrado(1);
+                    $em->persist($arVotacion);
+                    $em->flush();
+                    return [
+                        'error' => false
+                    ];
+                } else {
+                    return [
+                        'error' => true,
+                        'errorMensaje' => "La votacion no puede estar cerrada"
+                    ];
+                }
+            } else {
+                return [
+                    'error' => true,
+                    'errorMensaje' => "La votacion debe estar cerrada para publicarse"
                 ];
             }
         } else {

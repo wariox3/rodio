@@ -49,6 +49,16 @@ class Panal
     private $exigeCelda = true;
 
     /**
+     * @ORM\Column(name="coeficiente", type="float", options={"default" : 0})
+     */
+    private $coeficiente = 0.0;
+
+    /**
+     * @ORM\Column(name="area", type="float", options={"default" : 0})
+     */
+    private $area = 0.0;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Ciudad", inversedBy="panalesCiudadRel")
      * @ORM\JoinColumn(name="codigo_ciudad_fk", referencedColumnName="codigo_ciudad_pk")
      */
@@ -369,6 +379,38 @@ class Panal
     public function setCorreo($correo): void
     {
         $this->correo = $correo;
+    }
+
+    /**
+     * @return float
+     */
+    public function getCoeficiente(): float
+    {
+        return $this->coeficiente;
+    }
+
+    /**
+     * @param float $coeficiente
+     */
+    public function setCoeficiente(float $coeficiente): void
+    {
+        $this->coeficiente = $coeficiente;
+    }
+
+    /**
+     * @return float
+     */
+    public function getArea(): float
+    {
+        return $this->area;
+    }
+
+    /**
+     * @param float $area
+     */
+    public function setArea(float $area): void
+    {
+        $this->area = $area;
     }
 
 
