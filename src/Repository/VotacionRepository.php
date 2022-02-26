@@ -221,6 +221,7 @@ class VotacionRepository extends ServiceEntityRepository
             ->addSelect('v.estadoCerrado')
             ->addSelect('p.coeficiente as panalCoeficiente')
             ->addSelect('p.area as panalArea')
+            ->addSelect('p.cantidad as panalCantidad')
             ->leftJoin('v.panalRel', 'p')
             ->where("v.codigoVotacionPk = {$codigoVotacion}");
         $arVotacion = $queryBuilder->getQuery()->getResult();

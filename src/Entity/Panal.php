@@ -71,6 +71,11 @@ class Panal
     private $area = 0.0;
 
     /**
+     * @ORM\Column(name="cantidad", type="float", options={"default" : 0})
+     */
+    private $cantidad = 0.0;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Ciudad", inversedBy="panalesCiudadRel")
      * @ORM\JoinColumn(name="codigo_ciudad_fk", referencedColumnName="codigo_ciudad_pk")
      */
@@ -456,5 +461,23 @@ class Panal
     {
         $this->oferta = $oferta;
     }
+
+    /**
+     * @return float
+     */
+    public function getCantidad(): float
+    {
+        return $this->cantidad;
+    }
+
+    /**
+     * @param float $cantidad
+     */
+    public function setCantidad(float $cantidad): void
+    {
+        $this->cantidad = $cantidad;
+    }
+
+
 
 }
