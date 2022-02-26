@@ -34,12 +34,12 @@ class Votacion
     private $fechaHasta;
 
     /**
-     * @ORM\Column(name="titulo", type="string", length=80)
+     * @ORM\Column(name="titulo", type="string", length=300)
      */
     private $titulo;
 
     /**
-     * @ORM\Column(name="descripcion", type="string", length=200)
+     * @ORM\Column(name="descripcion", type="string", length=300)
      */
     private $descripcion;
 

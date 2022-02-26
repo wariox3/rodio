@@ -24,7 +24,7 @@ class VotacionDetalle
     private $codigoVotacionFk;
 
     /**
-     * @ORM\Column(name="descripcion", type="string", length=100)
+     * @ORM\Column(name="descripcion", type="string", length=300)
      */
     private $descripcion;
 
