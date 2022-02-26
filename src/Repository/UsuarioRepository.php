@@ -158,7 +158,9 @@ class UsuarioRepository extends ServiceEntityRepository
                         return [
                             'error' => false,
                             'panal' => $arPanal->getCodigoPanalPk(),
-                            'ciudad' => $arCiudad->getCodigoCiudadPk()
+                            'ciudad' => $arCiudad->getCodigoCiudadPk(),
+                            'oferta' => $arPanal->isOferta(),
+                            'tienda' => $arPanal->isTienda()
                         ];
                     } else {
                         return [
