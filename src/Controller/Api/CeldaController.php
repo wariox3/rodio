@@ -55,7 +55,7 @@ class CeldaController extends AbstractFOSRestController
     /**
      * @Rest\Post("/api/celda/asignar")
      */
-    public function asignar(Request $request)
+    public function conectar(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $raw = json_decode($request->getContent(), true);

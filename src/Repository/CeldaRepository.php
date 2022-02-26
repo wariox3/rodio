@@ -68,22 +68,29 @@ class CeldaRepository extends ServiceEntityRepository
             if(!$arUsuario->getCeldaRel()) {
                 $arCelda = $em->getRepository(Celda::class)->findOneBy(['codigoPanalFk' => $codigoPanal, 'celda' => $celda]);
                 if ($arCelda) {
-                    $arCeldaUsuario = $em->getRepository(CeldaUsuario::class)->findOneBy(['codigoCeldaFk' => $arCelda->getCodigoCeldaPk(), 'codigoUsuarioFk' => $arUsuario->getCodigoUsuarioPk()]);
-                    $llave = mt_rand(1000,9999);
-                    if(!$arCeldaUsuario) {
-                        $arCeldaUsuario = new CeldaUsuario();
-                        $arCeldaUsuario->setCeldaRel($arCelda);
-                        $arCeldaUsuario->setUsuarioRel($arUsuario);
+                    if($arCelda->getCorreo()) {
+                        $arCeldaUsuario = $em->getRepository(CeldaUsuario::class)->findOneBy(['codigoCeldaFk' => $arCelda->getCodigoCeldaPk(), 'codigoUsuarioFk' => $arUsuario->getCodigoUsuarioPk()]);
+                        $llave = mt_rand(1000,9999);
+                        if(!$arCeldaUsuario) {
+                            $arCeldaUsuario = new CeldaUsuario();
+                            $arCeldaUsuario->setCeldaRel($arCelda);
+                            $arCeldaUsuario->setUsuarioRel($arUsuario);
+                        }
+                        $arCeldaUsuario->setLlave($llave);
+                        $em->persist($arCeldaUsuario);
+                        $em->flush();
+                        $mensaje = "El usuario {$arUsuario->getUsuario()} genero un codigo para conectarse a la celda {$celda} debe proporcionarle este codigo para verificar su autorizacion: {$llave}";
+                        $this->dubnio->enviarCorreo("Se ha generado el codigo {$llave} de validacion para Veeci", $mensaje, $arCelda->getCorreo());
+                        return [
+                            'error' => false,
+                            'correo' => $arCelda->getCorreo()
+                        ];
+                    } else {
+                        return [
+                            'error' => true,
+                            'errorMensaje' => "La celda no tiene un correo electronico asignado, pruebe conectandose por QR"
+                        ];
                     }
-                    $arCeldaUsuario->setLlave($llave);
-                    $em->persist($arCeldaUsuario);
-                    $em->flush();
-                    $mensaje = "El usuario {$arUsuario->getUsuario()} genero un codigo para conectarse a la celda {$celda} debe proporcionarle este codigo para verificar su autorizacion: {$llave}";
-                    $this->dubnio->enviarCorreo("Se ha generado un codigo de validacion para Veci", $mensaje, $arCelda->getCorreo());
-                    return [
-                        'error' => false,
-                        'correo' => $arCelda->getCorreo()
-                    ];
                 } else {
                     return [
                         'error' => true,
