@@ -40,6 +40,12 @@ class UsuarioRepository extends ServiceEntityRepository
                 $puntoServicio = $arUsuario->getOperadorRel()->getPuntoServicioCromo();
                 $puntoServicioToken = $arUsuario->getOperadorRel()->getToken();
             }
+            $oferta = false;
+            $tienda = false;
+            if($arUsuario->getPanalRel()) {
+                $oferta = $arUsuario->getPanalRel()->isOferta();
+                $tienda = $arUsuario->getPanalRel()->isTienda();
+            }
             return [
                 'error' => false,
                 'autenticar' => true,
@@ -54,6 +60,8 @@ class UsuarioRepository extends ServiceEntityRepository
                     'codigoPuesto' => $arUsuario->getCodigoPuestoFk(),
                     'codigoTercero' => $arUsuario->getCodigoTerceroFk(),
                     'codigoOperador' => $arUsuario->getCodigoOperadorFk(),
+                    'tienda' => $tienda,
+                    'oferta' => $oferta,
                     'operador' => $operador,
                     'puntoServicio' => $puntoServicio,
                     'puntoServicioToken' => $puntoServicioToken,
