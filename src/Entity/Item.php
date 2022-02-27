@@ -29,6 +29,11 @@ class Item
     private $precio = 0.0;
 
     /**
+     * @ORM\Column(name="porcentaje_iva", type="float", nullable=true, options={"default" : 0})
+     */
+    private $porcentajeIva = 0.0;
+
+    /**
      * @ORM\Column(name="codigo_linea_fk", type="string", length=10, nullable=true)
      */
     private $codigoLineaFk;
@@ -37,6 +42,11 @@ class Item
      * @ORM\Column(name="codigo_grupo_fk", type="string", length=10, nullable=true)
      */
     private $codigoGrupoFk;
+
+    /**
+     * @ORM\Column(name="url_imagen", type="string", length=500, nullable=true)
+     */
+    private $urlImagen;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Linea", inversedBy="itemesLineaRel")
@@ -49,6 +59,11 @@ class Item
      * @ORM\JoinColumn(name="codigo_grupo_fk", referencedColumnName="codigo_grupo_pk")
      */
     private $grupoRel;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MovimientoDetalle", mappedBy="itemRel")
+     */
+    private $movimientosDetallesItemRel;
 
     /**
      * @return mixed
@@ -160,6 +175,54 @@ class Item
     public function setGrupoRel($grupoRel): void
     {
         $this->grupoRel = $grupoRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUrlImagen()
+    {
+        return $this->urlImagen;
+    }
+
+    /**
+     * @param mixed $urlImagen
+     */
+    public function setUrlImagen($urlImagen): void
+    {
+        $this->urlImagen = $urlImagen;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMovimientosDetallesItemRel()
+    {
+        return $this->movimientosDetallesItemRel;
+    }
+
+    /**
+     * @param mixed $movimientosDetallesItemRel
+     */
+    public function setMovimientosDetallesItemRel($movimientosDetallesItemRel): void
+    {
+        $this->movimientosDetallesItemRel = $movimientosDetallesItemRel;
+    }
+
+    /**
+     * @return float
+     */
+    public function getPorcentajeIva(): float
+    {
+        return $this->porcentajeIva;
+    }
+
+    /**
+     * @param float $porcentajeIva
+     */
+    public function setPorcentajeIva(float $porcentajeIva): void
+    {
+        $this->porcentajeIva = $porcentajeIva;
     }
 
 

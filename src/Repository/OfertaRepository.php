@@ -35,7 +35,6 @@ class OfertaRepository extends ServiceEntityRepository
             ->where("o.codigoPanalFk = {$codigoPanal}")
             ->andWhere()
             ->orderBy("o.fecha", "DESC");
-
         if ($codigoCategoria) {
             $queryBuilder->andWhere("o.codigoCategoriaFk = '{$codigoCategoria}' ");
         }

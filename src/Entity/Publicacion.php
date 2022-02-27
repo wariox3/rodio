@@ -19,7 +19,7 @@ class Publicacion
     private $codigoPublicacionPk;
 
     /**
-     * @ORM\Column(name="codigo_usuario_fk", type="integer", nullable=false)
+     * @ORM\Column(name="codigo_usuario_fk", type="integer")
      */
     private $codigoUsuarioFk;
 

@@ -169,6 +169,11 @@ class Usuario
     private $ofertasUsuarioRel;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Movimiento", mappedBy="usuarioRel")
+     */
+    private $movimientosUsuarioRel;
+
+    /**
      * @return mixed
      */
     public function getCodigoUsuarioPk()
@@ -647,5 +652,23 @@ class Usuario
     {
         $this->ofertasUsuarioRel = $ofertasUsuarioRel;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getMovimientosUsuarioRel()
+    {
+        return $this->movimientosUsuarioRel;
+    }
+
+    /**
+     * @param mixed $movimientosUsuarioRel
+     */
+    public function setMovimientosUsuarioRel($movimientosUsuarioRel): void
+    {
+        $this->movimientosUsuarioRel = $movimientosUsuarioRel;
+    }
+
+
 
 }
