@@ -54,7 +54,8 @@ class ItemRepository extends ServiceEntityRepository
             $grupos[$arItem['codigoGrupoFk']]['itemes'][] = [
                 'codigoItemPk' => $arItem['codigoItemPk'],
                 'nombre' => $arItem['nombre'],
-                'precio' => $arItem['precio']
+                'precio' => $arItem['precio'],
+                'urlImagen' => $arItem['urlImagen']
             ];
         }
         return [
