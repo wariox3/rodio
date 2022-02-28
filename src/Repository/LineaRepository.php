@@ -18,7 +18,8 @@ class LineaRepository extends ServiceEntityRepository
         $em = $this->getEntityManager();
         $queryBuilder = $em->createQueryBuilder()->from(Linea::class, 'l')
             ->select('l.codigoLineaPk')
-            ->addSelect('l.nombre');
+            ->addSelect('l.nombre')
+            ->addSelect('l.urlImagen');
         $arLineas = $queryBuilder->getQuery()->getResult();
         return [
             'error' => false,

@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\LineaRepository")
@@ -13,17 +12,19 @@ class Linea
     /**
      * @ORM\Id()
      * @ORM\Column(name="codigo_linea_pk", type="string", length=10, unique=true)
-     * @Assert\Length( max = 10, maxMessage="El campo no puede contener más de 10 caracteres")
      */
     private $codigoLineaPk;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="nombre", type="string", length=255)
-     * @Assert\Length( max = 255, maxMessage = "El campo no puede contener más de {{ limit }} caracteres")
      */
     private $nombre;
+
+
+    /**
+     * @ORM\Column(name="url_imagen", type="string", length=500, nullable=true)
+     */
+    private $urlImagen;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Grupo", mappedBy="lineaRel")
@@ -97,6 +98,22 @@ class Linea
     public function setItemesLineaRel($itemesLineaRel): void
     {
         $this->itemesLineaRel = $itemesLineaRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUrlImagen()
+    {
+        return $this->urlImagen;
+    }
+
+    /**
+     * @param mixed $urlImagen
+     */
+    public function setUrlImagen($urlImagen): void
+    {
+        $this->urlImagen = $urlImagen;
     }
 
 
