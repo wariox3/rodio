@@ -22,7 +22,13 @@ class MovimientoController extends AbstractFOSRestController
         $raw = json_decode($request->getContent(), true);
         $codigoUsuario = $raw['codigoUsuario']?? null;
         $detalles = $raw['detalles']?? null;
-        if($codigoUsuario && $detalles) {
+        $comentario = $raw['comentario']?? null;
+        //Informacion de entrega
+        $nombre = $raw['nombre']?? null;
+        $telefono = $raw['telefono']?? null;
+        $correo = $raw['correo']?? null;
+        $celda = $raw['celda']?? null;
+        if($codigoUsuario && $detalles && $nombre && $telefono && $correo && $celda) {
             return $em->getRepository(Movimiento::class)->apiNuevoPedido($codigoUsuario, $detalles);
         } else {
             return [

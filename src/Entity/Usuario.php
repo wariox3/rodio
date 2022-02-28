@@ -25,7 +25,7 @@ class Usuario
     private $usuario;
 
     /**
-     * @ORM\Column(name="nombre", type="string", length=30, nullable=true)
+     * @ORM\Column(name="nombre", type="string", length=255, nullable=true)
      */
     private $nombre;
 
@@ -172,6 +172,11 @@ class Usuario
      * @ORM\OneToMany(targetEntity="App\Entity\Movimiento", mappedBy="usuarioRel")
      */
     private $movimientosUsuarioRel;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Direccion", mappedBy="usuarioRel")
+     */
+    private $direccionesUsuarioRel;
 
     /**
      * @return mixed
@@ -667,6 +672,22 @@ class Usuario
     public function setMovimientosUsuarioRel($movimientosUsuarioRel): void
     {
         $this->movimientosUsuarioRel = $movimientosUsuarioRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDireccionesUsuarioRel()
+    {
+        return $this->direccionesUsuarioRel;
+    }
+
+    /**
+     * @param mixed $direccionesUsuarioRel
+     */
+    public function setDireccionesUsuarioRel($direccionesUsuarioRel): void
+    {
+        $this->direccionesUsuarioRel = $direccionesUsuarioRel;
     }
 
 

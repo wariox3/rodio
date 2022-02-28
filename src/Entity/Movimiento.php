@@ -34,6 +34,11 @@ class Movimiento
     private $codigoUsuarioFk;
 
     /**
+     * @ORM\Column(name="codigo_direccion_fk", type="integer")
+     */
+    private $codigoDireccionFk;
+
+    /**
      * @ORM\Column(name="estado_aprobado", type="boolean", options={"default" : false}, nullable=true)
      */
     private $estadoAprobado = false;
@@ -54,6 +59,12 @@ class Movimiento
      * @ORM\JoinColumn(name="codigo_usuario_fk", referencedColumnName="codigo_usuario_pk")
      */
     private $usuarioRel;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Direccion", inversedBy="movimientosDireccionRel")
+     * @ORM\JoinColumn(name="codigo_direccion_fk", referencedColumnName="codigo_direccion_pk")
+     */
+    private $direccionRel;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\MovimientoDetalle", mappedBy="movimientoRel")
@@ -202,6 +213,38 @@ class Movimiento
     public function setEstadoEntregado(bool $estadoEntregado): void
     {
         $this->estadoEntregado = $estadoEntregado;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodigoDireccionFk()
+    {
+        return $this->codigoDireccionFk;
+    }
+
+    /**
+     * @param mixed $codigoDireccionFk
+     */
+    public function setCodigoDireccionFk($codigoDireccionFk): void
+    {
+        $this->codigoDireccionFk = $codigoDireccionFk;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDireccionRel()
+    {
+        return $this->direccionRel;
+    }
+
+    /**
+     * @param mixed $direccionRel
+     */
+    public function setDireccionRel($direccionRel): void
+    {
+        $this->direccionRel = $direccionRel;
     }
 
 
