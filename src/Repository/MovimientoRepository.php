@@ -45,6 +45,7 @@ class MovimientoRepository extends ServiceEntityRepository
                         $arMovimiento->setFecha(new \DateTime('now'));
                         $arMovimiento->setUsuarioRel($arUsuario);
                         $arMovimiento->setDireccionRel($arDireccion);
+                        $arMovimiento->setComentario($comentario);
                         $em->persist($arMovimiento);
                         foreach ($detalles as $detalle) {
                             $arItem = $em->getRepository(Item::class)->find($detalle['codigoItemPk']);
