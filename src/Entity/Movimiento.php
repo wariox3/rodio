@@ -49,6 +49,11 @@ class Movimiento
     private $estadoEntregado = false;
 
     /**
+     * @ORM\Column(name="comentario", type="string", length=500, nullable=true)
+     */
+    private $comentario;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\MovimientoClase", inversedBy="movimientosMovimientoClaseRel")
      * @ORM\JoinColumn(name="codigo_movimiento_clase_fk", referencedColumnName="codigo_movimiento_clase_pk")
      */
@@ -245,6 +250,22 @@ class Movimiento
     public function setDireccionRel($direccionRel): void
     {
         $this->direccionRel = $direccionRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getComentario()
+    {
+        return $this->comentario;
+    }
+
+    /**
+     * @param mixed $comentario
+     */
+    public function setComentario($comentario): void
+    {
+        $this->comentario = $comentario;
     }
 
 

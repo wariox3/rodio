@@ -34,6 +34,40 @@ class PanalRepository extends ServiceEntityRepository
         ];
     }
 
+    public function apiTienda($codigoPanal)
+    {
+        $em = $this->getEntityManager();
+        $tienda = false;
+        $queryBuilder = $em->createQueryBuilder()->from(Panal::class, 'p')
+            ->select('p.tienda')
+            ->where("p.codigoPanalPk = {$codigoPanal}");
+        $arPanal = $queryBuilder->getQuery()->getOneOrNullResult();
+        if($arPanal) {
+            $tienda = $arPanal['tienda'];
+        }
+        return [
+            'error' => false,
+            'tienda' => $tienda
+        ];
+    }
+
+    public function apiOferta($codigoPanal)
+    {
+        $em = $this->getEntityManager();
+        $oferta = false;
+        $queryBuilder = $em->createQueryBuilder()->from(Panal::class, 'p')
+            ->select('p.oferta')
+            ->where("p.codigoPanalPk = {$codigoPanal}");
+        $arPanal = $queryBuilder->getQuery()->getOneOrNullResult();
+        if($arPanal) {
+            $oferta = $arPanal['oferta'];
+        }
+        return [
+            'error' => false,
+            'oferta' => $oferta
+        ];
+    }
+
     public function apiAdminLista($codigoPanal)
     {
         $em = $this->getEntityManager();
