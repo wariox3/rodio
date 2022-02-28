@@ -31,4 +31,25 @@ class DireccionController extends AbstractFOSRestController
         }
     }
 
+    /**
+     * @Rest\Post("/api/direccion/actualizar/v1")
+     */
+    public function actualizar(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoDireccion = $raw['codigoDireccion']?? null;
+        $nombre = $raw['nombre']?? null;
+        $celda = $raw['celda']?? null;
+        $celular = $raw['celular']?? null;
+        $correo = $raw['correo']?? null;
+        if($codigoDireccion && $nombre && $celda && $celular && $correo) {
+            return $em->getRepository(Direccion::class)->apiActualizar($codigoDireccion, $nombre, $celda, $celular, $correo);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
+        }
+    }
+
 }
