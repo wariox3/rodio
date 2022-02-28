@@ -5,6 +5,7 @@ namespace App\Repository;
 
 use App\Entity\Celda;
 use App\Entity\CeldaUsuario;
+use App\Entity\Direccion;
 use App\Entity\Item;
 use App\Entity\Movimiento;
 use App\Entity\MovimientoClase;
@@ -29,7 +30,7 @@ class MovimientoRepository extends ServiceEntityRepository
         $this->space = $space;
     }
 
-    public function apiNuevoPedido($codigoUsuario, $detalles)
+    public function apiNuevoPedido($codigoUsuario, $codigoDireccion, $comentario, $detalles)
     {
         $em = $this->getEntityManager();
         $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
@@ -37,40 +38,49 @@ class MovimientoRepository extends ServiceEntityRepository
             $arMovimientoClase = $em->getRepository(MovimientoClase::class)->find('PED');
             if($arMovimientoClase) {
                 if(is_array($detalles)) {
-                    $arMovimiento = new Movimiento();
-                    $arMovimiento->setMovimientoClaseRel($arMovimientoClase);
-                    $arMovimiento->setFecha(new \DateTime('now'));
-                    $arMovimiento->setUsuarioRel($arUsuario);
-                    $em->persist($arMovimiento);
-                    foreach ($detalles as $detalle) {
-                        $arItem = $em->getRepository(Item::class)->find($detalle['codigoItemPk']);
-                        if($arItem) {
-                            $cantidad = $detalle['cantidad'];
-                            $precio = $arItem->getPrecio();
-                            $subtotal = $cantidad * $precio;
-                            $porcentajeIva = $arItem->getPorcentajeIva();
-                            $iva = 0;
-                            if($porcentajeIva > 0) {
-                                $iva = $subtotal * $porcentajeIva / 100;
+                    $arDireccion = $em->getRepository(Direccion::class)->find($codigoDireccion);
+                    if($arDireccion) {
+                        $arMovimiento = new Movimiento();
+                        $arMovimiento->setMovimientoClaseRel($arMovimientoClase);
+                        $arMovimiento->setFecha(new \DateTime('now'));
+                        $arMovimiento->setUsuarioRel($arUsuario);
+                        $arMovimiento->setDireccionRel($arDireccion);
+                        $em->persist($arMovimiento);
+                        foreach ($detalles as $detalle) {
+                            $arItem = $em->getRepository(Item::class)->find($detalle['codigoItemPk']);
+                            if($arItem) {
+                                $cantidad = $detalle['cantidad'];
+                                $precio = $arItem->getPrecio();
+                                $subtotal = $cantidad * $precio;
+                                $porcentajeIva = $arItem->getPorcentajeIva();
+                                $iva = 0;
+                                if($porcentajeIva > 0) {
+                                    $iva = $subtotal * $porcentajeIva / 100;
+                                }
+                                $neto = $subtotal + $iva;
+                                $arMovimientoDetalle = new MovimientoDetalle();
+                                $arMovimientoDetalle->setMovimientoRel($arMovimiento);
+                                $arMovimientoDetalle->setItemRel($arItem);
+                                $arMovimientoDetalle->setCantidad($cantidad);
+                                $arMovimientoDetalle->setPorcentajeIva($porcentajeIva);
+                                $arMovimientoDetalle->setVrPrecio($precio);
+                                $arMovimientoDetalle->setVrSubtotal($subtotal);
+                                $arMovimientoDetalle->setVrIva($iva);
+                                $arMovimientoDetalle->setVrNeto($neto);
+                                $em->persist($arMovimientoDetalle);
                             }
-                            $neto = $subtotal + $iva;
-                            $arMovimientoDetalle = new MovimientoDetalle();
-                            $arMovimientoDetalle->setMovimientoRel($arMovimiento);
-                            $arMovimientoDetalle->setItemRel($arItem);
-                            $arMovimientoDetalle->setCantidad($cantidad);
-                            $arMovimientoDetalle->setPorcentajeIva($porcentajeIva);
-                            $arMovimientoDetalle->setVrPrecio($precio);
-                            $arMovimientoDetalle->setVrSubtotal($subtotal);
-                            $arMovimientoDetalle->setVrIva($iva);
-                            $arMovimientoDetalle->setVrNeto($neto);
-                            $em->persist($arMovimientoDetalle);
                         }
+                        $em->flush();
+                        return [
+                            'error' => false,
+                            'codigoMovimiento' => $arMovimiento->getCodigoMovimientoPk(),
+                        ];
+                    } else {
+                        return [
+                            'error' => true,
+                            'errorMensaje' => "La direccion no existe"
+                        ];
                     }
-                    $em->flush();
-                    return [
-                        'error' => false,
-                        'codigoMovimiento' => $arMovimiento->getCodigoMovimientoPk(),
-                    ];
                 } else {
                     return [
                         'error' => true,
