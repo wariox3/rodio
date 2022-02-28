@@ -43,7 +43,7 @@ class MovimientoRepository extends ServiceEntityRepository
                     $arMovimiento->setUsuarioRel($arUsuario);
                     $em->persist($arMovimiento);
                     foreach ($detalles as $detalle) {
-                        $arItem = $em->getRepository(Item::class)->find($detalle['item']);
+                        $arItem = $em->getRepository(Item::class)->find($detalle['codigoItemPk']);
                         if($arItem) {
                             $cantidad = $detalle['cantidad'];
                             $precio = $arItem->getPrecio();
