@@ -52,4 +52,21 @@ class DireccionController extends AbstractFOSRestController
         }
     }
 
+    /**
+     * @Rest\Post("/api/direccion/consulta/v1")
+     */
+    public function consulta(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoDireccion = $raw['codigoDireccion']?? null;
+        if($codigoDireccion) {
+            return $em->getRepository(Direccion::class)->apiConsulta($codigoDireccion);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
+        }
+    }
+
 }

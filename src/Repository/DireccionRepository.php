@@ -104,4 +104,26 @@ class DireccionRepository extends ServiceEntityRepository
 
 
     }
+
+    public function apiConsulta($codigoDireccion)
+    {
+        $em = $this->getEntityManager();
+        $arDireccion = $em->getRepository(Direccion::class)->find($codigoDireccion);
+        if($arDireccion) {
+            return [
+                'error' => false,
+                'nombre' => $arDireccion->getNombre(),
+                'celda' => $arDireccion->getCelda(),
+                'celular' => $arDireccion->getCelular(),
+                'correo' => $arDireccion->getCorreo(),
+            ];
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "La direccion no existe"
+            ];
+        }
+
+
+    }
 }
