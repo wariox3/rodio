@@ -71,6 +71,7 @@ class ItemRepository extends ServiceEntityRepository
             ->addSelect('i.nombre')
             ->addSelect('i.precio')
             ->addSelect('i.codigoGrupoFk')
+            ->addSelect('i.urlImagen')
             ->addSelect('g.nombre as grupoNombre')
             ->leftJoin('i.grupoRel', 'g')
             ->where("i.nombre like '%{$itemNombre}%' ")
