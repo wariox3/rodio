@@ -31,7 +31,7 @@ class ChatRepository  extends ServiceEntityRepository
                     $queryBuilder = $em->createQueryBuilder()->from(Chat::class, 'c')
                         ->select('c.codigoChatPk')
                         ->where("c.codigoOfertaFk = {$codigoOferta}")
-                        ->andWhere("c.codigoUsuarioEmisorFk = {$codigoUsuario}");
+                        ->andWhere("c.codigoUsuarioFk = {$codigoUsuario}");
                     $arChats = $queryBuilder->getQuery()->getOneOrNullResult();
                     if($arChats) {
                         return [
@@ -41,7 +41,7 @@ class ChatRepository  extends ServiceEntityRepository
                         ];
                     } else {
                         $arChat = new Chat();
-                        $arChat->setUsuarioEmisorRel($arUsuario);
+                        $arChat->setUsuarioRel($arUsuario);
                         $arChat->setOfertaRel($arOferta);
                         $arChat->setFecha(new \DateTime('now'));
                         $em->persist($arChat);
