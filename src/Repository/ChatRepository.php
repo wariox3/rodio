@@ -73,16 +73,18 @@ class ChatRepository  extends ServiceEntityRepository
 
     }
 
-    public function apiConsulta($codigoUsuario, $codigoOferta) {
+    public function apiLista($codigoUsuario) {
         $em = $this->getEntityManager();
         $queryBuilder = $em->createQueryBuilder()->from(Chat::class, 'c')
             ->select('c.codigoChatPk')
-            ->where("c.codigoOfertaFk = {$codigoOferta}")
-            ->andWhere("c.codigoUsuarioEmisorFk = {$codigoUsuario} or c.codigoUsuarioReceptorFk = {$codigoUsuario}");
+            ->addSelect('c.codigoUsuarioFk')
+            ->addSelect('o.codigoUsuarioFk as ofertaCodigoUsuarioFk')
+            ->leftJoin('c.ofertaRel', 'o')
+            ->andWhere("c.codigoUsuarioFk = {$codigoUsuario} or o.codigoUsuarioFk = {$codigoUsuario}");
         $arChats = $queryBuilder->getQuery()->getResult();
         return [
             'error' => false,
-            'casos' => $arChats
+            'chats' => $arChats
         ];
 
     }

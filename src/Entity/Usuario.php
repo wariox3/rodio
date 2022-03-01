@@ -179,14 +179,10 @@ class Usuario
     private $direccionesUsuarioRel;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Chat", mappedBy="usuarioEmisorRel")
+     * @ORM\OneToMany(targetEntity="App\Entity\Chat", mappedBy="usuarioRel")
      */
-    private $chatsUsuarioEmisorRel;
+    private $chatsUsuarioRel;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Chat", mappedBy="usuarioReceptorRel")
-     */
-    private $chatsUsuarioReceptorRel;
 
     /**
      * @return mixed
@@ -703,35 +699,17 @@ class Usuario
     /**
      * @return mixed
      */
-    public function getChatsUsuarioEmisorRel()
+    public function getChatsUsuarioRel()
     {
-        return $this->chatsUsuarioEmisorRel;
+        return $this->chatsUsuarioRel;
     }
 
     /**
-     * @param mixed $chatsUsuarioEmisorRel
+     * @param mixed $chatsUsuarioRel
      */
-    public function setChatsUsuarioEmisorRel($chatsUsuarioEmisorRel): void
+    public function setChatsUsuarioRel($chatsUsuarioRel): void
     {
-        $this->chatsUsuarioEmisorRel = $chatsUsuarioEmisorRel;
+        $this->chatsUsuarioRel = $chatsUsuarioRel;
     }
-
-    /**
-     * @return mixed
-     */
-    public function getChatsUsuarioReceptorRel()
-    {
-        return $this->chatsUsuarioReceptorRel;
-    }
-
-    /**
-     * @param mixed $chatsUsuarioReceptorRel
-     */
-    public function setChatsUsuarioReceptorRel($chatsUsuarioReceptorRel): void
-    {
-        $this->chatsUsuarioReceptorRel = $chatsUsuarioReceptorRel;
-    }
-
-
 
 }

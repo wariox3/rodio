@@ -27,14 +27,9 @@ class Chat
     private $codigoOfertaFk;
 
     /**
-     * @ORM\Column(name="codigo_usuario_emisor_fk", type="integer")
+     * @ORM\Column(name="codigo_usuario_fk", type="integer")
      */
-    private $codigoUsuarioEmisorFk;
-
-    /**
-     * @ORM\Column(name="codigo_usuario_receptor_fk", type="integer", nullable=true)
-     */
-    private $codigoUsuarioReceptorFk;
+    private $codigoUsuarioFk;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Oferta", inversedBy="chatsOfertaRel")
@@ -43,16 +38,10 @@ class Chat
     private $ofertaRel;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Usuario", inversedBy="chatsUsuarioEmisorRel")
-     * @ORM\JoinColumn(name="codigo_usuario_emisor_fk", referencedColumnName="codigo_usuario_pk")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Usuario", inversedBy="chatsUsuarioRel")
+     * @ORM\JoinColumn(name="codigo_usuario_fk", referencedColumnName="codigo_usuario_pk")
      */
-    private $usuarioEmisorRel;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Usuario", inversedBy="chatsUsuarioReceptorRel")
-     * @ORM\JoinColumn(name="codigo_usuario_receptor_fk", referencedColumnName="codigo_usuario_pk")
-     */
-    private $usuarioReceptorRel;
+    private $usuarioRel;
 
     /**
      * @return mixed
@@ -89,70 +78,6 @@ class Chat
     /**
      * @return mixed
      */
-    public function getCodigoUsuarioEmisorFk()
-    {
-        return $this->codigoUsuarioEmisorFk;
-    }
-
-    /**
-     * @param mixed $codigoUsuarioEmisorFk
-     */
-    public function setCodigoUsuarioEmisorFk($codigoUsuarioEmisorFk): void
-    {
-        $this->codigoUsuarioEmisorFk = $codigoUsuarioEmisorFk;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCodigoUsuarioReceptorFk()
-    {
-        return $this->codigoUsuarioReceptorFk;
-    }
-
-    /**
-     * @param mixed $codigoUsuarioReceptorFk
-     */
-    public function setCodigoUsuarioReceptorFk($codigoUsuarioReceptorFk): void
-    {
-        $this->codigoUsuarioReceptorFk = $codigoUsuarioReceptorFk;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUsuarioEmisorRel()
-    {
-        return $this->usuarioEmisorRel;
-    }
-
-    /**
-     * @param mixed $usuarioEmisorRel
-     */
-    public function setUsuarioEmisorRel($usuarioEmisorRel): void
-    {
-        $this->usuarioEmisorRel = $usuarioEmisorRel;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUsuarioReceptorRel()
-    {
-        return $this->usuarioReceptorRel;
-    }
-
-    /**
-     * @param mixed $usuarioReceptorRel
-     */
-    public function setUsuarioReceptorRel($usuarioReceptorRel): void
-    {
-        $this->usuarioReceptorRel = $usuarioReceptorRel;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getCodigoOfertaFk()
     {
         return $this->codigoOfertaFk;
@@ -169,6 +94,22 @@ class Chat
     /**
      * @return mixed
      */
+    public function getCodigoUsuarioFk()
+    {
+        return $this->codigoUsuarioFk;
+    }
+
+    /**
+     * @param mixed $codigoUsuarioFk
+     */
+    public function setCodigoUsuarioFk($codigoUsuarioFk): void
+    {
+        $this->codigoUsuarioFk = $codigoUsuarioFk;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getOfertaRel()
     {
         return $this->ofertaRel;
@@ -180,6 +121,22 @@ class Chat
     public function setOfertaRel($ofertaRel): void
     {
         $this->ofertaRel = $ofertaRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUsuarioRel()
+    {
+        return $this->usuarioRel;
+    }
+
+    /**
+     * @param mixed $usuarioRel
+     */
+    public function setUsuarioRel($usuarioRel): void
+    {
+        $this->usuarioRel = $usuarioRel;
     }
 
 

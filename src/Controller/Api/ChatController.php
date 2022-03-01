@@ -30,16 +30,15 @@ class ChatController extends AbstractFOSRestController
     }
 
     /**
-     * @Rest\Post("/api/chat/consulta")
+     * @Rest\Post("/api/chat/lista")
      */
-    public function consulta(Request $request)
+    public function lista(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $raw = json_decode($request->getContent(), true);
         $codigoUsuario = $raw['codigoUsuario']?? null;
-        $codigoOferta = $raw['codigoOferta']?? null;
-        if($codigoUsuario && $codigoOferta) {
-            return $em->getRepository(Chat::class)->apiConsulta($codigoUsuario, $codigoOferta);
+        if($codigoUsuario) {
+            return $em->getRepository(Chat::class)->apiLista($codigoUsuario);
         } else {
             return [
                 'error' => true,
