@@ -30,8 +30,9 @@ class ChatRepository  extends ServiceEntityRepository
                 if($arOferta->getCodigoOfertaPk() != $codigoUsuario) {
                     $queryBuilder = $em->createQueryBuilder()->from(Chat::class, 'c')
                         ->select('c.codigoChatPk')
+                        ->leftJoin('c.ofertaRel', 'o')
                         ->where("c.codigoOfertaFk = {$codigoOferta}")
-                        ->andWhere("c.codigoUsuarioFk = {$codigoUsuario}");
+                        ->andWhere("c.codigoUsuarioFk = {$codigoUsuario} or o.codigoUsuarioFk = {$codigoUsuario}");
                     $arChats = $queryBuilder->getQuery()->getOneOrNullResult();
                     if($arChats) {
                         return [
