@@ -179,6 +179,16 @@ class Usuario
     private $direccionesUsuarioRel;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Chat", mappedBy="usuarioEmisorRel")
+     */
+    private $chatsUsuarioEmisorRel;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Chat", mappedBy="usuarioReceptorRel")
+     */
+    private $chatsUsuarioReceptorRel;
+
+    /**
      * @return mixed
      */
     public function getCodigoUsuarioPk()
@@ -688,6 +698,38 @@ class Usuario
     public function setDireccionesUsuarioRel($direccionesUsuarioRel): void
     {
         $this->direccionesUsuarioRel = $direccionesUsuarioRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getChatsUsuarioEmisorRel()
+    {
+        return $this->chatsUsuarioEmisorRel;
+    }
+
+    /**
+     * @param mixed $chatsUsuarioEmisorRel
+     */
+    public function setChatsUsuarioEmisorRel($chatsUsuarioEmisorRel): void
+    {
+        $this->chatsUsuarioEmisorRel = $chatsUsuarioEmisorRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getChatsUsuarioReceptorRel()
+    {
+        return $this->chatsUsuarioReceptorRel;
+    }
+
+    /**
+     * @param mixed $chatsUsuarioReceptorRel
+     */
+    public function setChatsUsuarioReceptorRel($chatsUsuarioReceptorRel): void
+    {
+        $this->chatsUsuarioReceptorRel = $chatsUsuarioReceptorRel;
     }
 
 

@@ -71,6 +71,10 @@ class Oferta
      */
     private $usuarioRel;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Chat", mappedBy="ofertaRel")
+     */
+    private $chatsOfertaRel;
 
     /**
      * @return mixed
@@ -263,4 +267,22 @@ class Oferta
     {
         $this->usuarioRel = $usuarioRel;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getChatsOfertaRel()
+    {
+        return $this->chatsOfertaRel;
+    }
+
+    /**
+     * @param mixed $chatsOfertaRel
+     */
+    public function setChatsOfertaRel($chatsOfertaRel): void
+    {
+        $this->chatsOfertaRel = $chatsOfertaRel;
+    }
+
+
 }
