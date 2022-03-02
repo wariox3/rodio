@@ -259,25 +259,17 @@ class UsuarioRepository extends ServiceEntityRepository
         if($arUsuario) {
             if($nombre){
                 $arUsuario->setNombre($nombre);
+                $em->persist($arUsuario);
+                $em->flush();
+                return [
+                    'error' => false,
+                ];
             }else {
                 return [
                     'error' => true,
                     'errorMensaje' => "El nombre del usuario no puede estar vacio"
                 ];
             }
-            if($celular){
-                $arUsuario->setCelular($celular);
-            }else {
-                return [
-                    'error' => true,
-                    'errorMensaje' => "El celular no del usuario no puede estar"
-                ];
-            }
-            $em->persist($arUsuario);
-            $em->flush();
-            return [
-                'error' => false,
-            ];
         } else {
             return [
                 'error' => true,
