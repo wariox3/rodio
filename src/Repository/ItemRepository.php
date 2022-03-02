@@ -90,7 +90,7 @@ class ItemRepository extends ServiceEntityRepository
                 'codigoItemPk' => $arItem['codigoItemPk'],
                 'nombre' => $arItem['nombre'],
                 'precio' => $arItem['precio'],
-              'urlImagen' => $arItem['urlImagen']
+                'urlImagen' => $arItem['urlImagen']
             ];
         }
         return [
