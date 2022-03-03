@@ -29,7 +29,7 @@ class Celda
     private $celda;
 
     /**
-     * @ORM\Column(name="celular", type="string", length=20, nullable=true)
+     * @ORM\Column(name="celular", type="string", length=100, nullable=true)
      */
     private $celular;
 
