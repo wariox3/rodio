@@ -44,6 +44,11 @@ class Archivo
     private $ruta;
 
     /**
+     * @ORM\Column(name="url", type="string", length=500, nullable=true)
+     */
+    private $url;
+
+    /**
      * @return mixed
      */
     public function getCodigoArchivoPk()
@@ -137,6 +142,22 @@ class Archivo
     public function setCodigoModeloFk($codigoModeloFk): void
     {
         $this->codigoModeloFk = $codigoModeloFk;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * @param mixed $url
+     */
+    public function setUrl($url): void
+    {
+        $this->url = $url;
     }
 
 

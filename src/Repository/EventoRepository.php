@@ -67,7 +67,9 @@ class EventoRepository extends ServiceEntityRepository
                             $arArchivo->setCodigoModeloFk('Evento');
                             $arArchivo->setCodigo($arEvento->getCodigoEventoPk());
                             $arArchivo->setNombre($arrArchivo['nombre']);
-                            $arArchivo->setRuta($this->space->subir("evento/{$arrArchivo['tipo']}", $arrArchivo['nombre'], $arrArchivo['base64']));
+                            $archivo = $this->space->subir("evento/{$arrArchivo['tipo']}", $arrArchivo['nombre'], $arrArchivo['base64']);
+                            $arArchivo->setRuta($archivo['ruta']);
+                            $arArchivo->setUrl($archivo['url']);
                             $em->persist($arArchivo);
                         }
                     }
