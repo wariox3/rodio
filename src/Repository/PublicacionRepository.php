@@ -32,6 +32,7 @@ class PublicacionRepository extends ServiceEntityRepository
                     ->addSelect('p.urlImagen')
                     ->addSelect('p.reacciones')
                     ->addSelect('p.comentarios')
+                    ->addSelect('p.codigoUsuarioFk')
                     ->addSelect('u.urlImagen as usuarioUrlImagen')
                     ->addSelect('u.usuario as usuario')
                     ->leftJoin('p.celdaRel', 'c')
@@ -98,21 +99,30 @@ class PublicacionRepository extends ServiceEntityRepository
         }
     }
 
-    public function apiNuevo($arUsuario, $nombreImagen, $imagenBase64, $comentario) {
+    public function apiNuevo($codigoUsuario, $nombreImagen, $imagenBase64, $comentario) {
         $em = $this->getEntityManager();
-        $arPublicacion = new Publicacion();
-        $arPublicacion->setUsuarioRel($arUsuario);
-        $arPublicacion->setPanalRel($arUsuario->getPanalRel());
-        $arPublicacion->setComentario($comentario);
-        $arPublicacion->setFecha(new \DateTime('now'));
-        $arPublicacion->setEstadoAprobado($arUsuario->getPanalRel()->isPublicacionAprobar());
-        $arPublicacion->setUrlImagen($this->space->subir('publicacion', $nombreImagen, $imagenBase64));
-        $em->persist($arPublicacion);
-        $em->flush();
-        return [
-            'error' => false,
-            'codigoPublicacion' => $arPublicacion->getCodigoPublicacionPk()
-        ];
+        $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
+        if($arUsuario) {
+            $arPublicacion = new Publicacion();
+            $arPublicacion->setUsuarioRel($arUsuario);
+            $arPublicacion->setPanalRel($arUsuario->getPanalRel());
+            $arPublicacion->setComentario($comentario);
+            $arPublicacion->setFecha(new \DateTime('now'));
+            $arPublicacion->setEstadoAprobado($arUsuario->getPanalRel()->isPublicacionAprobar());
+            $archivo = $this->space->subir('publicacion', $nombreImagen, $imagenBase64);
+            $arPublicacion->setUrlImagen($archivo['url']);
+            $arPublicacion->setRuta($archivo['ruta']);
+            $em->persist($arPublicacion);
+            $em->flush();
+            return [
+                'error' => false,
+                'codigoPublicacion' => $arPublicacion->getCodigoPublicacionPk()
+            ];
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'No existe el usuario'];
+        }
     }
 
     public function reporte($codigoUsuario, $codigoPublicacion, $tipoReporte, $comentario)
@@ -143,6 +153,32 @@ class PublicacionRepository extends ServiceEntityRepository
             return [
                 'error' => true,
                 'errorMensaje' => 'No existe el usuario'];
+        }
+    }
+
+    public function apiEliminar($codigoPublicacion, $codigoUsuario)
+    {
+        $em = $this->getEntityManager();
+        $arPublicacion = $em->getRepository(Publicacion::class)->find($codigoPublicacion);
+        if($arPublicacion) {
+            if($arPublicacion->getCodigoUsuarioFk() == $codigoUsuario) {
+                $em->remove($arPublicacion);
+                $em->flush();
+                $this->space->eliminar($arPublicacion->getRuta());
+                return [
+                    'error' => false
+                ];
+            } else {
+                return [
+                    'error' => true,
+                    'errorMensaje' => "El usuario no puede eliminar esta publicacion"
+                ];
+            }
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "El contenido no existe"
+            ];
         }
     }
 }

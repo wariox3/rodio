@@ -47,14 +47,7 @@ class PublicacionController extends AbstractFOSRestController
             $imagenBase64 = $raw['imagenBase64']?? null;
             $comentario = $raw['comentario']?? null;
             if($codigoUsuario) {
-                $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
-                if($arUsuario) {
-                    return $em->getRepository(Publicacion::class)->apiNuevo($arUsuario, $nombreImagen, $imagenBase64, $comentario);
-                } else {
-                    return [
-                        'error' => true,
-                        'errorMensaje' => 'No existe el usuario'];
-                }
+                return $em->getRepository(Publicacion::class)->apiNuevo($codigoUsuario, $nombreImagen, $imagenBase64, $comentario);
             } else {
                 return [
                     'error' => true,
@@ -98,6 +91,25 @@ class PublicacionController extends AbstractFOSRestController
             return [
                 'error' => true,
                 'errorMensaje' => $e->getMessage()
+            ];
+        }
+    }
+
+    /**
+     * @Rest\Post("/api/publicacion/eliminar")
+     */
+    public function elimiinar(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoPublicacion = $raw['codigoPublicacion']?? null;
+        $codigoUsuario = $raw['codigoUsuario']?? null;
+        if($codigoPublicacion && $codigoUsuario) {
+            return $em->getRepository(Publicacion::class)->apiEliminar($codigoPublicacion, $codigoUsuario);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'
             ];
         }
     }

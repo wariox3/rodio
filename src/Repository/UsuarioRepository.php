@@ -35,6 +35,7 @@ class UsuarioRepository extends ServiceEntityRepository
             $operador = "";
             $puntoServicio = "";
             $puntoServicioToken = "";
+            $celda = "";
             if($arUsuario->getOperadorRel()) {
                 $operador = $arUsuario->getOperadorRel()->getNombre();
                 $puntoServicio = $arUsuario->getOperadorRel()->getPuntoServicioCromo();
@@ -45,6 +46,9 @@ class UsuarioRepository extends ServiceEntityRepository
             if($arUsuario->getPanalRel()) {
                 $oferta = $arUsuario->getPanalRel()->isOferta();
                 $tienda = $arUsuario->getPanalRel()->isTienda();
+            }
+            if($arUsuario->getCeldaRel()) {
+                $celda = $arUsuario->getCeldaRel()->getCelda();
             }
             return [
                 'error' => false,
@@ -60,6 +64,7 @@ class UsuarioRepository extends ServiceEntityRepository
                     'codigoPuesto' => $arUsuario->getCodigoPuestoFk(),
                     'codigoTercero' => $arUsuario->getCodigoTerceroFk(),
                     'codigoOperador' => $arUsuario->getCodigoOperadorFk(),
+                    'celda' => $celda,
                     'tienda' => $tienda,
                     'oferta' => $oferta,
                     'operador' => $operador,

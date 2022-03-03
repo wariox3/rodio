@@ -83,7 +83,9 @@ class ContenidoRepository extends ServiceEntityRepository
                 $arContenido->setPanalRel($arPanal);
                 $arContenido->setNombre($nombre);
                 $arContenido->setNombreArchivo($nombreArchivo);
-                $arContenido->setUrl($this->space->subir('contenido', $nombreArchivo, $base64));
+                $archivo = $this->space->subir('contenido', $nombreArchivo, $base64);
+                $arContenido->setUrl($archivo['url']);
+                $arContenido->setRuta($archivo['ruta']);
                 $em->persist($arContenido);
                 $em->flush();
                 return [
@@ -128,10 +130,9 @@ class ContenidoRepository extends ServiceEntityRepository
         if($arContenido) {
             $em->remove($arContenido);
             $em->flush();
-            $this->space->eliminar($arContenido->getUrl());
+            $this->space->eliminar($arContenido->getRuta());
             return [
-                'error' => false,
-                'codigoContenido' => $arContenido->getCodigoContenidoPk()
+                'error' => false
             ];
         } else {
             return [

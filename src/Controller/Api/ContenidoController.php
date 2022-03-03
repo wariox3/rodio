@@ -94,7 +94,6 @@ class ContenidoController extends AbstractFOSRestController
     {
         $em = $this->getDoctrine()->getManager();
         $raw = json_decode($request->getContent(), true);
-        $id = $raw['id']?? null;
         $codigoContenido = $raw['codigoContenido']?? null;
         if($codigoContenido) {
             return $em->getRepository(Contenido::class)->apiAdminEliminar($codigoContenido);

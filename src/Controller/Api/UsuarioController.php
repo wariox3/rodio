@@ -100,13 +100,13 @@ class UsuarioController extends AbstractFOSRestController
         if($codigoUsuario && $nombre && $imagenBase64) {
             $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
             if($arUsuario) {
-                $urlImagen = $spaceDO->subir('perfil', $nombre, $imagenBase64);
-                $arUsuario->setUrlImagen($urlImagen);
+                $archivo = $spaceDO->subir('perfil', $nombre, $imagenBase64);
+                $arUsuario->setUrlImagen($archivo['url']);
                 $em->persist($arUsuario);
                 $em->flush();
                 return [
                     'error' => false,
-                    'urlImagen' => $urlImagen
+                    'urlImagen' => $archivo['url']
                 ];
             } else {
                 return [

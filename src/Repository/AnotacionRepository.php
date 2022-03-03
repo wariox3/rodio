@@ -91,7 +91,7 @@ class AnotacionRepository extends ServiceEntityRepository
                             $arArchivo->setCodigoModeloFk('Anotacion');
                             $arArchivo->setCodigo($arAnotacion->getCodigoAnotacionPk());
                             $arArchivo->setNombre($arrArchivo['nombre']);
-                            $arArchivo->setRuta($this->space->subir("anotacion/{$arrArchivo['tipo']}", $arrArchivo['nombre'], $arrArchivo['base64']));
+                            //$arArchivo->setRuta($this->space->subir("anotacion/{$arrArchivo['tipo']}", $arrArchivo['nombre'], $arrArchivo['base64']));
                             $em->persist($arArchivo);
                         }
                     }

@@ -44,6 +44,11 @@ class Publicacion
     private $urlImagen;
 
     /**
+     * @ORM\Column(name="ruta", type="string", length=500, nullable=true)
+     */
+    private $ruta;
+
+    /**
      * @ORM\Column(name="reacciones", type="integer", options={"default" : 0})
      */
     private $reacciones = 0;
@@ -287,5 +292,22 @@ class Publicacion
     {
         $this->estadoAprobado = $estadoAprobado;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getRuta()
+    {
+        return $this->ruta;
+    }
+
+    /**
+     * @param mixed $ruta
+     */
+    public function setRuta($ruta): void
+    {
+        $this->ruta = $ruta;
+    }
+
 
 }

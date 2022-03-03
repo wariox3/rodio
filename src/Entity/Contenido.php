@@ -39,6 +39,11 @@ class Contenido
     private $url;
 
     /**
+     * @ORM\Column(name="ruta", type="string", length=500, nullable=true)
+     */
+    private $ruta;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Panal", inversedBy="contenidosPanalRel")
      * @ORM\JoinColumn(name="codigo_panal_fk", referencedColumnName="codigo_panal_pk")
      */
@@ -138,6 +143,22 @@ class Contenido
     public function setNombreArchivo($nombreArchivo): void
     {
         $this->nombreArchivo = $nombreArchivo;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRuta()
+    {
+        return $this->ruta;
+    }
+
+    /**
+     * @param mixed $ruta
+     */
+    public function setRuta($ruta): void
+    {
+        $this->ruta = $ruta;
     }
 
 
