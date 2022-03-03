@@ -23,9 +23,16 @@ class SpaceDO
         file_put_contents($destinoLocal, $base64);
         $spaces = Spaces($_ENV['DO_CLAVE_ACCESO'], $_ENV['DO_CLAVE_SECRETA']);
         $my_space = $spaces->space("semantica", "sfo3");
-        $my_space->uploadFile($destinoLocal, $destinoDO, "public");
+        $respuesta = $my_space->uploadFile($destinoLocal, $destinoDO, "public");
         unlink($destinoLocal);
+        ///return "{$destinoDO}";
         return "https://semantica.sfo3.digitaloceanspaces.com/{$destinoDO}";
     }
 
+    public function eliminar($url) {
+        $spaces = Spaces($_ENV['DO_CLAVE_ACCESO'], $_ENV['DO_CLAVE_SECRETA']);
+        $my_space = $spaces->space("semantica", "sfo3");
+        $my_space->deleteFile($url);
+        return true;
+    }
 }

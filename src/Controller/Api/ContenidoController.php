@@ -87,4 +87,22 @@ class ContenidoController extends AbstractFOSRestController
         }
     }
 
+    /**
+     * @Rest\Post("/api/admin/contenido/eliminar")
+     */
+    public function adminEliminar(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $id = $raw['id']?? null;
+        $codigoContenido = $raw['codigoContenido']?? null;
+        if($codigoContenido) {
+            return $em->getRepository(Contenido::class)->apiAdminEliminar($codigoContenido);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'
+            ];
+        }
+    }
 }

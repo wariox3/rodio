@@ -121,4 +121,24 @@ class ContenidoRepository extends ServiceEntityRepository
         }
     }
 
+    public function apiAdminEliminar($codigoContenido)
+    {
+        $em = $this->getEntityManager();
+        $arContenido = $em->getRepository(Contenido::class)->find($codigoContenido);
+        if($arContenido) {
+            $em->remove($arContenido);
+            $em->flush();
+            $this->space->eliminar($arContenido->getUrl());
+            return [
+                'error' => false,
+                'codigoContenido' => $arContenido->getCodigoContenidoPk()
+            ];
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "El contenido no existe"
+            ];
+        }
+    }
+
 }
