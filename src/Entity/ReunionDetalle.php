@@ -27,6 +27,11 @@ class ReunionDetalle
     private $codigoCeldaFk;
 
     /**
+     * @ORM\Column(name="apoderado", type="string", length=300, nullable=true)
+     */
+    private $apoderado;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Reunion", inversedBy="reunionesDetallesReunionRel")
      * @ORM\JoinColumn(name="codigo_reunion_fk", referencedColumnName="codigo_reunion_pk")
      */
@@ -116,6 +121,22 @@ class ReunionDetalle
     public function setCeldaRel($celdaRel): void
     {
         $this->celdaRel = $celdaRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getApoderado()
+    {
+        return $this->apoderado;
+    }
+
+    /**
+     * @param mixed $apoderado
+     */
+    public function setApoderado($apoderado): void
+    {
+        $this->apoderado = $apoderado;
     }
 
 

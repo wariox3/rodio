@@ -4,10 +4,12 @@ namespace App\Repository;
 
 use App\Entity\Caso;
 use App\Entity\CasoTipo;
+use App\Entity\Celda;
 use App\Entity\Panal;
 use App\Entity\Reunion;
 use App\Entity\ReunionDetalle;
 use App\Entity\Usuario;
+use App\Entity\Votacion;
 use App\Utilidades\Firebase;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -103,6 +105,10 @@ class ReunionRepository  extends ServiceEntityRepository
             $queryBuilder = $em->createQueryBuilder()->from(ReunionDetalle::class, 'rd')
                 ->select('rd.codigoReunionDetallePk')
                 ->addSelect('rd.codigoCeldaFk')
+                ->addSelect('rd.apoderado')
+                ->addSelect('c.celda')
+                ->addSelect('c.responsable as celdaResponsable')
+                ->leftJoin('rd.celdaRel', 'c')
                 ->where("rd.codigoReunionFk = {$codigoReunion}");
             $arReunionDetalles = $queryBuilder->getQuery()->getResult();
             return [
@@ -116,5 +122,119 @@ class ReunionRepository  extends ServiceEntityRepository
                 'errorMensaje' => 'No existe la reunion'
             ];
         }
+    }
+
+    public function apiAdminDetalleNuevo($id, $celda, $apoderado)
+    {
+        $em = $this->getEntityManager();
+        $arReunion = $em->getRepository(Reunion::class)->find($id);
+        if($arReunion) {
+            if($arReunion->isEstadoCerrado() == 0) {
+                $arCelda = $em->getRepository(Celda::class)->findOneBy(['codigoPanalFk' => $arReunion->getCodigoPanalFk(), 'celda' => $celda]);
+                if($arCelda) {
+                    $arReunionDetalleValidar = $em->getRepository(ReunionDetalle::class)->findOneBy(['codigoReunionFk' => $id, 'codigoCeldaFk' => $arCelda->getCodigoCeldaPk()]);
+                    if(!$arReunionDetalleValidar) {
+                        $arReunionDetalle = new ReunionDetalle();
+                        $arReunionDetalle->setCeldaRel($arCelda);
+                        $arReunionDetalle->setReunionRel($arReunion);
+                        $arReunionDetalle->setApoderado($apoderado);
+                        $em->persist($arReunionDetalle);
+                        $arReunion->setCantidad($arReunion->getCantidad() + 1);
+                        $arReunion->setCantidadCoeficiente($arReunion->getCantidadCoeficiente() + $arCelda->getCoeficiente());
+                        $em->persist($arReunion);
+                        $em->flush();
+                        return [
+                            'error' => false,
+                            'codigoReunionDetalle' => $arReunionDetalle->getCodigoReunionDetallePk()
+                        ];
+                    } else {
+                        return [
+                            'error' => true,
+                            'errorMensaje' => "La celda ya esta registrada"
+                        ];
+                    }
+                } else {
+                    return [
+                        'error' => true,
+                        'errorMensaje' => "No existe la celda"
+                    ];
+                }
+            } else {
+                return [
+                    'error' => true,
+                    'errorMensaje' => "La reunion ya esta cerrada"
+                ];
+            }
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "No existe la reunion"
+            ];
+        }
+    }
+
+    public function apiAdminDetalleEliminar($id)
+    {
+        $em = $this->getEntityManager();
+        $arReunionDetalle = $em->getRepository(ReunionDetalle::class)->find($id);
+        if($arReunionDetalle) {
+            $arReunion = $em->getRepository(Reunion::class)->find($arReunionDetalle->getCodigoReunionFk());
+            $arReunion->setCantidad($arReunion->getCantidad() - 1);
+            $arReunion->setCantidadCoeficiente($arReunion->getCantidadCoeficiente() - $arReunionDetalle->getCeldaRel()->getCoeficiente());
+            $em->persist($arReunion);
+            $em->remove($arReunionDetalle);
+            $em->flush();
+            return [
+                'error' => false
+            ];
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "No existe la reunino detalle"
+            ];
+        }
+    }
+
+    public function apiAdminCerrar($id)
+    {
+        $em = $this->getEntityManager();
+        $arReunion = $em->getRepository(Reunion::class)->find($id);
+        if($arReunion) {
+            if($arReunion->isEstadoCerrado() == 0) {
+                $arReunion->setEstadoCerrado(1);
+                $em->persist($arReunion);
+                $em->flush();
+                return [
+                    'error' => false
+                ];
+            } else {
+                return [
+                    'error' => true,
+                    'errorMensaje' => "La reunion no puede estar cerrada"
+                ];
+            }
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "No existe la reunion"
+            ];
+        }
+    }
+
+    public function apiAdminListaCombo($codigoPanal)
+    {
+        $em = $this->getEntityManager();
+        $queryBuilder = $em->createQueryBuilder()->from(Reunion::class, 'r')
+            ->select('r.codigoReunionPk')
+            ->addSelect('r.nombre')
+            ->where("r.codigoPanalFk = {$codigoPanal}")
+            ->andWhere("r.estadoCerrado = 0")
+            ->orderBy('r.fecha', 'DESC');
+        $arReuniones = $queryBuilder->getQuery()->getResult();
+        return [
+            'error' => false,
+            'reuniones' => $arReuniones
+        ];
+
     }
 }

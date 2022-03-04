@@ -74,9 +74,10 @@ class ReunionController extends AbstractFOSRestController
         $em = $this->getDoctrine()->getManager();
         $raw = json_decode($request->getContent(), true);
         $id = $raw['id']?? null;
-        $descripcion = $raw['descripcion']?? null;
-        if($id && $descripcion) {
-            return $em->getRepository(Reunion::class)->apiAdminDetalleNuevo($id, $descripcion);
+        $celda = $raw['celda']?? null;
+        $apoderado = $raw['apoderado']?? null;
+        if($id && $celda) {
+            return $em->getRepository(Reunion::class)->apiAdminDetalleNuevo($id, $celda, $apoderado);
         } else {
             return [
                 'error' => true,
@@ -117,6 +118,24 @@ class ReunionController extends AbstractFOSRestController
             return [
                 'error' => true,
                 'errorMensaje' => 'Faltan parametros para el consumo de la api'];
+        }
+    }
+
+    /**
+     * @Rest\Post("/api/admin/reunion/combo")
+     */
+    public function adminListaCombo(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoPanal = $raw['codigoPanal']?? null;
+        if($codigoPanal) {
+            return $em->getRepository(Reunion::class)->apiAdminListaCombo($codigoPanal);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'
+            ];
         }
     }
 }

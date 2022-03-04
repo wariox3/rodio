@@ -84,8 +84,9 @@ class VotacionController extends AbstractFOSRestController
         $fechaHasta = $raw['fechaHasta']?? null;
         $descripcion = $raw['descripcion']?? null;
         $titulo = $raw['titulo']?? null;
+        $codigoReunion = $raw['codigoReunion']?? null;
         if($codigoPanal && $fechaHasta && $titulo && $descripcion) {
-            return $em->getRepository(Votacion::class)->apiAdminNuevo($codigoPanal, $id, $fechaHasta, $titulo, $descripcion);
+            return $em->getRepository(Votacion::class)->apiAdminNuevo($codigoPanal, $id, $fechaHasta, $titulo, $descripcion, $codigoReunion);
         } else {
             return [
                 'error' => true,

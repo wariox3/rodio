@@ -6,6 +6,7 @@ namespace App\Repository;
 use App\Entity\Celda;
 use App\Entity\CeldaUsuario;
 use App\Entity\Panal;
+use App\Entity\Reunion;
 use App\Entity\Usuario;
 use App\Entity\Votacion;
 use App\Entity\VotacionCelda;
@@ -162,17 +163,22 @@ class VotacionRepository extends ServiceEntityRepository
 
     }
 
-    public function apiAdminNuevo($codigoPanal, $id, $fechaHasta, $titulo, $descripcion)
+    public function apiAdminNuevo($codigoPanal, $id, $fechaHasta, $titulo, $descripcion, $codigoReunion)
     {
         $em = $this->getEntityManager();
         $arPanal = $em->getRepository(Panal::class)->find($codigoPanal);
         if($arPanal) {
+            $arReunion = null;
+            if($codigoReunion) {
+                $arReunion = $em->getRepository(Reunion::class)->find($codigoReunion);
+            }
             if($id) {
                 $arVotacion = $em->getRepository(Votacion::class)->find($id);
                 if($arVotacion) {
                     $arVotacion->setFechaHasta(date_create($fechaHasta));
                     $arVotacion->setDescripcion($descripcion);
                     $arVotacion->setTitulo($titulo);
+                    $arVotacion->setReunionRel($arReunion);
                     $em->persist($arVotacion);
                     $em->flush();
                     return [
@@ -192,6 +198,7 @@ class VotacionRepository extends ServiceEntityRepository
                 $arVotacion->setFechaHasta(date_create($fechaHasta));
                 $arVotacion->setDescripcion($descripcion);
                 $arVotacion->setTitulo($titulo);
+                $arVotacion->setReunionRel($arReunion);
                 $em->persist($arVotacion);
                 $em->flush();
                 return [
@@ -216,6 +223,7 @@ class VotacionRepository extends ServiceEntityRepository
             ->addSelect('v.fechaHasta')
             ->addSelect('v.descripcion')
             ->addSelect('v.titulo')
+            ->addSelect('v.codigoReunionFk')
             ->addSelect('v.cantidad')
             ->addSelect('v.estadoPublicado')
             ->addSelect('v.estadoCerrado')
