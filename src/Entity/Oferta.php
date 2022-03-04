@@ -44,6 +44,11 @@ class Oferta
     private $urlImagen;
 
     /**
+     * @ORM\Column(name="ruta", type="string", length=500, nullable=true)
+     */
+    private $ruta;
+
+    /**
      * @ORM\Column(name="codigo_usuario_fk", type="integer", nullable=true)
      */
     private $codigoUsuarioFk;
@@ -282,6 +287,22 @@ class Oferta
     public function setChatsOfertaRel($chatsOfertaRel): void
     {
         $this->chatsOfertaRel = $chatsOfertaRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRuta()
+    {
+        return $this->ruta;
+    }
+
+    /**
+     * @param mixed $ruta
+     */
+    public function setRuta($ruta): void
+    {
+        $this->ruta = $ruta;
     }
 
 
