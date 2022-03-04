@@ -105,6 +105,11 @@ class Celda
     private $atencionesCeldaRel;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ReunionDetalle", mappedBy="celdaRel")
+     */
+    private $reunionesDetallesCeldaRel;
+
+    /**
      * @return mixed
      */
     public function getCodigoCeldaPk()
@@ -390,6 +395,22 @@ class Celda
     public function setCodigoExterno($codigoExterno): void
     {
         $this->codigoExterno = $codigoExterno;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReunionesDetallesCeldaRel()
+    {
+        return $this->reunionesDetallesCeldaRel;
+    }
+
+    /**
+     * @param mixed $reunionesDetallesCeldaRel
+     */
+    public function setReunionesDetallesCeldaRel($reunionesDetallesCeldaRel): void
+    {
+        $this->reunionesDetallesCeldaRel = $reunionesDetallesCeldaRel;
     }
 
 

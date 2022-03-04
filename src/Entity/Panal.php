@@ -127,6 +127,11 @@ class Panal
     private $visitasPanalRel;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Reunion", mappedBy="panalRel")
+     */
+    private $reunionesPanalRel;
+
+    /**
      * @return mixed
      */
     public function getCodigoPanalPk()
@@ -476,6 +481,22 @@ class Panal
     public function setCantidad(float $cantidad): void
     {
         $this->cantidad = $cantidad;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReunionesPanalRel()
+    {
+        return $this->reunionesPanalRel;
+    }
+
+    /**
+     * @param mixed $reunionesPanalRel
+     */
+    public function setReunionesPanalRel($reunionesPanalRel): void
+    {
+        $this->reunionesPanalRel = $reunionesPanalRel;
     }
 
 

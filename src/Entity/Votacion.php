@@ -19,9 +19,14 @@ class Votacion
     private $codigoVotacionPk;
 
     /**
-     * @ORM\Column(name="codigo_panal_fk", type="integer", nullable=true)
+     * @ORM\Column(name="codigo_panal_fk", type="integer")
      */
     private $codigoPanalFk;
+
+    /**
+     * @ORM\Column(name="codigo_reunion_fk", type="integer", nullable=true)
+     */
+    private $codigoReunionFk;
 
     /**
      * @ORM\Column(name="fecha", type="datetime")
@@ -63,6 +68,12 @@ class Votacion
      * @ORM\JoinColumn(name="codigo_panal_fk", referencedColumnName="codigo_panal_pk")
      */
     private $panalRel;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Reunion", inversedBy="votacionesReunionRel")
+     * @ORM\JoinColumn(name="codigo_reunion_fk", referencedColumnName="codigo_reunion_pk")
+     */
+    private $reunionRel;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\VotacionCelda", mappedBy="votacionRel")
@@ -264,6 +275,38 @@ class Votacion
     public function setEstadoPublicado(bool $estadoPublicado): void
     {
         $this->estadoPublicado = $estadoPublicado;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodigoReunionFk()
+    {
+        return $this->codigoReunionFk;
+    }
+
+    /**
+     * @param mixed $codigoReunionFk
+     */
+    public function setCodigoReunionFk($codigoReunionFk): void
+    {
+        $this->codigoReunionFk = $codigoReunionFk;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReunionRel()
+    {
+        return $this->reunionRel;
+    }
+
+    /**
+     * @param mixed $reunionRel
+     */
+    public function setReunionRel($reunionRel): void
+    {
+        $this->reunionRel = $reunionRel;
     }
 
 
