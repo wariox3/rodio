@@ -42,6 +42,16 @@ class Reunion
     private $cantidadCoeficiente = 0;
 
     /**
+     * @ORM\Column(name="cantidad_panal", type="integer", options={"default" : 0})
+     */
+    private $cantidadPanal = 0;
+
+    /**
+     * @ORM\Column(name="cantidad_coeficiente_panal", type="integer", options={"default" : 0})
+     */
+    private $cantidadCoeficientePanal = 0;
+
+    /**
      * @ORM\Column(name="estado_cerrado", type="boolean", options={"default" : false})
      */
     private $estadoCerrado = false;
@@ -220,6 +230,38 @@ class Reunion
     public function setCantidadCoeficiente(int $cantidadCoeficiente): void
     {
         $this->cantidadCoeficiente = $cantidadCoeficiente;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCantidadPanal(): int
+    {
+        return $this->cantidadPanal;
+    }
+
+    /**
+     * @param int $cantidadPanal
+     */
+    public function setCantidadPanal(int $cantidadPanal): void
+    {
+        $this->cantidadPanal = $cantidadPanal;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCantidadCoeficientePanal(): int
+    {
+        return $this->cantidadCoeficientePanal;
+    }
+
+    /**
+     * @param int $cantidadCoeficientePanal
+     */
+    public function setCantidadCoeficientePanal(int $cantidadCoeficientePanal): void
+    {
+        $this->cantidadCoeficientePanal = $cantidadCoeficientePanal;
     }
 
 

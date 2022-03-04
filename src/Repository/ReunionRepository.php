@@ -70,6 +70,8 @@ class ReunionRepository  extends ServiceEntityRepository
                 $arReunion->setPanalRel($arPanal);
                 $arReunion->setFecha(new \DateTime('now'));
                 $arReunion->setNombre($nombre);
+                $arReunion->setCantidadPanal($arPanal->getCantidad());
+                $arReunion->setCantidadCoeficientePanal($arPanal->getCoeficiente());
                 $em->persist($arReunion);
                 $em->flush();
                 return [
@@ -94,6 +96,8 @@ class ReunionRepository  extends ServiceEntityRepository
             ->addSelect('r.nombre')
             ->addSelect('r.cantidad')
             ->addSelect('r.cantidadCoeficiente')
+            ->addSelect('r.cantidadPanal')
+            ->addSelect('r.cantidadCoeficientePanal')
             ->addSelect('r.estadoCerrado')
             ->addSelect('p.coeficiente as panalCoeficiente')
             ->addSelect('p.area as panalArea')

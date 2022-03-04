@@ -41,6 +41,8 @@ class VotacionRepository extends ServiceEntityRepository
                 ->addSelect('v.descripcion')
                 ->addSelect('v.cantidad')
                 ->addSelect('v.estadoCerrado')
+                ->addSelect('r.nombre as reunionNombre')
+                ->leftJoin('v.reunionRel', 'r')
                 ->where("v.codigoPanalFk = {$arCelda->getCodigoPanalFk()}")
                 ->andWhere("v.estadoPublicado = 1")
                 ->andWhere("v.estadoCerrado = 0")
@@ -153,6 +155,8 @@ class VotacionRepository extends ServiceEntityRepository
             ->addSelect('v.cantidad')
             ->addSelect('v.estadoCerrado')
             ->addSelect('v.estadoPublicado')
+            ->addSelect('r.nombre as reunionNombre')
+            ->leftJoin('v.reunionRel', 'r')
             ->where("v.codigoPanalFk = {$codigoPanal}")
             ->orderBy('v.fecha', 'DESC');
         $arVotaciones = $queryBuilder->getQuery()->getResult();
@@ -230,7 +234,12 @@ class VotacionRepository extends ServiceEntityRepository
             ->addSelect('p.coeficiente as panalCoeficiente')
             ->addSelect('p.area as panalArea')
             ->addSelect('p.cantidad as panalCantidad')
+            ->addSelect('r.cantidad as reunionCantidad')
+            ->addSelect('r.cantidadCoeficiente  as reunionCantidadCoeficiente')
+            ->addSelect('r.cantidadPanal  as reunionCantidadPanal')
+            ->addSelect('r.cantidadCoeficientePanal  as reunionCantidadCoeficientePanal')
             ->leftJoin('v.panalRel', 'p')
+            ->leftJoin('v.reunionRel', 'r')
             ->where("v.codigoVotacionPk = {$codigoVotacion}");
         $arVotacion = $queryBuilder->getQuery()->getResult();
         if($arVotacion) {
