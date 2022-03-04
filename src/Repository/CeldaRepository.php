@@ -141,7 +141,8 @@ class CeldaRepository extends ServiceEntityRepository
                                 $em->flush();
                                 return [
                                     'error' => false,
-                                    'codigoCelda' => $arCelda->getCodigoCeldaPk()
+                                    'codigoCelda' => $arCelda->getCodigoCeldaPk(),
+                                    'celda' => $arCelda->getCelda()
                                 ];
                             } else {
                                 return [
