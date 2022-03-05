@@ -98,7 +98,7 @@ class PublicacionController extends AbstractFOSRestController
     /**
      * @Rest\Post("/api/publicacion/eliminar")
      */
-    public function elimiinar(Request $request)
+    public function eliminar(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $raw = json_decode($request->getContent(), true);
@@ -106,6 +106,43 @@ class PublicacionController extends AbstractFOSRestController
         $codigoUsuario = $raw['codigoUsuario']?? null;
         if($codigoPublicacion && $codigoUsuario) {
             return $em->getRepository(Publicacion::class)->apiEliminar($codigoPublicacion, $codigoUsuario);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'
+            ];
+        }
+    }
+
+    /**
+     * @Rest\Post("/api/admin/publicacion/lista")
+     */
+    public function adminLista(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoPanal = $raw['codigoPanal']?? null;
+        $estadoAprobado = $raw['estadoAprobado']?? null;
+        if($codigoPanal) {
+            return $em->getRepository(Publicacion::class)->apiAdminLista($codigoPanal, $estadoAprobado);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'
+            ];
+        }
+    }
+
+    /**
+     * @Rest\Post("/api/admin/publicacion/aprobar")
+     */
+    public function adminAprobar(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $id = $raw['id']?? null;
+        if($id) {
+            return $em->getRepository(Publicacion::class)->apiAdminAprobar($id);
         } else {
             return [
                 'error' => true,

@@ -181,4 +181,52 @@ class PublicacionRepository extends ServiceEntityRepository
             ];
         }
     }
+
+    public function apiAdminLista($codigoPanal, $estadoAprobado)
+    {
+        $em = $this->getEntityManager();
+        $queryBuilder = $em->createQueryBuilder()->from(Publicacion::class, 'p')
+            ->select('p.codigoPublicacionPk')
+            ->addSelect('p.fecha')
+            ->addSelect('p.estadoAprobado')
+            ->addSelect('p.ruta')
+            ->addSelect('p.urlImagen')
+            ->addSelect('u.nombre usuarioNombre')
+            ->leftJoin('p.usuarioRel', 'u')
+            ->where("p.codigoPanalFk = {$codigoPanal}")
+            ->orderBy('p.fecha', 'DESC');
+        switch ($estadoAprobado) {
+            case '0':
+                $queryBuilder->andWhere("p.estadoAprobado = 0");
+                break;
+            case '1':
+                $queryBuilder->andWhere("p.estadoAprobado = 1");
+                break;
+        }
+        $arPublicaciones = $queryBuilder->getQuery()->getResult();
+        return [
+            'error' => false,
+            'publicaciones' => $arPublicaciones
+        ];
+
+    }
+
+    public function apiAdminAprobar($id)
+    {
+        $em = $this->getEntityManager();
+        $arPublicacion = $em->getRepository(Publicacion::class)->find($id);
+        if($arPublicacion) {
+            $arPublicacion->setEstadoAprobado(1);
+            $em->persist($arPublicacion);
+            $em->flush();
+            return [
+                'error' => false
+            ];
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "La publicacion no existe"
+            ];
+        }
+    }
 }
