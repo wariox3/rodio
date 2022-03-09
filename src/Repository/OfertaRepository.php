@@ -92,4 +92,29 @@ class OfertaRepository extends ServiceEntityRepository
             ];
         }
     }
+
+    public function apiMisOfertas($codigoPanal, $codigoCategoria)
+    {
+        $em = $this->getEntityManager();
+        $queryBuilder = $em->createQueryBuilder()->from(Oferta::class, 'o')
+            ->select('o.codigoOfertaPk')
+            ->addSelect('o.fecha')
+            ->addSelect('o.descripcion')
+            ->addSelect('o.precio')
+            ->addSelect('o.urlImagen')
+            ->addSelect('o.codigoCategoriaFk')
+            ->addSelect('o.codigoPanalFk')
+            ->where("o.codigoUsuarioFk = {$codigoPanal}")
+            ->andWhere()
+            ->orderBy("o.fecha", "DESC");
+        if ($codigoCategoria) {
+            $queryBuilder->andWhere("o.codigoCategoriaFk = '{$codigoCategoria}' ");
+        }
+
+        $arOfertas = $queryBuilder->getQuery()->getResult();
+        return [
+            'error' => false,
+            'ofertas' => $arOfertas
+        ];
+    }
 }

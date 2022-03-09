@@ -56,4 +56,21 @@ class OfertaController extends AbstractFOSRestController
         }
     }
 
+
+    /**
+     * @Rest\Post("/api/oferta/misofertas")
+     */
+    public function misofertas(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoUsuario = $raw['codigoUsuario'] ?? null;
+        if($codigoUsuario){
+            return $em->getRepository(Oferta::class)->apiMisOfertas($codigoUsuario);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'
+            ];
+        }
+    }
 }
