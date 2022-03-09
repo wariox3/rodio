@@ -93,7 +93,7 @@ class OfertaRepository extends ServiceEntityRepository
         }
     }
 
-    public function apiMisOfertas($codigoPanal, $codigoCategoria)
+    public function apiMisOfertas($codigoUsuario, $codigoCategoria)
     {
         $em = $this->getEntityManager();
         $queryBuilder = $em->createQueryBuilder()->from(Oferta::class, 'o')
@@ -104,7 +104,7 @@ class OfertaRepository extends ServiceEntityRepository
             ->addSelect('o.urlImagen')
             ->addSelect('o.codigoCategoriaFk')
             ->addSelect('o.codigoPanalFk')
-            ->where("o.codigoUsuarioFk = {$codigoPanal}")
+            ->where("o.codigoUsuarioFk = {$codigoUsuario}")
             ->andWhere()
             ->orderBy("o.fecha", "DESC");
         if ($codigoCategoria) {

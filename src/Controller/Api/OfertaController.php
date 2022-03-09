@@ -64,8 +64,9 @@ class OfertaController extends AbstractFOSRestController
         $em = $this->getDoctrine()->getManager();
         $raw = json_decode($request->getContent(), true);
         $codigoUsuario = $raw['codigoUsuario'] ?? null;
+        $codigoCategoria = $raw['apiMisOfertas'] ?? null;
         if($codigoUsuario){
-            return $em->getRepository(Oferta::class)->apiMisOfertas($codigoUsuario);
+            return $em->getRepository(Oferta::class)->apiMisOfertas($codigoUsuario, $codigoCategoria);
         } else {
             return [
                 'error' => true,
