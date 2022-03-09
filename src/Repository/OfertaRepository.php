@@ -66,6 +66,7 @@ class OfertaRepository extends ServiceEntityRepository
                         if ($imagen['nombre'] && $imagen['base64']) {
                             $archivo = $this->space->subir('oferta', $imagen['nombre'], $imagen['base64']);
                             $arOferta->setUrlImagen($archivo['url']);
+                            $arOferta->setRuta($archivo['ruta']);
                         }
                     }
                     $em->persist($arOferta);

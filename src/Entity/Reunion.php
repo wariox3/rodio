@@ -32,14 +32,24 @@ class Reunion
     private $nombre;
 
     /**
-     * @ORM\Column(name="cantidad", type="integer", options={"default" : 0})
+     * @ORM\Column(name="cantidad", type="float", options={"default" : 0})
      */
-    private $cantidad = 0;
+    private $cantidad = 0.0;
 
     /**
-     * @ORM\Column(name="cantidad_coeficiente", type="integer", options={"default" : 0})
+     * @ORM\Column(name="cantidad_coeficiente", type="float", options={"default" : 0})
      */
-    private $cantidadCoeficiente = 0;
+    private $cantidadCoeficiente = 0.0;
+
+    /**
+     * @ORM\Column(name="cantidad_panal", type="float", options={"default" : 0})
+     */
+    private $cantidadPanal = 0.0;
+
+    /**
+     * @ORM\Column(name="cantidad_coeficiente_panal", type="float", options={"default" : 0})
+     */
+    private $cantidadCoeficientePanal = 0.0;
 
     /**
      * @ORM\Column(name="estado_cerrado", type="boolean", options={"default" : false})
@@ -81,6 +91,22 @@ class Reunion
     /**
      * @return mixed
      */
+    public function getCodigoPanalFk()
+    {
+        return $this->codigoPanalFk;
+    }
+
+    /**
+     * @param mixed $codigoPanalFk
+     */
+    public function setCodigoPanalFk($codigoPanalFk): void
+    {
+        $this->codigoPanalFk = $codigoPanalFk;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getFecha()
     {
         return $this->fecha;
@@ -111,6 +137,70 @@ class Reunion
     }
 
     /**
+     * @return float
+     */
+    public function getCantidad(): float
+    {
+        return $this->cantidad;
+    }
+
+    /**
+     * @param float $cantidad
+     */
+    public function setCantidad(float $cantidad): void
+    {
+        $this->cantidad = $cantidad;
+    }
+
+    /**
+     * @return float
+     */
+    public function getCantidadCoeficiente(): float
+    {
+        return $this->cantidadCoeficiente;
+    }
+
+    /**
+     * @param float $cantidadCoeficiente
+     */
+    public function setCantidadCoeficiente(float $cantidadCoeficiente): void
+    {
+        $this->cantidadCoeficiente = $cantidadCoeficiente;
+    }
+
+    /**
+     * @return float
+     */
+    public function getCantidadPanal(): float
+    {
+        return $this->cantidadPanal;
+    }
+
+    /**
+     * @param float $cantidadPanal
+     */
+    public function setCantidadPanal(float $cantidadPanal): void
+    {
+        $this->cantidadPanal = $cantidadPanal;
+    }
+
+    /**
+     * @return float
+     */
+    public function getCantidadCoeficientePanal(): float
+    {
+        return $this->cantidadCoeficientePanal;
+    }
+
+    /**
+     * @param float $cantidadCoeficientePanal
+     */
+    public function setCantidadCoeficientePanal(float $cantidadCoeficientePanal): void
+    {
+        $this->cantidadCoeficientePanal = $cantidadCoeficientePanal;
+    }
+
+    /**
      * @return bool
      */
     public function isEstadoCerrado(): bool
@@ -124,38 +214,6 @@ class Reunion
     public function setEstadoCerrado(bool $estadoCerrado): void
     {
         $this->estadoCerrado = $estadoCerrado;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getVotacionesReunionRel()
-    {
-        return $this->votacionesReunionRel;
-    }
-
-    /**
-     * @param mixed $votacionesReunionRel
-     */
-    public function setVotacionesReunionRel($votacionesReunionRel): void
-    {
-        $this->votacionesReunionRel = $votacionesReunionRel;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCodigoPanalFk()
-    {
-        return $this->codigoPanalFk;
-    }
-
-    /**
-     * @param mixed $codigoPanalFk
-     */
-    public function setCodigoPanalFk($codigoPanalFk): void
-    {
-        $this->codigoPanalFk = $codigoPanalFk;
     }
 
     /**
@@ -177,6 +235,22 @@ class Reunion
     /**
      * @return mixed
      */
+    public function getVotacionesReunionRel()
+    {
+        return $this->votacionesReunionRel;
+    }
+
+    /**
+     * @param mixed $votacionesReunionRel
+     */
+    public function setVotacionesReunionRel($votacionesReunionRel): void
+    {
+        $this->votacionesReunionRel = $votacionesReunionRel;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getReunionesDetallesReunionRel()
     {
         return $this->reunionesDetallesReunionRel;
@@ -189,39 +263,6 @@ class Reunion
     {
         $this->reunionesDetallesReunionRel = $reunionesDetallesReunionRel;
     }
-
-    /**
-     * @return int
-     */
-    public function getCantidad(): int
-    {
-        return $this->cantidad;
-    }
-
-    /**
-     * @param int $cantidad
-     */
-    public function setCantidad(int $cantidad): void
-    {
-        $this->cantidad = $cantidad;
-    }
-
-    /**
-     * @return int
-     */
-    public function getCantidadCoeficiente(): int
-    {
-        return $this->cantidadCoeficiente;
-    }
-
-    /**
-     * @param int $cantidadCoeficiente
-     */
-    public function setCantidadCoeficiente(int $cantidadCoeficiente): void
-    {
-        $this->cantidadCoeficiente = $cantidadCoeficiente;
-    }
-
 
 
 

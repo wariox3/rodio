@@ -52,7 +52,7 @@ class CasoRepository  extends ServiceEntityRepository
         }
     }
 
-    public function apiLista($codigoPanal)
+    public function apiLista($codigoPanal, $codigoUsuario = null)
     {
         $em = $this->getEntityManager();
         $queryBuilder = $em->createQueryBuilder()->from(Caso::class, 'c')
@@ -67,6 +67,9 @@ class CasoRepository  extends ServiceEntityRepository
             ->addSelect('c.estadoAtendido')
             ->addSelect('c.estadoRespuesta')
             ->where("c.codigoPanalFk = {$codigoPanal}");
+        if($codigoUsuario) {
+            $queryBuilder->andWhere("c.codigoUsuarioFk = {$codigoUsuario}");
+        }
         $arCasos = $queryBuilder->getQuery()->getResult();
         return [
             'error' => false,

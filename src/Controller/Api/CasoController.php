@@ -50,6 +50,24 @@ class CasoController extends AbstractFOSRestController
     }
 
     /**
+     * @Rest\Post("/api/caso/lista/v1")
+     */
+    public function listaV1(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoPanal = $raw['codigoPanal']?? null;
+        $codigoUsuario = $raw['codigoUsuario']?? null;
+        if($codigoPanal && $codigoUsuario) {
+            return $em->getRepository(Caso::class)->apiLista($codigoPanal, $codigoUsuario);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
+        }
+    }
+
+    /**
      * @Rest\Post("/api/admin/caso/lista")
      */
     public function adminLista(Request $request)

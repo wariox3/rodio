@@ -6,6 +6,7 @@ namespace App\Repository;
 use App\Entity\Celda;
 use App\Entity\CeldaUsuario;
 use App\Entity\Panal;
+use App\Entity\Reunion;
 use App\Entity\Usuario;
 use App\Entity\Votacion;
 use App\Entity\VotacionCelda;
@@ -40,6 +41,8 @@ class VotacionRepository extends ServiceEntityRepository
                 ->addSelect('v.descripcion')
                 ->addSelect('v.cantidad')
                 ->addSelect('v.estadoCerrado')
+                ->addSelect('r.nombre as reunionNombre')
+                ->leftJoin('v.reunionRel', 'r')
                 ->where("v.codigoPanalFk = {$arCelda->getCodigoPanalFk()}")
                 ->andWhere("v.estadoPublicado = 1")
                 ->andWhere("v.estadoCerrado = 0")
@@ -152,6 +155,8 @@ class VotacionRepository extends ServiceEntityRepository
             ->addSelect('v.cantidad')
             ->addSelect('v.estadoCerrado')
             ->addSelect('v.estadoPublicado')
+            ->addSelect('r.nombre as reunionNombre')
+            ->leftJoin('v.reunionRel', 'r')
             ->where("v.codigoPanalFk = {$codigoPanal}")
             ->orderBy('v.fecha', 'DESC');
         $arVotaciones = $queryBuilder->getQuery()->getResult();
@@ -162,17 +167,22 @@ class VotacionRepository extends ServiceEntityRepository
 
     }
 
-    public function apiAdminNuevo($codigoPanal, $id, $fechaHasta, $titulo, $descripcion)
+    public function apiAdminNuevo($codigoPanal, $id, $fechaHasta, $titulo, $descripcion, $codigoReunion)
     {
         $em = $this->getEntityManager();
         $arPanal = $em->getRepository(Panal::class)->find($codigoPanal);
         if($arPanal) {
+            $arReunion = null;
+            if($codigoReunion) {
+                $arReunion = $em->getRepository(Reunion::class)->find($codigoReunion);
+            }
             if($id) {
                 $arVotacion = $em->getRepository(Votacion::class)->find($id);
                 if($arVotacion) {
                     $arVotacion->setFechaHasta(date_create($fechaHasta));
                     $arVotacion->setDescripcion($descripcion);
                     $arVotacion->setTitulo($titulo);
+                    $arVotacion->setReunionRel($arReunion);
                     $em->persist($arVotacion);
                     $em->flush();
                     return [
@@ -192,6 +202,7 @@ class VotacionRepository extends ServiceEntityRepository
                 $arVotacion->setFechaHasta(date_create($fechaHasta));
                 $arVotacion->setDescripcion($descripcion);
                 $arVotacion->setTitulo($titulo);
+                $arVotacion->setReunionRel($arReunion);
                 $em->persist($arVotacion);
                 $em->flush();
                 return [
@@ -216,13 +227,19 @@ class VotacionRepository extends ServiceEntityRepository
             ->addSelect('v.fechaHasta')
             ->addSelect('v.descripcion')
             ->addSelect('v.titulo')
+            ->addSelect('v.codigoReunionFk')
             ->addSelect('v.cantidad')
             ->addSelect('v.estadoPublicado')
             ->addSelect('v.estadoCerrado')
             ->addSelect('p.coeficiente as panalCoeficiente')
             ->addSelect('p.area as panalArea')
             ->addSelect('p.cantidad as panalCantidad')
+            ->addSelect('r.cantidad as reunionCantidad')
+            ->addSelect('r.cantidadCoeficiente  as reunionCantidadCoeficiente')
+            ->addSelect('r.cantidadPanal  as reunionCantidadPanal')
+            ->addSelect('r.cantidadCoeficientePanal  as reunionCantidadCoeficientePanal')
             ->leftJoin('v.panalRel', 'p')
+            ->leftJoin('v.reunionRel', 'r')
             ->where("v.codigoVotacionPk = {$codigoVotacion}");
         $arVotacion = $queryBuilder->getQuery()->getResult();
         if($arVotacion) {
