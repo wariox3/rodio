@@ -80,6 +80,11 @@ class Usuario
     private $codigoTerceroFk;
 
     /**
+     * @ORM\Column(name="calidad_imagen", type="string", length=10, options={"default": "BAJO"} )
+     */
+    private $calidadImagen = "BAJO";
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Panal", inversedBy="usuariosPanalRel")
      * @ORM\JoinColumn(name="codigo_panal_fk", referencedColumnName="codigo_panal_pk")
      */
@@ -711,5 +716,23 @@ class Usuario
     {
         $this->chatsUsuarioRel = $chatsUsuarioRel;
     }
+
+    /**
+     * @return string
+     */
+    public function getCalidadImagen(): string
+    {
+        return $this->calidadImagen;
+    }
+
+    /**
+     * @param string $calidadImagen
+     */
+    public function setCalidadImagen(string $calidadImagen): void
+    {
+        $this->calidadImagen = $calidadImagen;
+    }
+
+
 
 }

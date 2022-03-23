@@ -64,6 +64,7 @@ class UsuarioRepository extends ServiceEntityRepository
                     'codigoPuesto' => $arUsuario->getCodigoPuestoFk(),
                     'codigoTercero' => $arUsuario->getCodigoTerceroFk(),
                     'codigoOperador' => $arUsuario->getCodigoOperadorFk(),
+                    'calidadImagen' => $arUsuario->getCalidadImagen(),
                     'celda' => $celda,
                     'tienda' => $tienda,
                     'oferta' => $oferta,
