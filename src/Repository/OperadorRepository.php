@@ -14,4 +14,22 @@ class OperadorRepository extends ServiceEntityRepository
         parent::__construct($registry, Operador::class);
     }
 
+    public function apiConectar($codigoOperador)
+    {
+        $em = $this->getEntityManager();
+        $arOperador = $em->getRepository(Operador::class)->find($codigoOperador);
+        if ($arOperador) {
+            return [
+                'error' => false,
+                'nombre' => $arOperador->getNombre(),
+                'puntoServicio' => $arOperador->getPuntoServicioCromo()
+            ];
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "No existe el operador"
+            ];
+        }
+    }
+
 }
