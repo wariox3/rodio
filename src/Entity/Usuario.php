@@ -85,6 +85,11 @@ class Usuario
     private $calidadImagen = "BAJO";
 
     /**
+     * @ORM\Column(name="vr_saldo", type="float", options={"default" : 0})
+     */
+    private $vrSaldo = 0.0;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Panal", inversedBy="usuariosPanalRel")
      * @ORM\JoinColumn(name="codigo_panal_fk", referencedColumnName="codigo_panal_pk")
      */
@@ -188,6 +193,15 @@ class Usuario
      */
     private $chatsUsuarioRel;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Transaccion", mappedBy="usuarioRel")
+     */
+    private $transaccionesUsuarioRel;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Cupon", mappedBy="usuarioRel")
+     */
+    private $cuponesUsuarioRel;
 
     /**
      * @return mixed
@@ -731,6 +745,54 @@ class Usuario
     public function setCalidadImagen(string $calidadImagen): void
     {
         $this->calidadImagen = $calidadImagen;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTransaccionesUsuarioRel()
+    {
+        return $this->transaccionesUsuarioRel;
+    }
+
+    /**
+     * @param mixed $transaccionesUsuarioRel
+     */
+    public function setTransaccionesUsuarioRel($transaccionesUsuarioRel): void
+    {
+        $this->transaccionesUsuarioRel = $transaccionesUsuarioRel;
+    }
+
+    /**
+     * @return float
+     */
+    public function getVrSaldo(): float
+    {
+        return $this->vrSaldo;
+    }
+
+    /**
+     * @param float $vrSaldo
+     */
+    public function setVrSaldo(float $vrSaldo): void
+    {
+        $this->vrSaldo = $vrSaldo;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCuponesUsuarioRel()
+    {
+        return $this->cuponesUsuarioRel;
+    }
+
+    /**
+     * @param mixed $cuponesUsuarioRel
+     */
+    public function setCuponesUsuarioRel($cuponesUsuarioRel): void
+    {
+        $this->cuponesUsuarioRel = $cuponesUsuarioRel;
     }
 
 
