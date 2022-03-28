@@ -22,7 +22,8 @@ class OperadorRepository extends ServiceEntityRepository
             return [
                 'error' => false,
                 'nombre' => $arOperador->getNombre(),
-                'puntoServicio' => $arOperador->getPuntoServicioCromo()
+                'puntoServicio' => $arOperador->getPuntoServicioCromo(),
+                'puntoServicioToken' => $arOperador->getToken()
             ];
         } else {
             return [
