@@ -29,6 +29,11 @@ class Departamento
     private $codigoPaisFk;
 
     /**
+     * @ORM\Column(name="codigo_interface", type="string", length=20, nullable=true)
+     */
+    private $codigoInterface;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Pais", inversedBy="departamentosPaisRel")
      * @ORM\JoinColumn(name="codigo_pais_fk", referencedColumnName="codigo_pais_pk")
      */
@@ -117,6 +122,22 @@ class Departamento
     public function setCiudadesDepartamentoRel($ciudadesDepartamentoRel): void
     {
         $this->ciudadesDepartamentoRel = $ciudadesDepartamentoRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodigoInterface()
+    {
+        return $this->codigoInterface;
+    }
+
+    /**
+     * @param mixed $codigoInterface
+     */
+    public function setCodigoInterface($codigoInterface): void
+    {
+        $this->codigoInterface = $codigoInterface;
     }
 
 
