@@ -34,6 +34,16 @@ class Ciudad
     private $usuariosCiudadRel;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Viaje", mappedBy="ciudadOrigenRel")
+     */
+    private $viajesCiudadOrigenRel;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Viaje", mappedBy="ciudadDestinoRel")
+     */
+    private $viajesCiudadDestinoRel;
+
+    /**
      * @return mixed
      */
     public function getCodigoCiudadPk()

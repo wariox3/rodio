@@ -35,6 +35,7 @@ class CuponRepository extends ServiceEntityRepository
                         $arCupon->setEstadoAplicado(1);
                         $em->persist($arCupon);
                         $arTransaccion = new Transaccion();
+                        $arTransaccion->setCodigoTransaccionTipoFk('cupon');
                         $arTransaccion->setFecha(new \DateTime('now'));
                         $arTransaccion->setUsuarioRel($arUsuario);
                         $arTransaccion->setVrValor($arCupon->getVrValor());
