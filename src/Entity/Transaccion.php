@@ -19,6 +19,11 @@ class Transaccion
     private $codigoTransaccionPk;
 
     /**
+     * @ORM\Column(name="codigo_transaccion_tipo_fk", type="string", length=20)
+     */
+    private $codigoTransaccionTipoFk;
+
+    /**
      * @ORM\Column(name="codigo_usuario_fk", type="integer")
      */
     private $codigoUsuarioFk;
@@ -138,6 +143,22 @@ class Transaccion
     public function setUsuarioRel($usuarioRel): void
     {
         $this->usuarioRel = $usuarioRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodigoTransaccionTipoFk()
+    {
+        return $this->codigoTransaccionTipoFk;
+    }
+
+    /**
+     * @param mixed $codigoTransaccionTipoFk
+     */
+    public function setCodigoTransaccionTipoFk($codigoTransaccionTipoFk): void
+    {
+        $this->codigoTransaccionTipoFk = $codigoTransaccionTipoFk;
     }
 
 
