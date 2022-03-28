@@ -21,6 +21,7 @@ class CiudadRepository extends ServiceEntityRepository
         $queryBuilder = $em->createQueryBuilder()->from(Ciudad::class, 'c')
             ->select('c.codigoCiudadPk')
             ->addSelect('c.nombre')
+            ->where('c.estadoInactivo = 0')
             ->setMaxResults(10);
         if($nombre) {
             $queryBuilder->andWhere("c.nombre like '%{$nombre}%'");

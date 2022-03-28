@@ -34,6 +34,11 @@ class Ciudad
     private $codigoInterface;
 
     /**
+     * @ORM\Column(name="estado_inactivo", type="boolean", options={"default" : false}, nullable=true)
+     */
+    private $estadoInactivo = false;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Departamento", inversedBy="ciudadesDepartamentoRel")
      * @ORM\JoinColumn(name="codigo_departamento_fk", referencedColumnName="codigo_departamento_pk")
      */
@@ -201,6 +206,22 @@ class Ciudad
     public function setCodigoInterface($codigoInterface): void
     {
         $this->codigoInterface = $codigoInterface;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEstadoInactivo(): bool
+    {
+        return $this->estadoInactivo;
+    }
+
+    /**
+     * @param bool $estadoInactivo
+     */
+    public function setEstadoInactivo(bool $estadoInactivo): void
+    {
+        $this->estadoInactivo = $estadoInactivo;
     }
 
 
