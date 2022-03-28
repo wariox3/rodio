@@ -24,6 +24,17 @@ class Ciudad
     private $nombre;
 
     /**
+     * @ORM\Column(name="codigo_departamento_fk", type="integer", nullable=true)
+     */
+    private $codigoDepartamentoFk;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Departamento", inversedBy="ciudadesDepartamentoRel")
+     * @ORM\JoinColumn(name="codigo_departamento_fk", referencedColumnName="codigo_departamento_pk")
+     */
+    private $departamentoRel;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Panal", mappedBy="ciudadRel")
      */
     private $panalesCiudadRel;
@@ -105,6 +116,70 @@ class Ciudad
     public function setUsuariosCiudadRel($usuariosCiudadRel): void
     {
         $this->usuariosCiudadRel = $usuariosCiudadRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodigoDepartamentoFk()
+    {
+        return $this->codigoDepartamentoFk;
+    }
+
+    /**
+     * @param mixed $codigoDepartamentoFk
+     */
+    public function setCodigoDepartamentoFk($codigoDepartamentoFk): void
+    {
+        $this->codigoDepartamentoFk = $codigoDepartamentoFk;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDepartamentoRel()
+    {
+        return $this->departamentoRel;
+    }
+
+    /**
+     * @param mixed $departamentoRel
+     */
+    public function setDepartamentoRel($departamentoRel): void
+    {
+        $this->departamentoRel = $departamentoRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getViajesCiudadOrigenRel()
+    {
+        return $this->viajesCiudadOrigenRel;
+    }
+
+    /**
+     * @param mixed $viajesCiudadOrigenRel
+     */
+    public function setViajesCiudadOrigenRel($viajesCiudadOrigenRel): void
+    {
+        $this->viajesCiudadOrigenRel = $viajesCiudadOrigenRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getViajesCiudadDestinoRel()
+    {
+        return $this->viajesCiudadDestinoRel;
+    }
+
+    /**
+     * @param mixed $viajesCiudadDestinoRel
+     */
+    public function setViajesCiudadDestinoRel($viajesCiudadDestinoRel): void
+    {
+        $this->viajesCiudadDestinoRel = $viajesCiudadDestinoRel;
     }
 
 

@@ -34,12 +34,12 @@ class Viaje
     private $vrFlete = 0.0;
 
     /**
-     * @ORM\Column(name="codigoCiudadOrigenFk", type="integer", nullable=true)
+     * @ORM\Column(name="codigo_ciudad_origen_fk", type="integer", nullable=true)
      */
     private $codigoCiudadOrigenFk;
 
     /**
-     * @ORM\Column(name="codigoCiudadDestinoFk", type="integer", nullable=true)
+     * @ORM\Column(name="codigo_ciudad_destino_fk", type="integer", nullable=true)
      */
     private $codigoCiudadDestinoFk;
 
@@ -49,7 +49,7 @@ class Viaje
     private $cantidadClientes = 0;
 
     /**
-     * @ORM\Column(name="comentarios", type="string", length=300)
+     * @ORM\Column(name="comentarios", type="string", length=300, nullable=true)
      */
     private $comentarios;
 
