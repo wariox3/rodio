@@ -64,6 +64,11 @@ class Operador
     private $puestosOperadorRel;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Viaje", mappedBy="operadorRel")
+     */
+    private $viajesOperadorRel;
+
+    /**
      * @return mixed
      */
     public function getCodigoOperadorPk()
@@ -222,5 +227,23 @@ class Operador
     {
         $this->puestosOperadorRel = $puestosOperadorRel;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getViajesOperadorRel()
+    {
+        return $this->viajesOperadorRel;
+    }
+
+    /**
+     * @param mixed $viajesOperadorRel
+     */
+    public function setViajesOperadorRel($viajesOperadorRel): void
+    {
+        $this->viajesOperadorRel = $viajesOperadorRel;
+    }
+
+
 
 }

@@ -14,6 +14,32 @@ use Symfony\Component\HttpFoundation\Request;
 class ViajeController extends AbstractFOSRestController
 {
     /**
+     * @Rest\Post("/api/viaje/nuevo")
+     */
+    public function nuevo(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoOperador = $raw['codigoOperador']?? null;
+        $ciudadOrigen = $raw['codigoCiudadOrigen']?? null;
+        $ciudadDestino = $raw['codigoCiudadDestino']?? null;
+        $fechaCargue = $raw['fechaCargue']?? null;
+        $flete = $raw['flete']?? null;
+        $cantidadClientes = $raw['cantidadClientes']?? null;
+        $comentario = $raw['comentario']?? null;
+        $peso = $raw['peso']?? null;
+        $volumen = $raw['volumen']?? null;
+        if($codigoOperador && $ciudadOrigen && $ciudadDestino && $fechaCargue && $flete && $cantidadClientes && $peso && $volumen) {
+            return $em->getRepository(Viaje::class)->apiNuevo($codigoOperador, $ciudadOrigen, $ciudadDestino, $fechaCargue, $flete, $cantidadClientes, $peso, $volumen, $comentario);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
+        }
+
+    }
+
+    /**
      * @Rest\Post("/api/viaje/lista/cliente")
      */
     public function listaCliente(Request $request)

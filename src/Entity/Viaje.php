@@ -29,6 +29,11 @@ class Viaje
     private $fechaCargue;
 
     /**
+     * @ORM\Column(name="codigo_operador_fk", type="integer", nullable=true)
+     */
+    private $codigoOperadorFk;
+
+    /**
      * @ORM\Column(name="vr_flete", type="float", options={"default" : 0})
      */
     private $vrFlete = 0.0;
@@ -49,9 +54,25 @@ class Viaje
     private $cantidadClientes = 0;
 
     /**
-     * @ORM\Column(name="comentarios", type="string", length=300, nullable=true)
+     * @ORM\Column(name="peso", type="integer", options={"default" : 0})
      */
-    private $comentarios;
+    private $peso = 0;
+
+    /**
+     * @ORM\Column(name="volumen", type="integer", options={"default" : 0})
+     */
+    private $volumen = 0;
+
+    /**
+     * @ORM\Column(name="comentario", type="string", length=300, nullable=true)
+     */
+    private $comentario;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Operador", inversedBy="viajesOperadorRel")
+     * @ORM\JoinColumn(name="codigo_operador_fk", referencedColumnName="codigo_operador_pk")
+     */
+    private $operadorRel;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Ciudad", inversedBy="viajesCiudadOrigenRel")
@@ -180,22 +201,6 @@ class Viaje
     /**
      * @return mixed
      */
-    public function getComentarios()
-    {
-        return $this->comentarios;
-    }
-
-    /**
-     * @param mixed $comentarios
-     */
-    public function setComentarios($comentarios): void
-    {
-        $this->comentarios = $comentarios;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getCiudadOrigenRel()
     {
         return $this->ciudadOrigenRel;
@@ -223,6 +228,86 @@ class Viaje
     public function setCiudadDestinoRel($ciudadDestinoRel): void
     {
         $this->ciudadDestinoRel = $ciudadDestinoRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodigoOperadorFk()
+    {
+        return $this->codigoOperadorFk;
+    }
+
+    /**
+     * @param mixed $codigoOperadorFk
+     */
+    public function setCodigoOperadorFk($codigoOperadorFk): void
+    {
+        $this->codigoOperadorFk = $codigoOperadorFk;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPeso(): int
+    {
+        return $this->peso;
+    }
+
+    /**
+     * @param int $peso
+     */
+    public function setPeso(int $peso): void
+    {
+        $this->peso = $peso;
+    }
+
+    /**
+     * @return int
+     */
+    public function getVolumen(): int
+    {
+        return $this->volumen;
+    }
+
+    /**
+     * @param int $volumen
+     */
+    public function setVolumen(int $volumen): void
+    {
+        $this->volumen = $volumen;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOperadorRel()
+    {
+        return $this->operadorRel;
+    }
+
+    /**
+     * @param mixed $operadorRel
+     */
+    public function setOperadorRel($operadorRel): void
+    {
+        $this->operadorRel = $operadorRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getComentario()
+    {
+        return $this->comentario;
+    }
+
+    /**
+     * @param mixed $comentario
+     */
+    public function setComentario($comentario): void
+    {
+        $this->comentario = $comentario;
     }
 
 
