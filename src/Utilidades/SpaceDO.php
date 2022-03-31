@@ -12,13 +12,12 @@ class SpaceDO
 
     public function subir($clase, $textoBase64) {
         $nombreArchivo = bin2hex(random_bytes((30 - (20 % 2)) / 2));;
-        $destinoLocal = "/var/www/html/temporal/{$nombreArchivo}";
-        $destinoDO = "rodio/$clase/{$nombreArchivo}";
         $datosBase64 = explode(',', $textoBase64);
-        $base64 = $datosBase64[0];
-        if(isset($datosBase64[1])) {
-            $base64 = $datosBase64[1];
-        }
+        $data = $datosBase64[0];
+        $extension = substr($data, 11, -7);
+        $base64 = $datosBase64[1];
+        $destinoLocal = "/var/www/html/temporal/{$nombreArchivo}.{$extension}";
+        $destinoDO = "rodio/$clase/{$nombreArchivo}.{$extension}";
         $base64 = base64_decode($base64);
         file_put_contents($destinoLocal, $base64);
         $spaces = Spaces($_ENV['DO_CLAVE_ACCESO'], $_ENV['DO_CLAVE_SECRETA']);
