@@ -130,7 +130,7 @@ class PublicacionRepository extends ServiceEntityRepository
             if($arPublicacion->getCodigoUsuarioFk() == $codigoUsuario) {
                 $em->remove($arPublicacion);
                 $em->flush();
-                $this->space->eliminar($arPublicacion->getRuta());
+                $this->space->eliminar($arPublicacion->getUrlImagen());
                 return [
                     'error' => false
                 ];
