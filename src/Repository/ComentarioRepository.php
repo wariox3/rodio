@@ -24,6 +24,7 @@ class ComentarioRepository extends ServiceEntityRepository
             ->addSelect('c.comentario')
             ->addSelect('c.codigoUsuarioFk')
             ->addSelect('u.urlImagen as usuarioUrlImagen')
+            ->addSelect("CONCAT('{$_ENV['ALMACENAMIENTO_URL']}', u.urlImagen) as usuarioUrlImagen")
             ->addSelect('u.usuario as usuario')
             ->addSelect('u.nombre as usuarioNombre')
             ->leftJoin('c.usuarioRel', 'u')
