@@ -240,6 +240,8 @@ class UsuarioRepository extends ServiceEntityRepository
             }
             return [
                 'error' => false,
+                'codigoUsuario' => $arUsuario->getCodigoUsuarioPk(),
+                'usuario' => $arUsuario->getUsuario(),
                 'nombre' => $arUsuario->getNombre(),
                 'codigoPanalFk' => $arUsuario->getCodigoPanalFk(),
                 'codigoCeldaFk' => $arUsuario->getCodigoCeldaFk(),

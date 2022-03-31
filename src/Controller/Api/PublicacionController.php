@@ -21,8 +21,8 @@ class PublicacionController extends AbstractFOSRestController
         if($codigoUsuario) {
             $respuesta =  $em->getRepository(Publicacion::class)->apiLista($codigoUsuario);
             if($respuesta['error'] == false){
-                $arLiquidaciones = $paginator->paginate($respuesta['publicaciones'], $request->query->getInt('page', $pagina), 10);
-                $respuesta['publicaciones'] = $arLiquidaciones;
+                $arPublicaciones = $paginator->paginate($respuesta['publicaciones'], $request->query->getInt('page', $pagina), 10);
+                $respuesta['publicaciones'] = $arPublicaciones;
                 return $respuesta;
             } else {
                 return $respuesta;
