@@ -19,7 +19,7 @@ class PublicacionRepository extends ServiceEntityRepository
         $this->space = $space;
     }
 
-    public function apiLista($codigoUsuario, $pagina = 0)
+    public function apiLista($codigoUsuario)
     {
         $em = $this->getEntityManager();
         $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
@@ -29,50 +29,10 @@ class PublicacionRepository extends ServiceEntityRepository
                     ->select('p.codigoPublicacionPk')
                     ->addSelect('p.fecha')
                     ->addSelect('p.comentario')
-                    ->addSelect('p.urlImagen')
+                    ->addSelect("CONCAT('{$_ENV['ALMACENAMIENTO_URL']}', p.urlImagen) as urlImagen")
                     ->addSelect('p.reacciones')
                     ->addSelect('p.comentarios')
-                    ->addSelect('p.codigoUsuarioFk')
-                    ->addSelect('u.urlImagen as usuarioUrlImagen')
-                    ->addSelect('u.usuario as usuario')
-                    ->leftJoin('p.celdaRel', 'c')
-                    ->leftJoin('p.usuarioRel', 'u')
-                    ->where("c.codigoPanalFk = {$arUsuario->getCodigoPanalFk()}")
-                    ->orderBy('p.fecha', 'DESC')
-                    ->setFirstResult(10 * $pagina)
-                    ->setMaxResults(10);
-                $arPublicaciones = $queryBuilder->getQuery()->getResult();
-                return [
-                    'error' => false,
-                    'publicaciones' => $arPublicaciones
-                ];
-            }  else {
-                return [
-                    'error' => true,
-                    'errorMensaje' => "El usuario no tiene un panal asignado"
-                ];
-            }
-        } else {
-            return [
-                'error' => true,
-                'errorMensaje' => "El usuario no existe"
-            ];
-        }
-    }
-
-    public function apiLista2($codigoUsuario)
-    {
-        $em = $this->getEntityManager();
-        $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
-        if($arUsuario) {
-            if($arUsuario->getPanalRel()) {
-                $queryBuilder = $em->createQueryBuilder()->from(Publicacion::class, 'p')
-                    ->select('p.codigoPublicacionPk')
-                    ->addSelect('p.fecha')
-                    ->addSelect('p.comentario')
-                    ->addSelect('p.urlImagen')
-                    ->addSelect('p.reacciones')
-                    ->addSelect('p.comentarios')
+                    ->addSelect('p.permiteComentario')
                     ->addSelect('u.urlImagen as usuarioUrlImagen')
                     ->addSelect('u.usuario as usuario')
                     ->addSelect('u.nombre as usuarioNombre')
@@ -99,7 +59,7 @@ class PublicacionRepository extends ServiceEntityRepository
         }
     }
 
-    public function apiNuevo($codigoUsuario, $nombreImagen, $imagenBase64, $comentario) {
+    public function apiNuevoV1($codigoUsuario, $nombreImagen, $imagenBase64, $comentario, $permiteComentario) {
         $em = $this->getEntityManager();
         $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
         if($arUsuario) {
@@ -111,7 +71,12 @@ class PublicacionRepository extends ServiceEntityRepository
             $arPublicacion->setEstadoAprobado($arUsuario->getPanalRel()->isPublicacionAprobar());
             $archivo = $this->space->subir('publicacion', $nombreImagen, $imagenBase64);
             $arPublicacion->setUrlImagen($archivo['url']);
-            $arPublicacion->setRuta($archivo['ruta']);
+            if($permiteComentario) {
+                if(!$arUsuario->getPanalRel()->isPublicacionPermiteComentario()) {
+                    $permiteComentario = false;
+                }
+            }
+            $arPublicacion->setPermiteComentario($permiteComentario);
             $em->persist($arPublicacion);
             $em->flush();
             return [

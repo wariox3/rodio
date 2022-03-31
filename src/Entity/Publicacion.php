@@ -44,11 +44,6 @@ class Publicacion
     private $urlImagen;
 
     /**
-     * @ORM\Column(name="ruta", type="string", length=500, nullable=true)
-     */
-    private $ruta;
-
-    /**
      * @ORM\Column(name="reacciones", type="integer", options={"default" : 0})
      */
     private $reacciones = 0;
@@ -62,6 +57,11 @@ class Publicacion
      * @ORM\Column(name="estado_aprobado", type="boolean", options={"default" : true}, nullable=true)
      */
     private $estadoAprobado = true;
+
+    /**
+     * @ORM\Column(name="permite_comentario", type="boolean", options={"default" : true})
+     */
+    private $permiteComentario = true;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Panal", inversedBy="publicacionesPanalRel")
@@ -294,19 +294,19 @@ class Publicacion
     }
 
     /**
-     * @return mixed
+     * @return bool
      */
-    public function getRuta()
+    public function isPermiteComentario(): bool
     {
-        return $this->ruta;
+        return $this->permiteComentario;
     }
 
     /**
-     * @param mixed $ruta
+     * @param bool $permiteComentario
      */
-    public function setRuta($ruta): void
+    public function setPermiteComentario(bool $permiteComentario): void
     {
-        $this->ruta = $ruta;
+        $this->permiteComentario = $permiteComentario;
     }
 
 

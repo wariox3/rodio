@@ -3,11 +3,7 @@
 
 namespace App\Controller\Api;
 
-use App\Entity\Celda;
-use App\Entity\Ciudad;
 use App\Entity\Panal;
-use App\Entity\Publicacion;
-use App\Entity\Usuario;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Symfony\Component\HttpFoundation\Request;

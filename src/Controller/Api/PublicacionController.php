@@ -19,7 +19,7 @@ class PublicacionController extends AbstractFOSRestController
     {
         $em = $this->getDoctrine()->getManager();
         if($codigoUsuario) {
-            $respuesta =  $em->getRepository(Publicacion::class)->apiLista2($codigoUsuario);
+            $respuesta =  $em->getRepository(Publicacion::class)->apiLista($codigoUsuario);
             if($respuesta['error'] == false){
                 $arLiquidaciones = $paginator->paginate($respuesta['publicaciones'], $request->query->getInt('page', $pagina), 10);
                 $respuesta['publicaciones'] = $arLiquidaciones;
@@ -35,9 +35,9 @@ class PublicacionController extends AbstractFOSRestController
     }
 
     /**
-     * @Rest\Post("/api/publicacion/nuevo")
+     * @Rest\Post("/api/publicacion/nuevo/v1")
      */
-    public function nuevo(Request $request)
+    public function nuevoV1(Request $request)
     {
         try {
             $em = $this->getDoctrine()->getManager();
@@ -46,8 +46,9 @@ class PublicacionController extends AbstractFOSRestController
             $nombreImagen = $raw['imagenNombre']?? null;
             $imagenBase64 = $raw['imagenBase64']?? null;
             $comentario = $raw['comentario']?? null;
-            if($codigoUsuario) {
-                return $em->getRepository(Publicacion::class)->apiNuevo($codigoUsuario, $nombreImagen, $imagenBase64, $comentario);
+            $permiteComentario = $raw['permiteComentario']?? null;
+            if($codigoUsuario && $permiteComentario) {
+                return $em->getRepository(Publicacion::class)->apiNuevoV1($codigoUsuario, $nombreImagen, $imagenBase64, $comentario, $permiteComentario);
             } else {
                 return [
                     'error' => true,

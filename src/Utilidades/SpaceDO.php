@@ -26,8 +26,8 @@ class SpaceDO
         $my_space->uploadFile($destinoLocal, $destinoDO, "public");
         unlink($destinoLocal);
         return [
-            'url' => "https://semantica.sfo3.digitaloceanspaces.com/{$destinoDO}",
-            'ruta' => $destinoDO];
+            'url' => "{$destinoDO}"
+        ];
     }
 
     public function eliminar($url) {

@@ -44,6 +44,11 @@ class Panal
     private $publicacionAprobar = true;
 
     /**
+     * @ORM\Column(name="publicacion_permite_comentario", type="boolean", options={"default" : true}, nullable=true)
+     */
+    private $publicacionPermiteComentario = true;
+
+    /**
      * @ORM\Column(name="exige_celda", type="boolean", options={"default" : true})
      */
     private $exigeCelda = true;
@@ -497,6 +502,22 @@ class Panal
     public function setReunionesPanalRel($reunionesPanalRel): void
     {
         $this->reunionesPanalRel = $reunionesPanalRel;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPublicacionPermiteComentario(): bool
+    {
+        return $this->publicacionPermiteComentario;
+    }
+
+    /**
+     * @param bool $publicacionPermiteComentario
+     */
+    public function setPublicacionPermiteComentario(bool $publicacionPermiteComentario): void
+    {
+        $this->publicacionPermiteComentario = $publicacionPermiteComentario;
     }
 
 
