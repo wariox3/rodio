@@ -57,7 +57,7 @@ class UsuarioRepository extends ServiceEntityRepository
                     'codigo' => $arUsuario->getCodigoUsuarioPk(),
                     'usuario' => $arUsuario->getUsuario(),
                     'nombre' => $arUsuario->getNombre(),
-                    'urlImagen' => $arUsuario->getUrlImagen(),
+                    'urlImagen' => $_ENV['ALMACENAMIENTO_URL'] . $arUsuario->getUrlImagen(),
                     'codigoCelda' => $arUsuario->getCodigoCeldaFk(),
                     'codigoPanal' => $arUsuario->getCodigoPanalFk(),
                     'codigoCiudad' => $arUsuario->getCodigoCiudadFk(),
