@@ -183,8 +183,7 @@ class UsuarioController extends AbstractFOSRestController
         $codigoUsuario = $raw['codigoUsuario']?? null;
         $nombre = $raw['nombre']?? null;
         $celular = $raw['celular']?? null;
-
-        if($codigoUsuario) {
+        if($codigoUsuario && $nombre && $celular) {
             return $em->getRepository(Usuario::class)->apiEditarInformacion($codigoUsuario, $nombre, $celular);
         } else {
             return [

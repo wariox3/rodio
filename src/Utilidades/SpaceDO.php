@@ -11,6 +11,7 @@ class SpaceDO
     }
 
     public function subir($clase, $textoBase64) {
+        //https://github.com/SociallyDev/Spaces-API
         $nombreArchivo = bin2hex(random_bytes((30 - (20 % 2)) / 2));;
         $datosBase64 = explode(',', $textoBase64);
         $data = $datosBase64[0];

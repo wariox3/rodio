@@ -208,7 +208,6 @@ class UsuarioRepository extends ServiceEntityRepository
             }
             $arUsuario->setCeldaRel(null);
             $arUsuario->setPanalRel(null);
-            $arUsuario->setCiudadRel(null);
             $em->persist($arUsuario);
             $em->flush();
             return [
@@ -264,19 +263,13 @@ class UsuarioRepository extends ServiceEntityRepository
         $em = $this->getEntityManager();
         $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
         if($arUsuario) {
-            if($nombre){
-                $arUsuario->setNombre($nombre);
-                $em->persist($arUsuario);
-                $em->flush();
-                return [
-                    'error' => false,
-                ];
-            }else {
-                return [
-                    'error' => true,
-                    'errorMensaje' => "El nombre del usuario no puede estar vacio"
-                ];
-            }
+            $arUsuario->setNombre($nombre);
+            $arUsuario->setCelular($celular);
+            $em->persist($arUsuario);
+            $em->flush();
+            return [
+                'error' => false,
+            ];
         } else {
             return [
                 'error' => true,
