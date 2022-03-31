@@ -143,7 +143,7 @@ class PublicacionRepository extends ServiceEntityRepository
         } else {
             return [
                 'error' => true,
-                'errorMensaje' => "El contenido no existe"
+                'errorMensaje' => "La publicacion no existe"
             ];
         }
     }
