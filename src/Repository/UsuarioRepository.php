@@ -248,7 +248,8 @@ class UsuarioRepository extends ServiceEntityRepository
                 'panalNombre' => $panalNombre,
                 'celda' => $celda,
                 'codigoCiudadFk' => $arUsuario->getCodigoCiudadFk(),
-                'ciudadNombre' => $ciudadNombre
+                'ciudadNombre' => $ciudadNombre,
+                'urlImagen' => $_ENV['ALMACENAMIENTO_URL'] . $arUsuario->getUrlImagen()
             ];
         } else {
             return [
