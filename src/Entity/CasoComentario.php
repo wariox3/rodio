@@ -29,12 +29,12 @@ class CasoComentario
     private $fecha;
 
     /**
-     * @ORM\Column(name="comentario", type="string", length=250, nullable=true)
+     * @ORM\Column(name="comentario", type="string", length=500, nullable=true)
      */
     private $comentario;
 
     /**
-     * @ORM\Column(name="codigo_usuario_fk", type="integer", nullable=false)
+     * @ORM\Column(name="codigo_usuario_fk", type="integer", nullable=true)
      */
     private $codigoUsuarioFk;
 

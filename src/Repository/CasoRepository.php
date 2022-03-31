@@ -138,13 +138,11 @@ class CasoRepository  extends ServiceEntityRepository
             ->select('c.codigoCasoPk')
             ->addSelect('c.fecha')
             ->addSelect('c.fechaAtendido')
-            ->addSelect('c.fechaRespuesta')
             ->addSelect('c.codigoCasoTipoFk')
             ->addSelect('c.comentario')
-            ->addSelect('c.respuesta')
             ->addSelect('c.codigoUsuarioFk')
             ->addSelect('c.estadoAtendido')
-            ->addSelect('c.estadoRespuesta')
+            ->addSelect('c.estadoCerrado')
             ->where("c.codigoPanalFk = {$codigoPanal}");
         $arCasos = $queryBuilder->getQuery()->getResult();
         return [
@@ -163,17 +161,23 @@ class CasoRepository  extends ServiceEntityRepository
             ->addSelect('c.codigoUsuarioFk')
             ->addSelect('c.fecha')
             ->addSelect('c.fechaAtendido')
-            ->addSelect('c.fechaRespuesta')
             ->addSelect('c.comentario')
-            ->addSelect('c.respuesta')
             ->addSelect('c.estadoAtendido')
-            ->addSelect('c.estadoRespuesta')
+            ->addSelect('c.estadoCerrado')
             ->where("c.codigoCasoPk = {$codigoCaso}");
         $arCaso = $queryBuilder->getQuery()->getResult();
+        $queryBuilder = $em->createQueryBuilder()->from(CasoComentario::class, 'cc')
+            ->select('cc.codigoCasoComentarioPk')
+            ->addSelect('cc.fecha')
+            ->addSelect('cc.comentario')
+            ->addSelect('cc.codigoUsuarioFk')
+            ->where("cc.codigoCasoFk = {$codigoCaso}");
+        $arCasoComentarios = $queryBuilder->getQuery()->getResult();
         if($arCaso) {
             return [
                 'error' => false,
-                'caso' => $arCaso[0]
+                'caso' => $arCaso[0],
+                'comentarios' => $arCasoComentarios
             ];
         } else {
             return [
@@ -212,18 +216,61 @@ class CasoRepository  extends ServiceEntityRepository
         }
     }
 
+    public function apiAdminCerrar($id)
+    {
+        $em = $this->getEntityManager();
+        $arCaso = $em->getRepository(Caso::class)->find($id);
+        if($arCaso) {
+            if($arCaso->isEstadoAtendido() == 1) {
+                if($arCaso->isEstadoCerrado() == 0) {
+                    $arCaso->setEstadoCerrado(1);
+                    $arCaso->setFechaCerrado(new \DateTime('now'));
+                    $em->persist($arCaso);
+                    $em->flush();
+                    return [
+                        'error' => false
+                    ];
+                } else {
+                    return [
+                        'error' => true,
+                        'errorMensaje' => "El caso no puede estar cerrado"
+                    ];
+                }
+            } else {
+                return [
+                    'error' => true,
+                    'errorMensaje' => "El caso debe estar atendido"
+                ];
+            }
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "No existe el caso"
+            ];
+        }
+    }
+
     public function apiAdminRespuestaNuevo($id, $respuesta)
     {
         $em = $this->getEntityManager();
         $arCaso = $em->getRepository(Caso::class)->find($id);
         if($arCaso) {
-            $arCaso->setEstadoRespuesta(1);
-            $arCaso->setRespuesta($respuesta);
-            $em->persist($arCaso);
-            $em->flush();
-            return [
-                'error' => false,
-            ];
+            if($arCaso->isEstadoCerrado() == 0) {
+                $arCasoComentario = new CasoComentario();
+                $arCasoComentario->setFecha(new \DateTime('now'));
+                $arCasoComentario->setComentario($respuesta);
+                $arCasoComentario->setCasoRel($arCaso);
+                $em->persist($arCasoComentario);
+                $em->flush();
+                return [
+                    'error' => false
+                ];
+            } else {
+                return [
+                    'error' => true,
+                    'errorMensaje' => "No se pueden comentar casos cerrados"
+                ];
+            }
         } else {
             return [
                 'error' => true,

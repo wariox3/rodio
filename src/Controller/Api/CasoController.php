@@ -138,6 +138,23 @@ class CasoController extends AbstractFOSRestController
     }
 
     /**
+     * @Rest\Post("/api/admin/caso/cerrar")
+     */
+    public function adminCerrar(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoCaso = $raw['codigoCaso']?? null;
+        if($codigoCaso) {
+            return $em->getRepository(Caso::class)->apiAdminCerrar($codigoCaso);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
+        }
+    }
+
+    /**
      * @Rest\Post("/api/admin/caso/respuestanuevo")
      */
     public function adminRespuestaNuevo(Request $request)

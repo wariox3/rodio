@@ -53,12 +53,10 @@ class Panal
      */
     private $exigeCelda = true;
 
-
     /**
      * @ORM\Column(name="tienda", type="boolean", options={"default" : true})
      */
     private $tienda = true;
-
 
     /**
      * @ORM\Column(name="oferta", type="boolean", options={"default" : true})

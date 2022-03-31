@@ -74,7 +74,9 @@ class PanalRepository extends ServiceEntityRepository
         $queryBuilder = $em->createQueryBuilder()->from(Panal::class, 'p')
             ->select('p.codigoPanalPk')
             ->addSelect('p.nombre')
+            ->addSelect('p.direccion')
             ->addSelect('p.publicacionAprobar')
+            ->addSelect('p.publicacionPermiteComentario')
             ->where("p.codigoPanalPk = {$codigoPanal}");
         $arPanales = $queryBuilder->getQuery()->getResult();
         return [
@@ -90,7 +92,9 @@ class PanalRepository extends ServiceEntityRepository
         $queryBuilder = $em->createQueryBuilder()->from(Panal::class, 'p')
             ->select('p.codigoPanalPk')
             ->addSelect('p.nombre')
+            ->addSelect('p.direccion')
             ->addSelect('p.publicacionAprobar')
+            ->addSelect('p.publicacionPermiteComentario')
             ->where("p.codigoPanalPk = {$codigoPanal}");
         $arPanal = $queryBuilder->getQuery()->getResult();
         if($arPanal) {
@@ -106,12 +110,14 @@ class PanalRepository extends ServiceEntityRepository
         }
     }
 
-    public function apiAdminNuevo($codigoPanal, $nombre, $publicacionAprobar) {
+    public function apiAdminNuevo($codigoPanal, $nombre, $direccion, $publicacionAprobar, $permiteComentario) {
         $em = $this->getEntityManager();
         $arPanal = $em->getRepository(Panal::class)->find($codigoPanal);
         if($arPanal) {
             $arPanal->setNombre($nombre);
+            $arPanal->setDireccion($direccion);
             $arPanal->setPublicacionAprobar($publicacionAprobar);
+            $arPanal->setPublicacionPermiteComentario($permiteComentario);
             $em->persist($arPanal);
             $em->flush();
             return [

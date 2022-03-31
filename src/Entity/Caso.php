@@ -27,6 +27,11 @@ class Caso
     private $fechaAtendido;
 
     /**
+     * @ORM\Column(name="fecha_cerrado", type="datetime", nullable=true)
+     */
+    private $fechaCerrado;
+
+    /**
      * @ORM\Column(name="codigo_caso_tipo_fk", type="string", length=20)
      */
     private $codigoCasoTipoFk;
@@ -285,6 +290,22 @@ class Caso
     public function setCasosComentariosCasoRel($casosComentariosCasoRel): void
     {
         $this->casosComentariosCasoRel = $casosComentariosCasoRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFechaCerrado()
+    {
+        return $this->fechaCerrado;
+    }
+
+    /**
+     * @param mixed $fechaCerrado
+     */
+    public function setFechaCerrado($fechaCerrado): void
+    {
+        $this->fechaCerrado = $fechaCerrado;
     }
 
 

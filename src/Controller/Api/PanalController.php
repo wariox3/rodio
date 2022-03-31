@@ -83,9 +83,11 @@ class PanalController extends AbstractFOSRestController
         $raw = json_decode($request->getContent(), true);
         $codigoPanal = $raw['codigoPanal']?? null;
         $nombre = $raw['nombre']?? null;
+        $direccion = $raw['direccion']?? null;
         $publicacionAprobar = $raw['publicacionAprobar']?? 0;
+        $permiteComentario = $raw['publicacionPermiteComentario']?? 0;
         if($codigoPanal && $nombre) {
-            return $em->getRepository(Panal::class)->apiAdminNuevo($codigoPanal, $nombre, $publicacionAprobar);
+            return $em->getRepository(Panal::class)->apiAdminNuevo($codigoPanal, $nombre, $direccion, $publicacionAprobar, $permiteComentario);
         } else {
             return [
                 'error' => true,
