@@ -72,7 +72,7 @@ class PublicacionRepository extends ServiceEntityRepository
             $archivo = $this->space->subir('publicacion', $nombreImagen, $imagenBase64);
             $arPublicacion->setUrlImagen($archivo['url']);
             if($permiteComentario) {
-                if(!$arUsuario->getPanalRel()->isPublicacionPermiteComentario()) {
+                if($arUsuario->getPanalRel()->isPublicacionPermiteComentario() == false) {
                     $permiteComentario = false;
                 }
             }

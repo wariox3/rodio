@@ -47,7 +47,7 @@ class PublicacionController extends AbstractFOSRestController
             $imagenBase64 = $raw['imagenBase64']?? null;
             $comentario = $raw['comentario']?? null;
             $permiteComentario = $raw['permiteComentario']?? null;
-            if($codigoUsuario && $permiteComentario) {
+            if($codigoUsuario) {
                 return $em->getRepository(Publicacion::class)->apiNuevoV1($codigoUsuario, $nombreImagen, $imagenBase64, $comentario, $permiteComentario);
             } else {
                 return [
