@@ -27,11 +27,6 @@ class Caso
     private $fechaAtendido;
 
     /**
-     * @ORM\Column(name="fecha_respuesta", type="datetime", nullable=true)
-     */
-    private $fechaRespuesta;
-
-    /**
      * @ORM\Column(name="codigo_caso_tipo_fk", type="string", length=20)
      */
     private $codigoCasoTipoFk;
@@ -47,11 +42,6 @@ class Caso
     private $comentario;
 
     /**
-     * @ORM\Column(name="respuesta", type="text", nullable=true)
-     */
-    private $respuesta;
-
-    /**
      * @ORM\Column(name="codigo_panal_fk", type="integer")
      */
     private $codigoPanalFk;
@@ -62,9 +52,9 @@ class Caso
     private $estadoAtendido = false;
 
     /**
-     * @ORM\Column(name="estado_respuesta", type="boolean", options={"default" : false}, nullable=true)
+     * @ORM\Column(name="estado_cerrado", type="boolean", options={"default" : false}, nullable=true)
      */
-    private $estadoRespuesta = false;
+    private $estadoCerrado = false;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CasoTipo", inversedBy="casosCasoTipoRel")
@@ -83,6 +73,11 @@ class Caso
      * @ORM\JoinColumn(name="codigo_usuario_fk", referencedColumnName="codigo_usuario_pk")
      */
     private $usuarioRel;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\CasoComentario", mappedBy="casoRel")
+     */
+    private $casosComentariosCasoRel;
 
     /**
      * @return mixed
@@ -114,6 +109,22 @@ class Caso
     public function setFecha($fecha): void
     {
         $this->fecha = $fecha;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFechaAtendido()
+    {
+        return $this->fechaAtendido;
+    }
+
+    /**
+     * @param mixed $fechaAtendido
+     */
+    public function setFechaAtendido($fechaAtendido): void
+    {
+        $this->fechaAtendido = $fechaAtendido;
     }
 
     /**
@@ -167,22 +178,6 @@ class Caso
     /**
      * @return mixed
      */
-    public function getUsuarioRel()
-    {
-        return $this->usuarioRel;
-    }
-
-    /**
-     * @param mixed $usuarioRel
-     */
-    public function setUsuarioRel($usuarioRel): void
-    {
-        $this->usuarioRel = $usuarioRel;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getCodigoPanalFk()
     {
         return $this->codigoPanalFk;
@@ -194,86 +189,6 @@ class Caso
     public function setCodigoPanalFk($codigoPanalFk): void
     {
         $this->codigoPanalFk = $codigoPanalFk;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPanalRel()
-    {
-        return $this->panalRel;
-    }
-
-    /**
-     * @param mixed $panalRel
-     */
-    public function setPanalRel($panalRel): void
-    {
-        $this->panalRel = $panalRel;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCasoTipoRel()
-    {
-        return $this->casoTipoRel;
-    }
-
-    /**
-     * @param mixed $casoTipoRel
-     */
-    public function setCasoTipoRel($casoTipoRel): void
-    {
-        $this->casoTipoRel = $casoTipoRel;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFechaAtendido()
-    {
-        return $this->fechaAtendido;
-    }
-
-    /**
-     * @param mixed $fechaAtendido
-     */
-    public function setFechaAtendido($fechaAtendido): void
-    {
-        $this->fechaAtendido = $fechaAtendido;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFechaRespuesta()
-    {
-        return $this->fechaRespuesta;
-    }
-
-    /**
-     * @param mixed $fechaRespuesta
-     */
-    public function setFechaRespuesta($fechaRespuesta): void
-    {
-        $this->fechaRespuesta = $fechaRespuesta;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRespuesta()
-    {
-        return $this->respuesta;
-    }
-
-    /**
-     * @param mixed $respuesta
-     */
-    public function setRespuesta($respuesta): void
-    {
-        $this->respuesta = $respuesta;
     }
 
     /**
@@ -295,17 +210,81 @@ class Caso
     /**
      * @return bool
      */
-    public function isEstadoRespuesta(): bool
+    public function isEstadoCerrado(): bool
     {
-        return $this->estadoRespuesta;
+        return $this->estadoCerrado;
     }
 
     /**
-     * @param bool $estadoRespuesta
+     * @param bool $estadoCerrado
      */
-    public function setEstadoRespuesta(bool $estadoRespuesta): void
+    public function setEstadoCerrado(bool $estadoCerrado): void
     {
-        $this->estadoRespuesta = $estadoRespuesta;
+        $this->estadoCerrado = $estadoCerrado;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCasoTipoRel()
+    {
+        return $this->casoTipoRel;
+    }
+
+    /**
+     * @param mixed $casoTipoRel
+     */
+    public function setCasoTipoRel($casoTipoRel): void
+    {
+        $this->casoTipoRel = $casoTipoRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPanalRel()
+    {
+        return $this->panalRel;
+    }
+
+    /**
+     * @param mixed $panalRel
+     */
+    public function setPanalRel($panalRel): void
+    {
+        $this->panalRel = $panalRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUsuarioRel()
+    {
+        return $this->usuarioRel;
+    }
+
+    /**
+     * @param mixed $usuarioRel
+     */
+    public function setUsuarioRel($usuarioRel): void
+    {
+        $this->usuarioRel = $usuarioRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCasosComentariosCasoRel()
+    {
+        return $this->casosComentariosCasoRel;
+    }
+
+    /**
+     * @param mixed $casosComentariosCasoRel
+     */
+    public function setCasosComentariosCasoRel($casosComentariosCasoRel): void
+    {
+        $this->casosComentariosCasoRel = $casosComentariosCasoRel;
     }
 
 

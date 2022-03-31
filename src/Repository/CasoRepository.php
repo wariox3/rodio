@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Caso;
+use App\Entity\CasoComentario;
 use App\Entity\CasoTipo;
 use App\Entity\Usuario;
 use App\Utilidades\Firebase;
@@ -52,30 +53,82 @@ class CasoRepository  extends ServiceEntityRepository
         }
     }
 
-    public function apiLista($codigoPanal, $codigoUsuario = null)
+    public function apiLista($codigoPanal, $codigoUsuario)
     {
         $em = $this->getEntityManager();
         $queryBuilder = $em->createQueryBuilder()->from(Caso::class, 'c')
             ->select('c.codigoCasoPk')
             ->addSelect('c.fecha')
             ->addSelect('c.fechaAtendido')
-            ->addSelect('c.fechaRespuesta')
             ->addSelect('c.codigoCasoTipoFk')
             ->addSelect('c.comentario')
-            ->addSelect('c.respuesta')
             ->addSelect('c.codigoUsuarioFk')
             ->addSelect('c.estadoAtendido')
-            ->addSelect('c.estadoRespuesta')
-            ->where("c.codigoPanalFk = {$codigoPanal}");
-        if($codigoUsuario) {
-            $queryBuilder->andWhere("c.codigoUsuarioFk = {$codigoUsuario}");
-        }
+            ->addSelect('c.estadoCerrado')
+            ->where("c.codigoPanalFk = {$codigoPanal}")
+            ->andWhere("c.codigoUsuarioFk = {$codigoUsuario}");
         $arCasos = $queryBuilder->getQuery()->getResult();
         return [
             'error' => false,
             'casos' => $arCasos
         ];
 
+    }
+
+    public function apiDetalle($codigoCaso)
+    {
+        $em = $this->getEntityManager();
+        $arCaso = $em->getRepository(Caso::class)->find($codigoCaso);
+        if($arCaso) {
+            $queryBuilder = $em->createQueryBuilder()->from(CasoComentario::class, 'cc')
+                ->select('cc.codigoCasoComentarioPk')
+                ->addSelect('cc.fecha')
+                ->addSelect('cc.codigoUsuarioFk')
+                ->addSelect('cc.comentario')
+                ->where("cc.codigoCasoFk = {$codigoCaso}");
+            $arCasoComentarios = $queryBuilder->getQuery()->getResult();
+            return [
+                'error' => false,
+                'comentarios' => $arCasoComentarios
+            ];
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "El caso no existe"
+            ];
+        }
+    }
+
+    public function apiDetalleNuevo($codigoCaso, $codigoUsuario, $comentario)
+    {
+        $em = $this->getEntityManager();
+        $arCaso = $em->getRepository(Caso::class)->find($codigoCaso);
+        if($arCaso) {
+            $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
+            if($arUsuario) {
+                $arCasoComentario = new CasoComentario();
+                $arCasoComentario->setFecha(new \DateTime('now'));
+                $arCasoComentario->setCasoRel($arCaso);
+                $arCasoComentario->setUsuarioRel($arUsuario);
+                $arCasoComentario->setComentario($comentario);
+                $em->persist($arCasoComentario);
+                $em->flush();
+                return [
+                    'error' => false,
+                    'codigoCasoComentario' => $arCasoComentario->getCodigoCasoComentarioPk(),
+                ];
+            } else {
+                return [
+                    'error' => true,
+                    'errorMensaje' => "No existe el usuario"
+                ];
+            }
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "El caso no existe"
+            ];
+        }
     }
 
     public function apiAdminLista($codigoPanal)

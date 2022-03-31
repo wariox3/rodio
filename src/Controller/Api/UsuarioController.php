@@ -95,18 +95,17 @@ class UsuarioController extends AbstractFOSRestController
         $em = $this->getDoctrine()->getManager();
         $raw = json_decode($request->getContent(), true);
         $codigoUsuario = $raw['codigoUsuario']?? null;
-        $nombre = $raw['nombre']?? null;
         $imagenBase64 = $raw['imagenBase64']?? null;
-        if($codigoUsuario && $nombre && $imagenBase64) {
+        if($codigoUsuario && $imagenBase64) {
             $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
             if($arUsuario) {
-                $archivo = $spaceDO->subir('perfil', $nombre, $imagenBase64);
+                $archivo = $spaceDO->subir('perfil', $imagenBase64);
                 $arUsuario->setUrlImagen($archivo['url']);
                 $em->persist($arUsuario);
                 $em->flush();
                 return [
                     'error' => false,
-                    'urlImagen' => $archivo['url']
+                    'urlImagen' => $_ENV['ALMACENAMIENTO_URL'].$archivo['url']
                 ];
             } else {
                 return [

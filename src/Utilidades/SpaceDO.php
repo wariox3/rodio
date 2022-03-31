@@ -10,8 +10,8 @@ class SpaceDO
 
     }
 
-    public function subir($clase, $nombre, $textoBase64) {
-        $nombreArchivo = rand(100000, 999999) . "_" . $nombre;
+    public function subir($clase, $textoBase64) {
+        $nombreArchivo = bin2hex(random_bytes((30 - (20 % 2)) / 2));;
         $destinoLocal = "/var/www/html/temporal/{$nombreArchivo}";
         $destinoDO = "rodio/$clase/{$nombreArchivo}";
         $datosBase64 = explode(',', $textoBase64);

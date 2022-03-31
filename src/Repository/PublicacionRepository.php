@@ -69,7 +69,7 @@ class PublicacionRepository extends ServiceEntityRepository
             $arPublicacion->setComentario($comentario);
             $arPublicacion->setFecha(new \DateTime('now'));
             $arPublicacion->setEstadoAprobado($arUsuario->getPanalRel()->isPublicacionAprobar());
-            $archivo = $this->space->subir('publicacion', $nombreImagen, $imagenBase64);
+            $archivo = $this->space->subir('publicacion', $imagenBase64);
             $arPublicacion->setUrlImagen($archivo['url']);
             if($permiteComentario) {
                 if($arUsuario->getPanalRel()->isPublicacionPermiteComentario() == false) {

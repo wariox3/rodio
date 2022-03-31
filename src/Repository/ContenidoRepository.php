@@ -83,7 +83,7 @@ class ContenidoRepository extends ServiceEntityRepository
                 $arContenido->setPanalRel($arPanal);
                 $arContenido->setNombre($nombre);
                 $arContenido->setNombreArchivo($nombreArchivo);
-                $archivo = $this->space->subir('contenido', $nombreArchivo, $base64);
+                $archivo = $this->space->subir('contenido', $base64);
                 $arContenido->setUrl($archivo['url']);
                 $arContenido->setRuta($archivo['ruta']);
                 $em->persist($arContenido);
