@@ -106,12 +106,14 @@ class PanalRepository extends ServiceEntityRepository
         }
     }
 
-    public function apiAdminNuevo($codigoPanal, $nombre, $publicacionAprobar) {
+    public function apiAdminNuevo($codigoPanal, $nombre, $direccion, $publicacionAprobar, $permiteComentario) {
         $em = $this->getEntityManager();
         $arPanal = $em->getRepository(Panal::class)->find($codigoPanal);
         if($arPanal) {
             $arPanal->setNombre($nombre);
+            $arPanal->setDireccion($direccion);
             $arPanal->setPublicacionAprobar($publicacionAprobar);
+            $arPanal->setPublicacionPermiteComentario($permiteComentario);
             $em->persist($arPanal);
             $em->flush();
             return [
