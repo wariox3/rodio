@@ -33,6 +33,7 @@ class PublicacionRepository extends ServiceEntityRepository
                     ->addSelect('p.reacciones')
                     ->addSelect('p.comentarios')
                     ->addSelect('p.permiteComentario')
+                    ->addSelect('p.codigoUsuarioFk')
                     ->addSelect("CONCAT('{$_ENV['ALMACENAMIENTO_URL']}', u.urlImagen) as usuarioUrlImagen")
                     ->addSelect('u.usuario as usuario')
                     ->addSelect('u.nombre as usuarioNombre')
