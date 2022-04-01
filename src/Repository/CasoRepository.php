@@ -89,6 +89,14 @@ class CasoRepository  extends ServiceEntityRepository
             $arCasoComentarios = $queryBuilder->getQuery()->getResult();
             return [
                 'error' => false,
+                'codigoCasoPk' => $arCaso->getCodigoCasoPk(),
+                'fecha' => $arCaso->getFecha(),
+                'fechaAtendido' => $arCaso->getFechaAtendido(),
+                'fechaCerrado' => $arCaso->getFechaCerrado(),
+                'estadoAtendido' => $arCaso->isEstadoAtendido(),
+                'estadoCerrado' => $arCaso->isEstadoCerrado(),
+                'casoTipoNombre' => $arCaso->getCasoTipoRel()->getNombre(),
+                'comentario' => $arCaso->getComentario(),
                 'comentarios' => $arCasoComentarios
             ];
         } else {
