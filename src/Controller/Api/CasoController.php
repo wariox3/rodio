@@ -4,6 +4,7 @@
 namespace App\Controller\Api;
 
 use App\Entity\Caso;
+use App\Utilidades\Dubnio;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Symfony\Component\HttpFoundation\Request;
@@ -114,8 +115,11 @@ class CasoController extends AbstractFOSRestController
             $codigoPanal = $raw['codigoPanal']?? null;
             $tipo = $raw['tipo']?? null;
             $descripcion = $raw['descripcion']?? null;
-            if($descripcion && $tipo && $codigoPanal) {
-                return $em->getRepository(Caso::class)->apiAdminNuevo($codigoPanal, $tipo, $descripcion);
+            $nombre = $raw['nombre']?? null;
+            $correo = $raw['correo']?? null;
+            $celular = $raw['celular']?? null;
+            if($descripcion && $tipo && $codigoPanal && $nombre && $correo) {
+                return $em->getRepository(Caso::class)->apiAdminNuevo($codigoPanal, $tipo, $descripcion, $nombre, $correo, $celular);
             } else {
                 return [
                     'error' => true,
@@ -184,7 +188,7 @@ class CasoController extends AbstractFOSRestController
     /**
      * @Rest\Post("/api/admin/caso/respuestanuevo")
      */
-    public function adminRespuestaNuevo(Request $request)
+    public function adminRespuestaNuevo(Request $request, Dubnio $dubnio)
     {
         $em = $this->getDoctrine()->getManager();
         $raw = json_decode($request->getContent(), true);

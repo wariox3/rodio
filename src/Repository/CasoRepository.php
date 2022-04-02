@@ -7,6 +7,7 @@ use App\Entity\CasoComentario;
 use App\Entity\CasoTipo;
 use App\Entity\Panal;
 use App\Entity\Usuario;
+use App\Utilidades\Dubnio;
 use App\Utilidades\Firebase;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -14,11 +15,13 @@ use Doctrine\Persistence\ManagerRegistry;
 class CasoRepository  extends ServiceEntityRepository
 {
     private $firebase;
+    private $dubnio;
 
-    public function __construct(ManagerRegistry $registry, Firebase $firebase)
+    public function __construct(ManagerRegistry $registry, Firebase $firebase, Dubnio $dubnio)
     {
         parent::__construct($registry, Caso::class);
         $this->firebase = $firebase;
+        $this->dubnio = $dubnio;
     }
 
     public function apiNuevo($tipo, $codigoUsuario, $descripcion)
@@ -66,6 +69,9 @@ class CasoRepository  extends ServiceEntityRepository
             ->addSelect('c.fechaAtendido')
             ->addSelect('c.codigoCasoTipoFk')
             ->addSelect('c.descripcion')
+            ->addSelect('c.nombre')
+            ->addSelect('c.celular')
+            ->addSelect('c.correo')
             ->addSelect('c.codigoUsuarioFk')
             ->addSelect('c.estadoAtendido')
             ->addSelect('c.estadoCerrado')
@@ -101,6 +107,9 @@ class CasoRepository  extends ServiceEntityRepository
                 'estadoCerrado' => $arCaso->isEstadoCerrado(),
                 'casoTipoNombre' => $arCaso->getCasoTipoRel()->getNombre(),
                 'descripcion' => $arCaso->getDescripcion(),
+                'nombre' => $arCaso->getNombre(),
+                'correo' => $arCaso->getCorreo(),
+                'celular' => $arCaso->getCelular(),
                 'comentarios' => $arCasoComentarios
             ];
         } else {
@@ -152,6 +161,9 @@ class CasoRepository  extends ServiceEntityRepository
             ->addSelect('c.fechaAtendido')
             ->addSelect('c.codigoCasoTipoFk')
             ->addSelect('c.descripcion')
+            ->addSelect('c.nombre')
+            ->addSelect('c.celular')
+            ->addSelect('c.correo')
             ->addSelect('c.codigoUsuarioFk')
             ->addSelect('c.estadoAtendido')
             ->addSelect('c.estadoCerrado')
@@ -164,7 +176,7 @@ class CasoRepository  extends ServiceEntityRepository
 
     }
 
-    public function apiAdminNuevo($codigoPanal, $tipo, $descripcion)
+    public function apiAdminNuevo($codigoPanal, $tipo, $descripcion, $nombre, $correo, $celular)
     {
         $em = $this->getEntityManager();
         $arPanal = $em->getRepository(Panal::class)->find($codigoPanal);
@@ -176,6 +188,9 @@ class CasoRepository  extends ServiceEntityRepository
                 $arCaso->setDescripcion($descripcion);
                 $arCaso->setFecha(new \DateTime('now'));
                 $arCaso->setPanalRel($arPanal);
+                $arCaso->setNombre($nombre);
+                $arCaso->setCorreo($correo);
+                $arCaso->setCelular($celular);
                 $em->persist($arCaso);
                 $em->flush();
                 return [
@@ -308,6 +323,12 @@ class CasoRepository  extends ServiceEntityRepository
                 $arCasoComentario->setCasoRel($arCaso);
                 $em->persist($arCasoComentario);
                 $em->flush();
+                $asunto = "Veeci! tienes una respuesta a tu caso PQRS {$arCaso->getCodigoCasoPk()}";
+                $mensaje = "
+                        Caso {$arCaso->getCodigoCasoPk()}: {$arCaso->getDescripcion()}
+                        Respuesta: {$respuesta}
+                ";
+                $this->dubnio->enviarCorreo($asunto, $mensaje, $arCaso->getCorreo());
                 return [
                     'error' => false
                 ];
