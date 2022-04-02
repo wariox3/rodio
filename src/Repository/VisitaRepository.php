@@ -114,7 +114,7 @@ class VisitaRepository extends ServiceEntityRepository
             ->addSelect('v.codigoIngreso')
             ->addSelect('v.estadoAutorizado')
             ->addSelect('v.estadoCerrado')
-            ->addSelect('v.urlImagen')
+            ->addSelect("CONCAT('{$_ENV['ALMACENAMIENTO_URL']}', v.urlImagen) as urlImagen")
             ->addSelect('v.celda')
             ->addSelect('c.celular')
             ->addSelect('c.correo')
