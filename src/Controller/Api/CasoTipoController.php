@@ -24,4 +24,16 @@ class CasoTipoController extends AbstractFOSRestController
 
     }
 
+    /**
+     * @Rest\Post("/api/admin/casotipo/combo")
+     */
+    public function combo(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        return $em->getRepository(CasoTipo::class)->apiAdminListaCombo();
+
+    }
+
+
 }

@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Caso;
 use App\Entity\CasoComentario;
 use App\Entity\CasoTipo;
+use App\Entity\Panal;
 use App\Entity\Usuario;
 use App\Utilidades\Firebase;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -20,7 +21,7 @@ class CasoRepository  extends ServiceEntityRepository
         $this->firebase = $firebase;
     }
 
-    public function apiNuevo($tipo, $codigoUsuario, $comentario)
+    public function apiNuevo($tipo, $codigoUsuario, $descripcion)
     {
         $em = $this->getEntityManager();
         $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
@@ -30,9 +31,12 @@ class CasoRepository  extends ServiceEntityRepository
                 $arCaso = new Caso();
                 $arCaso->setUsuarioRel($arUsuario);
                 $arCaso->setCasoTipoRel($arCasoTipo);
-                $arCaso->setComentario($comentario);
+                $arCaso->setDescripcion($descripcion);
                 $arCaso->setFecha(new \DateTime('now'));
                 $arCaso->setPanalRel($arUsuario->getPanalRel());
+                $arCaso->setNombre($arUsuario->getNombre());
+                $arCaso->setCelular($arUsuario->getCelular());
+                $arCaso->setCorreo($arUsuario->getUsuario());
                 $em->persist($arCaso);
                 $em->flush();
                 return [
@@ -61,7 +65,7 @@ class CasoRepository  extends ServiceEntityRepository
             ->addSelect('c.fecha')
             ->addSelect('c.fechaAtendido')
             ->addSelect('c.codigoCasoTipoFk')
-            ->addSelect('c.comentario')
+            ->addSelect('c.descripcion')
             ->addSelect('c.codigoUsuarioFk')
             ->addSelect('c.estadoAtendido')
             ->addSelect('c.estadoCerrado')
@@ -96,7 +100,7 @@ class CasoRepository  extends ServiceEntityRepository
                 'estadoAtendido' => $arCaso->isEstadoAtendido(),
                 'estadoCerrado' => $arCaso->isEstadoCerrado(),
                 'casoTipoNombre' => $arCaso->getCasoTipoRel()->getNombre(),
-                'comentario' => $arCaso->getComentario(),
+                'descripcion' => $arCaso->getDescripcion(),
                 'comentarios' => $arCasoComentarios
             ];
         } else {
@@ -147,7 +151,7 @@ class CasoRepository  extends ServiceEntityRepository
             ->addSelect('c.fecha')
             ->addSelect('c.fechaAtendido')
             ->addSelect('c.codigoCasoTipoFk')
-            ->addSelect('c.comentario')
+            ->addSelect('c.descripcion')
             ->addSelect('c.codigoUsuarioFk')
             ->addSelect('c.estadoAtendido')
             ->addSelect('c.estadoCerrado')
@@ -160,6 +164,40 @@ class CasoRepository  extends ServiceEntityRepository
 
     }
 
+    public function apiAdminNuevo($codigoPanal, $tipo, $descripcion)
+    {
+        $em = $this->getEntityManager();
+        $arPanal = $em->getRepository(Panal::class)->find($codigoPanal);
+        if($arPanal) {
+            $arCasoTipo = $em->getRepository(CasoTipo::class)->find($tipo);
+            if($arCasoTipo) {
+                $arCaso = new Caso();
+                $arCaso->setCasoTipoRel($arCasoTipo);
+                $arCaso->setDescripcion($descripcion);
+                $arCaso->setFecha(new \DateTime('now'));
+                $arCaso->setPanalRel($arPanal);
+                $em->persist($arCaso);
+                $em->flush();
+                return [
+                    'error' => false,
+                    'codigoCaso' => $arCaso->getCodigoCasoPk(),
+                ];
+            } else {
+                return [
+                    'error' => true,
+                    'errorMensaje' => "No existe el tipo de caso"
+                ];
+            }
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "El panal no existe"
+            ];
+        }
+
+
+    }
+
     public function apiAdminDetalle($codigoCaso)
     {
         $em = $this->getEntityManager();
@@ -169,7 +207,7 @@ class CasoRepository  extends ServiceEntityRepository
             ->addSelect('c.codigoUsuarioFk')
             ->addSelect('c.fecha')
             ->addSelect('c.fechaAtendido')
-            ->addSelect('c.comentario')
+            ->addSelect('c.descripcion')
             ->addSelect('c.estadoAtendido')
             ->addSelect('c.estadoCerrado')
             ->where("c.codigoCasoPk = {$codigoCaso}");

@@ -33,4 +33,19 @@ class CasoTipoRepository extends ServiceEntityRepository
             'casosTipos' => $arCasosTipos
         ];
     }
+
+    public function apiAdminListaCombo()
+    {
+        $em = $this->getEntityManager();
+        $queryBuilder = $em->createQueryBuilder()->from(CasoTipo::class, 'ct')
+            ->select('ct.codigoCasoTipoPk')
+            ->addSelect('ct.nombre')
+            ->setMaxResults(10);
+        $arCasosTipos = $queryBuilder->getQuery()->getResult();
+        return [
+            'error' => false,
+            'casosTipos' => $arCasosTipos
+        ];
+
+    }
 }

@@ -20,9 +20,9 @@ class CasoController extends AbstractFOSRestController
         $raw = json_decode($request->getContent(), true);
         $codigoUsuario = $raw['codigoUsuario']?? null;
         $tipo = $raw['tipo']?? null;
-        $comentario = $raw['comentario']?? null;
-        if($codigoUsuario && $comentario && $tipo) {
-            return $em->getRepository(Caso::class)->apiNuevo($tipo, $codigoUsuario, $comentario);
+        $descripcion = $raw['descripcion']?? null;
+        if($codigoUsuario && $descripcion && $tipo) {
+            return $em->getRepository(Caso::class)->apiNuevo($tipo, $codigoUsuario, $descripcion);
         } else {
             return [
                 'error' => true,
@@ -100,6 +100,33 @@ class CasoController extends AbstractFOSRestController
             return [
                 'error' => true,
                 'errorMensaje' => 'Faltan parametros para el consumo de la api'];
+        }
+    }
+
+    /**
+     * @Rest\Post("/api/admin/caso/nuevo")
+     */
+    public function adminNuevo(Request $request)
+    {
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $raw = json_decode($request->getContent(), true);
+            $codigoPanal = $raw['codigoPanal']?? null;
+            $tipo = $raw['tipo']?? null;
+            $descripcion = $raw['descripcion']?? null;
+            if($descripcion && $tipo && $codigoPanal) {
+                return $em->getRepository(Caso::class)->apiAdminNuevo($codigoPanal, $tipo, $descripcion);
+            } else {
+                return [
+                    'error' => true,
+                    'errorMensaje' => 'Faltan parametros para el consumo de la api'
+                ];
+            }
+        } catch (\Exception $e) {
+            return [
+                'error' => true,
+                'errorMensaje' => $e->getMessage()
+            ];
         }
     }
 

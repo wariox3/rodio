@@ -37,19 +37,34 @@ class Caso
     private $codigoCasoTipoFk;
 
     /**
-     * @ORM\Column(name="codigo_usuario_fk", type="integer", nullable=false)
+     * @ORM\Column(name="codigo_usuario_fk", type="integer", nullable=true)
      */
     private $codigoUsuarioFk;
 
     /**
-     * @ORM\Column(name="comentario", type="text", nullable=true)
+     * @ORM\Column(name="descripcion", type="text", nullable=true)
      */
-    private $comentario;
+    private $descripcion;
 
     /**
      * @ORM\Column(name="codigo_panal_fk", type="integer")
      */
     private $codigoPanalFk;
+
+    /**
+     * @ORM\Column(name="nombre", type="string", length=200)
+     */
+    private $nombre;
+
+    /**
+     * @ORM\Column(name="correo", type="string", length=200)
+     */
+    private $correo;
+
+    /**
+     * @ORM\Column(name="celular", type="string", length=30, nullable=true)
+     */
+    private $celular;
 
     /**
      * @ORM\Column(name="estado_atendido", type="boolean", options={"default" : false}, nullable=true)
@@ -135,6 +150,22 @@ class Caso
     /**
      * @return mixed
      */
+    public function getFechaCerrado()
+    {
+        return $this->fechaCerrado;
+    }
+
+    /**
+     * @param mixed $fechaCerrado
+     */
+    public function setFechaCerrado($fechaCerrado): void
+    {
+        $this->fechaCerrado = $fechaCerrado;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getCodigoCasoTipoFk()
     {
         return $this->codigoCasoTipoFk;
@@ -167,17 +198,17 @@ class Caso
     /**
      * @return mixed
      */
-    public function getComentario()
+    public function getDescripcion()
     {
-        return $this->comentario;
+        return $this->descripcion;
     }
 
     /**
-     * @param mixed $comentario
+     * @param mixed $descripcion
      */
-    public function setComentario($comentario): void
+    public function setDescripcion($descripcion): void
     {
-        $this->comentario = $comentario;
+        $this->descripcion = $descripcion;
     }
 
     /**
@@ -295,17 +326,49 @@ class Caso
     /**
      * @return mixed
      */
-    public function getFechaCerrado()
+    public function getNombre()
     {
-        return $this->fechaCerrado;
+        return $this->nombre;
     }
 
     /**
-     * @param mixed $fechaCerrado
+     * @param mixed $nombre
      */
-    public function setFechaCerrado($fechaCerrado): void
+    public function setNombre($nombre): void
     {
-        $this->fechaCerrado = $fechaCerrado;
+        $this->nombre = $nombre;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCorreo()
+    {
+        return $this->correo;
+    }
+
+    /**
+     * @param mixed $correo
+     */
+    public function setCorreo($correo): void
+    {
+        $this->correo = $correo;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCelular()
+    {
+        return $this->celular;
+    }
+
+    /**
+     * @param mixed $celular
+     */
+    public function setCelular($celular): void
+    {
+        $this->celular = $celular;
     }
 
 

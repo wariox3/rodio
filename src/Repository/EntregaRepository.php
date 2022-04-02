@@ -61,7 +61,8 @@ class EntregaRepository extends ServiceEntityRepository
                 $arEntrega->setFechaIngreso(new \DateTime('now'));
                 $arEntrega->setCodigoEntregaTipoFk($tipo);
                 if($imagen) {
-                    $arEntrega->setUrlImagenIngreso($this->space->subir('entrega', $imagen['base64']));
+                    $archivo = $this->space->subir('entrega', $imagen);
+                    $arEntrega->setUrlImagenIngreso($archivo['url']);
                 }
                 $em->persist($arEntrega);
                 $em->flush();
@@ -168,7 +169,7 @@ class EntregaRepository extends ServiceEntityRepository
                 if($arUsuario) {
                     $arEntrega->setEstadoCerrado(1);
                     if($imagen) {
-                        $archivo = $this->space->subir('entrega', $imagen['base64']);
+                        $archivo = $this->space->subir('entrega', $imagen);
                         $arEntrega->setUrlImagen($archivo['url']);
                     }
                     $em->persist($arEntrega);

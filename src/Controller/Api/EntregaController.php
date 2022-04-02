@@ -40,7 +40,7 @@ class EntregaController extends AbstractFOSRestController
         $celda = $raw['celda']?? null;
         $tipo = $raw['tipo']?? null;
         $entrega = $raw['entrega']?? null;
-        $imagen = $raw['imagen']?? null;
+        $imagen = $raw['imagenBase64']?? null;
         if($codigoPanal && $celda && $tipo) {
             return $em->getRepository(Entrega::class)->apiNuevo($codigoPanal, $celda, $tipo, $entrega, $imagen);
         } else {
@@ -98,7 +98,7 @@ class EntregaController extends AbstractFOSRestController
         $raw = json_decode($request->getContent(), true);
         $codigoEntrega = $raw['codigoEntrega']?? null;
         $codigoUsuario = $raw['codigoUsuario']?? null;
-        $arrImagen = $raw['imagen']??[];
+        $arrImagen = $raw['imagenBase64']??[];
         if($codigoEntrega && $codigoUsuario) {
             return $em->getRepository(Entrega::class)->apiEntregar($codigoEntrega, $codigoUsuario, $arrImagen);
         } else {

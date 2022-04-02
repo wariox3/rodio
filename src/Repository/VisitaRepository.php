@@ -69,8 +69,10 @@ class VisitaRepository extends ServiceEntityRepository
                 $arVisita->setNombre($nombre);
                 $arVisita->setPlaca($placa);
                 $arVisita->setCodigoIngreso($codigo);
+
                 if($imagen) {
-                    $arVisita->setUrlImagen($this->space->subir('visita', $imagen['base64']));
+                    $archivo = $this->space->subir('visita', $imagen);
+                    $arVisita->setUrlImagen($archivo['url']);
                 }
                 $em->persist($arVisita);
                 $em->flush();
