@@ -37,7 +37,7 @@ class VisitaRepository extends ServiceEntityRepository
             ->addSelect('v.estadoAutorizado')
             ->addSelect('v.estadoCerrado')
             ->addSelect('v.codigoIngreso')
-            ->addSelect('v.urlImagen')
+            ->addSelect("CONCAT('{$_ENV['ALMACENAMIENTO_URL']}', v.urlImagen) as urlImagen")
             ->where("v.codigoCeldaFk = {$codigoCelda}")
             ->orderBy('e.estadoCerrado', 'ASC')
             ->orderBy('v.fecha', 'DESC');
@@ -70,10 +70,7 @@ class VisitaRepository extends ServiceEntityRepository
                 $arVisita->setPlaca($placa);
                 $arVisita->setCodigoIngreso($codigo);
                 if($imagen) {
-                    if($imagen['nombre'] && $imagen['base64']) {
-                        $archivo = $this->space->subir('visita', $imagen['base64']);
-                        $arVisita->setUrlImagen($archivo['url']);
-                    }
+                    $arVisita->setUrlImagen($this->space->subir('visita', $imagen['base64']));
                 }
                 $em->persist($arVisita);
                 $em->flush();

@@ -35,8 +35,8 @@ class EntregaRepository extends ServiceEntityRepository
             ->addSelect('e.codigoEntregaTipoFk')
             ->addSelect('e.estadoAutorizado')
             ->addSelect('e.estadoCerrado')
-            ->addSelect('e.urlImagen')
-            ->addSelect('e.urlImagenIngreso')
+            ->addSelect("CONCAT('{$_ENV['ALMACENAMIENTO_URL']}', e.urlImagen) as urlImagen")
+            ->addSelect("CONCAT('{$_ENV['ALMACENAMIENTO_URL']}', e.urlImagenIngreso) as urlImagenIngreso")
             ->where("e.codigoCeldaFk = {$codigoCelda}")
             ->orderBy('e.estadoCerrado', 'ASC')
             ->addOrderBy('e.estadoAutorizado', 'ASC')
@@ -61,8 +61,7 @@ class EntregaRepository extends ServiceEntityRepository
                 $arEntrega->setFechaIngreso(new \DateTime('now'));
                 $arEntrega->setCodigoEntregaTipoFk($tipo);
                 if($imagen) {
-                    $archivo = $this->space->subir('entrega', $imagen['base64']);
-                    $arEntrega->setUrlImagenIngreso($archivo['url']);
+                    $arEntrega->setUrlImagenIngreso($this->space->subir('entrega', $imagen['base64']));
                 }
                 $em->persist($arEntrega);
                 $em->flush();
