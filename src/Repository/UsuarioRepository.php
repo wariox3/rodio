@@ -95,7 +95,7 @@ class UsuarioRepository extends ServiceEntityRepository
             $arUsuario->setNombre($usuarioSeparado[0]);
             $arUsuario->setClave($clave);
             $arUsuario->setCelular($celular);
-            $arUsuario->setUrlImagen('https://semantica.sfo3.digitaloceanspaces.com/rodio/perfil/general.png');
+            $arUsuario->setUrlImagen('rodio/perfil/general.png');
             $em->persist($arUsuario);
             $em->flush();
             return [
