@@ -23,7 +23,7 @@ class TransaccionRepository extends ServiceEntityRepository
         $em = $this->getEntityManager();
         $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
         if($arUsuario) {
-            if($arUsuario->getVrSaldo() + $valor >= 0) {
+//            if($arUsuario->getVrSaldo() + $valor >= 0) {
                 $arTransaccion = new Transaccion();
                 $arTransaccion->setCodigoTransaccionTipoFk($tipo);
                 $arTransaccion->setUsuarioRel($arUsuario);
@@ -36,12 +36,12 @@ class TransaccionRepository extends ServiceEntityRepository
                 return [
                     'error' => false
                 ];
-            } else {
-                return [
-                    'error' => true,
-                    'errorMensaje' => 'El saldo es insuficiente para la transaccion'
-                ];
-            }
+//            } else {
+//                return [
+//                    'error' => true,
+//                    'errorMensaje' => 'El saldo es insuficiente para la transaccion'
+//                ];
+//            }
         } else {
             return [
                 'error' => true,
