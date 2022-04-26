@@ -6,14 +6,17 @@ namespace App\Repository;
 use App\Entity\Despacho;
 use App\Entity\Operador;
 use App\Entity\Usuario;
+use App\Utilidades\Cromo;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 class DespachoRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $cromo;
+    public function __construct(ManagerRegistry $registry, Cromo $cromo)
     {
         parent::__construct($registry, Despacho::class);
+        $this->cromo = $cromo;
     }
 
     public function apiNuevo($codigoUsuario, $operador, $codigoDespacho, $token)
@@ -23,18 +26,36 @@ class DespachoRepository extends ServiceEntityRepository
         if($arUsuario) {
             $arOperador = $em->getRepository(Operador::class)->find($operador);
             if($arOperador) {
-                $arDespacho = new Despacho();
-                $arDespacho->setFecha(new \DateTime('now'));
-                $arDespacho->setUsuarioRel($arUsuario);
-                $arDespacho->setOperadorRel($arOperador);
-                $arDespacho->setCodigoDespacho($codigoDespacho);
-                $arDespacho->setToken($token);
-                $em->persist($arDespacho);
-                $em->flush();
-                return [
-                    'error' => false,
-                    'codigoDespacho' => $arDespacho->getCodigoDespachoPk(),
-                ];
+                $arDespacho = $em->getRepository(Despacho::class)->findOneBy(['codigoUsuarioFk' => $codigoUsuario, 'codigoOperadorFk' => $operador, 'codigoDespacho' => $codigoDespacho]);
+                if(!$arDespacho) {
+                    $parametros = [
+                        "codigoDespacho" => $codigoDespacho,
+                        "codigoUsuario" => $codigoUsuario,
+                        "token" => $token,
+                    ];
+                    $respuesta = $this->cromo->post($arOperador, '/api/transporte/despacho/cargar', $parametros);
+                    if($respuesta['error'] = false) {
+                        $arDespacho = new Despacho();
+                        $arDespacho->setFecha(new \DateTime('now'));
+                        $arDespacho->setUsuarioRel($arUsuario);
+                        $arDespacho->setOperadorRel($arOperador);
+                        $arDespacho->setCodigoDespacho($codigoDespacho);
+                        $arDespacho->setToken($token);
+                        $em->persist($arDespacho);
+                        $em->flush();
+                        return [
+                            'error' => false,
+                            'codigoDespacho' => $arDespacho->getCodigoDespachoPk(),
+                        ];
+                    } else {
+                        return $respuesta;
+                    }
+                } else {
+                    return [
+                        'error' => true,
+                        'errorMensaje' => "El usuario ya cargo este despacho"
+                    ];
+                }
             } else {
                 return [
                     'error' => true,
