@@ -188,7 +188,7 @@ class CasoController extends AbstractFOSRestController
     /**
      * @Rest\Post("/api/admin/caso/respuestanuevo")
      */
-    public function adminRespuestaNuevo(Request $request, Dubnio $dubnio)
+    public function adminRespuestaNuevo(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $raw = json_decode($request->getContent(), true);
