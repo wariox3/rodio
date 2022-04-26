@@ -94,7 +94,7 @@ class DespachoController extends AbstractFOSRestController
         $codigoDespacho = $raw['codigoDespacho']?? null;
         $guia = $raw['guia']?? null;
         if($codigoDespacho && $guia) {
-            return $em->getRepository(Despacho::class)->apiGuiaEntega($codigoDespacho, $guia);
+            return $em->getRepository(Despacho::class)->apiGuiaEntrega($codigoDespacho, $guia);
         } else {
             return [
                 'error' => true,
