@@ -88,7 +88,6 @@ class DespachoRepository extends ServiceEntityRepository
             'error' => false,
             'despachos' => $arDespachos
         ];
-
     }
 
     public function apiDetalle($codigoDespacho)
@@ -151,6 +150,20 @@ class DespachoRepository extends ServiceEntityRepository
                 "codigoDespacho" => $arDespacho->getCodigoDespacho()
             ];
             return $this->cromo->post($arDespacho->getOperadorRel(), '/api/transporte/guia/pendiente/entrega/despacho', $parametros);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "El despacho no existe"
+            ];
+        }
+    }
+
+    public function apiGuiaNovedadTipoLista($codigoDespacho)
+    {
+        $em = $this->getEntityManager();
+        $arDespacho = $em->getRepository(Despacho::class)->find($codigoDespacho);
+        if($arDespacho) {
+            return $respuesta = $this->cromo->post($arDespacho->getOperadorRel(), '/api/transporte/novedadtipo/lista', []);
         } else {
             return [
                 'error' => true,
