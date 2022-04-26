@@ -163,7 +163,26 @@ class DespachoRepository extends ServiceEntityRepository
         $em = $this->getEntityManager();
         $arDespacho = $em->getRepository(Despacho::class)->find($codigoDespacho);
         if($arDespacho) {
-            return $respuesta = $this->cromo->post($arDespacho->getOperadorRel(), '/api/transporte/novedadtipo/lista', []);
+            return $this->cromo->post($arDespacho->getOperadorRel(), '/api/transporte/novedadtipo/lista', []);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "El despacho no existe"
+            ];
+        }
+    }
+
+    public function apiGuiaNovedadNuevo($codigoDespacho, $codigoGuia, $codigoNovedadTipo, $descripcion)
+    {
+        $em = $this->getEntityManager();
+        $arDespacho = $em->getRepository(Despacho::class)->find($codigoDespacho);
+        if($arDespacho) {
+            $parametros = [
+                "codigoGuia" => $codigoGuia,
+                "codigoNovedadTipo" => $codigoNovedadTipo,
+                "descripcion" => $descripcion
+            ];
+            return $this->cromo->post($arDespacho->getOperadorRel(), '/api/transporte/novedad/nuevo', $parametros);
         } else {
             return [
                 'error' => true,
