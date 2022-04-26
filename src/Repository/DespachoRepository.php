@@ -34,7 +34,7 @@ class DespachoRepository extends ServiceEntityRepository
                         "token" => $token,
                     ];
                     $respuesta = $this->cromo->post($arOperador, '/api/transporte/despacho/cargar', $parametros);
-                    if($respuesta['error'] = false) {
+                    if($respuesta['error'] == false) {
                         $arDespacho = new Despacho();
                         $arDespacho->setFecha(new \DateTime('now'));
                         $arDespacho->setUsuarioRel($arUsuario);
