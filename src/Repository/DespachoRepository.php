@@ -69,4 +69,29 @@ class DespachoRepository extends ServiceEntityRepository
         ];
 
     }
+
+    public function apiDetalle($codigoDespacho)
+    {
+        $em = $this->getEntityManager();
+        $arDespacho = $em->getRepository(Despacho::class)->find($codigoDespacho);
+        if($arDespacho) {
+            return [
+                'error' => false,
+                'codigoDespachoPk' =>$arDespacho->getCodigoDespachoPk(),
+                'fecha' =>$arDespacho->getFecha(),
+                'codigoDespacho' => $arDespacho->getCodigoDespacho(),
+                'token' => $arDespacho->getToken(),
+                'codigoOperador' => $arDespacho->getCodigoOperadorFk(),
+                'nombre' => $arDespacho->getOperadorRel()->getNombre(),
+                'puntoServicio' => $arDespacho->getOperadorRel()->getPuntoServicioCromo(),
+                'puntoServicioToken' => $arDespacho->getOperadorRel()->getToken()
+
+            ];
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "El despacho no existe"
+            ];
+        }
+    }
 }
