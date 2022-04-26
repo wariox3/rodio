@@ -92,9 +92,11 @@ class DespachoController extends AbstractFOSRestController
         $em = $this->getDoctrine()->getManager();
         $raw = json_decode($request->getContent(), true);
         $codigoDespacho = $raw['codigoDespacho']?? null;
-        $guia = $raw['guia']?? null;
-        if($codigoDespacho && $guia) {
-            return $em->getRepository(Despacho::class)->apiGuiaEntrega($codigoDespacho, $guia);
+        $guia = $raw['codigoGuia']?? null;
+        $usuario = $raw['usuario']?? null;
+        $imagenes = $raw['imagenes']?? null;
+        if($codigoDespacho && $guia && $usuario) {
+            return $em->getRepository(Despacho::class)->apiGuiaEntrega($codigoDespacho, $guia, $usuario, $imagenes);
         } else {
             return [
                 'error' => true,
