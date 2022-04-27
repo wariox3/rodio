@@ -85,6 +85,44 @@ class DespachoController extends AbstractFOSRestController
     }
 
     /**
+     * @Rest\Post("/api/despacho/guia/recogido/detalle")
+     */
+    public function guiaRecogidoDetalle(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoDespacho = $raw['codigoDespacho']?? null;
+        $guia = $raw['codigoGuia']?? null;
+        if($codigoDespacho && $guia) {
+            return $em->getRepository(Despacho::class)->apiGuiaRecogidoDetalle($codigoDespacho, $guia);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
+        }
+    }
+
+    /**
+     * @Rest\Post("/api/despacho/guia/recogido")
+     */
+    public function guiaRecogido(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoDespacho = $raw['codigoDespacho']?? null;
+        $guia = $raw['codigoGuia']?? null;
+        $usuario = $raw['usuario']?? null;
+        $unidades = $raw['unidades']?? 0;
+        if($codigoDespacho && $guia && $usuario) {
+            return $em->getRepository(Despacho::class)->apiGuiaRecogido($codigoDespacho, $guia, $usuario, $unidades);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
+        }
+    }
+
+    /**
      * @Rest\Post("/api/despacho/guia/entrega")
      */
     public function guiaEntrega(Request $request)

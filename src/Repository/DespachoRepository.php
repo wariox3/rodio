@@ -145,6 +145,50 @@ class DespachoRepository extends ServiceEntityRepository
         }
     }
 
+    public function apiGuiaRecogidoDetalle($codigoDespacho, $guia)
+    {
+        $em = $this->getEntityManager();
+        $arDespacho = $em->getRepository(Despacho::class)->find($codigoDespacho);
+        if($arDespacho) {
+            $parametros = [
+                "codigoGuia" => $guia
+            ];
+            return $this->cromo->post($arDespacho->getOperadorRel(), '/api/transporte/guia/detalle/recogido', $parametros);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "El despacho no existe"
+            ];
+        }
+    }
+
+    public function apiGuiaRecogido($codigoDespacho, $guia, $usuario, $unidades)
+    {
+        $em = $this->getEntityManager();
+        $arDespacho = $em->getRepository(Despacho::class)->find($codigoDespacho);
+        if($arDespacho) {
+            $parametros = [
+                "codigoGuia" => $guia,
+                "codigoDespacho" => $arDespacho->getCodigoDespacho(),
+                "usuario" => $usuario,
+                "unidades" => $unidades
+            ];
+            $respuesta = $this->cromo->post($arDespacho->getOperadorRel(), '/api/transporte/guia/recogido', $parametros);
+            if($respuesta['error'] == false) {
+                return [
+                    'error' => false
+                ];
+            } else {
+                return $respuesta;
+            }
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "El despacho no existe"
+            ];
+        }
+    }
+
     public function apiGuiaEntregaPendiente($codigoDespacho)
     {
         $em = $this->getEntityManager();
