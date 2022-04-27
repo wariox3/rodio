@@ -44,6 +44,16 @@ class Despacho
     private $codigoUsuarioFk;
 
     /**
+     * @ORM\Column(name="codigo_despacho_clase_fk", type="string", length=5, nullable=true)
+     */
+    private $codigoDespachoClaseFk;
+
+    /**
+     * @ORM\Column(name="fecha_despacho", type="datetime", nullable=true)
+     */
+    private $fechaDespacho;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Operador", inversedBy="despachosOperadorRel")
      * @ORM\JoinColumn(name="codigo_operador_fk", referencedColumnName="codigo_operador_pk")
      */
@@ -181,6 +191,38 @@ class Despacho
     public function setUsuarioRel($usuarioRel): void
     {
         $this->usuarioRel = $usuarioRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodigoDespachoClaseFk()
+    {
+        return $this->codigoDespachoClaseFk;
+    }
+
+    /**
+     * @param mixed $codigoDespachoClaseFk
+     */
+    public function setCodigoDespachoClaseFk($codigoDespachoClaseFk): void
+    {
+        $this->codigoDespachoClaseFk = $codigoDespachoClaseFk;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFechaDespacho()
+    {
+        return $this->fechaDespacho;
+    }
+
+    /**
+     * @param mixed $fechaDespacho
+     */
+    public function setFechaDespacho($fechaDespacho): void
+    {
+        $this->fechaDespacho = $fechaDespacho;
     }
 
 

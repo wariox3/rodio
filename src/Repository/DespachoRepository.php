@@ -37,6 +37,8 @@ class DespachoRepository extends ServiceEntityRepository
                     if($respuesta['error'] == false) {
                         $arDespacho = new Despacho();
                         $arDespacho->setFecha(new \DateTime('now'));
+                        $arDespacho->setFechaDespacho(date_create($respuesta['fecha']));
+                        $arDespacho->setCodigoDespachoClaseFk($respuesta['codigoDespachoClase']);
                         $arDespacho->setUsuarioRel($arUsuario);
                         $arDespacho->setOperadorRel($arOperador);
                         $arDespacho->setCodigoDespacho($codigoDespacho);
@@ -79,6 +81,8 @@ class DespachoRepository extends ServiceEntityRepository
             ->addSelect('d.codigoOperadorFk')
             ->addSelect('d.codigoDespacho')
             ->addSelect('d.token')
+            ->addSelect('d.fechaDespacho')
+            ->addSelect('d.codigoDespachoClaseFk')
             ->addSelect('o.nombre as operadorNombre')
             ->leftJoin('d.operadorRel', 'o')
             ->andWhere("d.codigoUsuarioFk = {$codigoUsuario}")
