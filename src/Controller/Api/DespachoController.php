@@ -68,6 +68,23 @@ class DespachoController extends AbstractFOSRestController
     }
 
     /**
+     * @Rest\Post("/api/despacho/guias")
+     */
+    public function guias(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoDespacho = $raw['codigoDespacho']?? null;
+        if($codigoDespacho) {
+            return $em->getRepository(Despacho::class)->apiGuias($codigoDespacho);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
+        }
+    }
+
+    /**
      * @Rest\Post("/api/despacho/guia/entrega/pendiente")
      */
     public function guiaEntregaPendiente(Request $request)

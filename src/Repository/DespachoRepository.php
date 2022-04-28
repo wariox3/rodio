@@ -238,4 +238,21 @@ class DespachoRepository extends ServiceEntityRepository
             ];
         }
     }
+
+    public function apiGuias($codigoDespacho)
+    {
+        $em = $this->getEntityManager();
+        $arDespacho = $em->getRepository(Despacho::class)->find($codigoDespacho);
+        if($arDespacho) {
+            $parametros = [
+                "codigoDespacho" => $arDespacho->getCodigoDespacho()
+            ];
+            return $this->cromo->post($arDespacho->getOperadorRel(), '/api/transporte/despacho/guias', $parametros);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "El despacho no existe"
+            ];
+        }
+    }
 }
