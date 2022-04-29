@@ -54,6 +54,11 @@ class Despacho
     private $fechaDespacho;
 
     /**
+     * @ORM\Column(name="estado_entregado", type="boolean", options={"default" : false})
+     */
+    private $estadoEntregado = false;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Operador", inversedBy="despachosOperadorRel")
      * @ORM\JoinColumn(name="codigo_operador_fk", referencedColumnName="codigo_operador_pk")
      */
@@ -225,5 +230,20 @@ class Despacho
         $this->fechaDespacho = $fechaDespacho;
     }
 
+    /**
+     * @return bool
+     */
+    public function isEstadoEntregado(): bool
+    {
+        return $this->estadoEntregado;
+    }
+
+    /**
+     * @param bool $estadoEntregado
+     */
+    public function setEstadoEntregado(bool $estadoEntregado): void
+    {
+        $this->estadoEntregado = $estadoEntregado;
+    }
 
 }

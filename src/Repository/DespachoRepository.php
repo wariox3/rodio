@@ -83,6 +83,7 @@ class DespachoRepository extends ServiceEntityRepository
             ->addSelect('d.token')
             ->addSelect('d.fechaDespacho')
             ->addSelect('d.codigoDespachoClaseFk')
+            ->addSelect('d.estadoEntregado')
             ->addSelect('o.nombre as operadorNombre')
             ->leftJoin('d.operadorRel', 'o')
             ->andWhere("d.codigoUsuarioFk = {$codigoUsuario}")
@@ -105,12 +106,42 @@ class DespachoRepository extends ServiceEntityRepository
                 'fecha' =>$arDespacho->getFecha(),
                 'codigoDespacho' => $arDespacho->getCodigoDespacho(),
                 'token' => $arDespacho->getToken(),
+                'estadoEntregado' => $arDespacho->isEstadoEntregado(),
                 'codigoOperador' => $arDespacho->getCodigoOperadorFk(),
                 'nombre' => $arDespacho->getOperadorRel()->getNombre(),
                 'puntoServicio' => $arDespacho->getOperadorRel()->getPuntoServicioCromo(),
                 'puntoServicioToken' => $arDespacho->getOperadorRel()->getToken()
 
             ];
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "El despacho no existe"
+            ];
+        }
+    }
+
+    public function apiEntrega($codigoDespacho, $fecha, $hora)
+    {
+        $em = $this->getEntityManager();
+        $arDespacho = $em->getRepository(Despacho::class)->find($codigoDespacho);
+        if($arDespacho) {
+            $parametros = [
+                "codigoDespacho" => $arDespacho->getCodigoDespacho(),
+                "fecha" => $fecha,
+                "hora" => $hora
+            ];
+            $respuesta = $this->cromo->post($arDespacho->getOperadorRel(), '/api/transporte/despacho/entrega', $parametros);
+            if($respuesta['error'] == false) {
+                $arDespacho->setEstadoEntregado(1);
+                $em->persist($arDespacho);
+                $em->flush();
+                return [
+                    'error' => false
+                ];
+            } else {
+                return $respuesta;
+            }
         } else {
             return [
                 'error' => true,
