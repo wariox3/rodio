@@ -28,7 +28,10 @@ class AnotacionRepository extends ServiceEntityRepository
             ->select('a.codigoAnotacionPk')
             ->addSelect('a.fecha')
             ->addSelect('a.comentario')
-            ->where("a.codigoPuestoFk = {$codigoPuesto}");
+            ->addSelect('at.nombre as anotacionTipoNombre')
+            ->leftJoin('a.anotacionTipoRel', 'at')
+            ->where("a.codigoPuestoFk = {$codigoPuesto}")
+            ->orderBy('a.fecha','DESC');
         $arAnotaciones = $queryBuilder->getQuery()->getResult();
         $respuesta = [
             'error' => false,
@@ -53,13 +56,11 @@ class AnotacionRepository extends ServiceEntityRepository
         $queryBuilder = $em->createQueryBuilder()->from(Archivo::class, 'a')
             ->select('a.codigoArchivoPk')
             ->addSelect('a.nombre')
-            ->addSelect('a.ruta')
+            ->addSelect("CONCAT('{$_ENV['ALMACENAMIENTO_URL']}', a.url) as url")
             ->addSelect('a.codigoArchivoTipoFk as tipo')
             ->where("a.codigoModeloFk = 'Anotacion' ")
             ->andWhere("a.codigo = {$codigoAnotacion}");
         $arArchivos = $queryBuilder->getQuery()->getResult();
-
-
         $respuesta = [
             'error' => false,
             'anotacion' => $arAnotaciones,
@@ -91,7 +92,8 @@ class AnotacionRepository extends ServiceEntityRepository
                             $arArchivo->setCodigoModeloFk('Anotacion');
                             $arArchivo->setCodigo($arAnotacion->getCodigoAnotacionPk());
                             $arArchivo->setNombre($arrArchivo['nombre']);
-                            //$arArchivo->setRuta($this->space->subir("anotacion/{$arrArchivo['tipo']}", $arrArchivo['nombre'], $arrArchivo['base64']));
+                            $archivo = $this->space->subir("anotacion", $arrArchivo['base64']);
+                            $arArchivo->setUrl($archivo['url']);
                             $em->persist($arArchivo);
                         }
                     }
