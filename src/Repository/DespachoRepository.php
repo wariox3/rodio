@@ -155,18 +155,23 @@ class DespachoRepository extends ServiceEntityRepository
         $em = $this->getEntityManager();
         $arDespacho = $em->getRepository(Despacho::class)->find($codigoDespacho);
         if($arDespacho) {
-            $parametros = [
-                "codigoGuia" => $guia,
-                "usuario" => $usuario,
-                "imagenes" => $imagenes
-            ];
-            $respuesta = $this->cromo->post($arDespacho->getOperadorRel(), '/api/transporte/guia/entrega', $parametros);
-            if($respuesta['error'] == false) {
-                return [
-                    'error' => false
+            $arUsuario = $em->getRepository(Usuario::class)->find($usuario);
+            if($arUsuario) {
+                $parametros = [
+                    "codigoGuia" => $guia,
+                    "usuario" => $usuario,
+                    "usuarioNombre" => $arUsuario->getNombre(),
+                    "usuarioCorreo" => $arUsuario->getUsuario(),
+                    "imagenes" => $imagenes
                 ];
-            } else {
-                return $respuesta;
+                $respuesta = $this->cromo->post($arDespacho->getOperadorRel(), '/api/transporte/guia/entrega', $parametros);
+                if($respuesta['error'] == false) {
+                    return [
+                        'error' => false
+                    ];
+                } else {
+                    return $respuesta;
+                }
             }
         } else {
             return [
