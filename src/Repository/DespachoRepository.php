@@ -175,6 +175,7 @@ class DespachoRepository extends ServiceEntityRepository
                     $arGuia->setCodigoGuia($guia);
                     $arGuia->setCodigoSeguimientoTipoFk('ENTREGA');
                     $em->persist($arGuia);
+                    $em->flush();
                     return [
                         'error' => false
                     ];
