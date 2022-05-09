@@ -168,10 +168,6 @@ class DespachoRepository extends ServiceEntityRepository
                 ];
                 $respuesta = $this->cromo->post($arDespacho->getOperadorRel(), '/api/transporte/guia/entrega', $parametros);
                 if($respuesta['error'] == false) {
-                    return [
-                        'error' => false
-                    ];
-                } else {
                     $arGuia = new Guia();
                     $arGuia->setFecha(new \DateTime('now'));
                     $arGuia->setUsuarioRel($arUsuario);
@@ -179,6 +175,10 @@ class DespachoRepository extends ServiceEntityRepository
                     $arGuia->setCodigoGuia($guia);
                     $arGuia->setCodigoSeguimientoTipoFk('ENTREGA');
                     $em->persist($arGuia);
+                    return [
+                        'error' => false
+                    ];
+                } else {
                     return $respuesta;
                 }
             }
