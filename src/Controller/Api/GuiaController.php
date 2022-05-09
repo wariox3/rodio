@@ -16,7 +16,7 @@ class GuiaController extends AbstractFOSRestController
     /**
      * @Rest\Post("/api/guia/ingreso")
      */
-    public function nuevo(Request $request)
+    public function ingreso(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $raw = json_decode($request->getContent(), true);
@@ -29,6 +29,24 @@ class GuiaController extends AbstractFOSRestController
                 'error' => true,
                 'errorMensaje' => 'Faltan parametros para el consumo de la api'
             ];
+        }
+    }
+
+    /**
+     * @Rest\Post("/api/guia/ingreso/detalle")
+     */
+    public function ingresoDetalle(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoUsuario = $raw['codigoUsuario']?? null;
+        $codigoGuia = $raw['codigoGuia']?? null;
+        if($codigoUsuario && $codigoGuia) {
+            return $em->getRepository(Guia::class)->apiIngresoDetalle($codigoUsuario, $codigoGuia);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
         }
     }
 

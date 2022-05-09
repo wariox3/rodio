@@ -59,4 +59,29 @@ class GuiaRepository extends ServiceEntityRepository
             ];
         }
     }
+
+    public function apiIngresoDetalle($codigoUsuario, $codigoGuia)
+    {
+        $em = $this->getEntityManager();
+        $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
+        if($arUsuario) {
+            if($arUsuario->getOperadorRel()) {
+                $arOperador = $arUsuario->getOperadorRel();
+                $parametros = [
+                    "codigoGuia" => $codigoGuia
+                ];
+                return $this->cromo->post($arOperador, '/api/transporte/guia/detalle/ingreso', $parametros);
+            } else {
+                return [
+                    'error' => true,
+                    'errorMensaje' => "El usuario no tiene un operador asignado"
+                ];
+            }
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "No existe el usuario"
+            ];
+        }
+    }
 }
