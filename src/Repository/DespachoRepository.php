@@ -4,6 +4,7 @@
 namespace App\Repository;
 
 use App\Entity\Despacho;
+use App\Entity\Guia;
 use App\Entity\Operador;
 use App\Entity\Usuario;
 use App\Utilidades\Cromo;
@@ -171,6 +172,13 @@ class DespachoRepository extends ServiceEntityRepository
                         'error' => false
                     ];
                 } else {
+                    $arGuia = new Guia();
+                    $arGuia->setFecha(new \DateTime('now'));
+                    $arGuia->setUsuarioRel($arUsuario);
+                    $arGuia->setOperadorRel($arDespacho->getOperadorRel());
+                    $arGuia->setCodigoGuia($guia);
+                    $arGuia->setCodigoSeguimientoTipoFk('ENTREGA');
+                    $em->persist($arGuia);
                     return $respuesta;
                 }
             }

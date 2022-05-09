@@ -214,6 +214,11 @@ class Usuario
     private $despachosUsuarioRel;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Guia", mappedBy="usuarioRel")
+     */
+    private $guiasUsuarioRel;
+
+    /**
      * @return mixed
      */
     public function getCodigoUsuarioPk()
@@ -835,6 +840,22 @@ class Usuario
     public function setDespachosUsuarioRel($despachosUsuarioRel): void
     {
         $this->despachosUsuarioRel = $despachosUsuarioRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGuiasUsuarioRel()
+    {
+        return $this->guiasUsuarioRel;
+    }
+
+    /**
+     * @param mixed $guiasUsuarioRel
+     */
+    public function setGuiasUsuarioRel($guiasUsuarioRel): void
+    {
+        $this->guiasUsuarioRel = $guiasUsuarioRel;
     }
 
 

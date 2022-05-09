@@ -74,6 +74,11 @@ class Operador
     private $despachosOperadorRel;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Guia", mappedBy="operadorRel")
+     */
+    private $guiasOperadorRel;
+
+    /**
      * @return mixed
      */
     public function getCodigoOperadorPk()
@@ -263,6 +268,22 @@ class Operador
     public function setDespachosOperadorRel($despachosOperadorRel): void
     {
         $this->despachosOperadorRel = $despachosOperadorRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGuiasOperadorRel()
+    {
+        return $this->guiasOperadorRel;
+    }
+
+    /**
+     * @param mixed $guiasOperadorRel
+     */
+    public function setGuiasOperadorRel($guiasOperadorRel): void
+    {
+        $this->guiasOperadorRel = $guiasOperadorRel;
     }
 
 
