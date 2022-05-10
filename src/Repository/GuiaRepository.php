@@ -84,4 +84,71 @@ class GuiaRepository extends ServiceEntityRepository
             ];
         }
     }
+
+    public function apiSalida($codigoUsuario, $codigoGuia)
+    {
+        $em = $this->getEntityManager();
+        $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
+        if($arUsuario) {
+            if($arUsuario->getOperadorRel()) {
+                $arOperador = $arUsuario->getOperadorRel();
+                $parametros = [
+                    "codigoGuia" => $codigoGuia,
+                    "codigoUsuario" => $codigoUsuario
+                ];
+                $respuesta = $this->cromo->post($arOperador, '/api/transporte/guia/salida', $parametros);
+                if($respuesta['error'] == false) {
+                    $arGuia = new Guia();
+                    $arGuia->setFecha(new \DateTime('now'));
+                    $arGuia->setUsuarioRel($arUsuario);
+                    $arGuia->setOperadorRel($arOperador);
+                    $arGuia->setCodigoGuia($codigoGuia);
+                    $arGuia->setCodigoSeguimientoTipoFk('SALIDA');
+                    $em->persist($arGuia);
+                    $em->flush();
+                    return [
+                        'error' => false
+                    ];
+                } else {
+                    return $respuesta;
+                }
+
+            } else {
+                return [
+                    'error' => true,
+                    'errorMensaje' => "El usuario no tiene un operador asignado"
+                ];
+            }
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "No existe el usuario"
+            ];
+        }
+    }
+
+    public function apiSalidaDetalle($codigoUsuario, $codigoGuia)
+    {
+        $em = $this->getEntityManager();
+        $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
+        if($arUsuario) {
+            if($arUsuario->getOperadorRel()) {
+                $arOperador = $arUsuario->getOperadorRel();
+                $parametros = [
+                    "codigoGuia" => $codigoGuia
+                ];
+                return $this->cromo->post($arOperador, '/api/transporte/guia/detalle/salida', $parametros);
+            } else {
+                return [
+                    'error' => true,
+                    'errorMensaje' => "El usuario no tiene un operador asignado"
+                ];
+            }
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "No existe el usuario"
+            ];
+        }
+    }
 }
