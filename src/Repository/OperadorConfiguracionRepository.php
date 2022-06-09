@@ -23,6 +23,7 @@ class OperadorConfiguracionRepository extends ServiceEntityRepository
             return [
                 'error' => false,
                 'calidadImagenEntrega' => $arOperadorConfiguracion->getCalidadImagenEntrega(),
+                'exigeImagenEntrega' => $arOperadorConfiguracion->isExigeImagenEntrega()
             ];
         } else {
             return [

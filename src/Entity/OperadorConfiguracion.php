@@ -23,6 +23,11 @@ class OperadorConfiguracion
     private $calidadImagenEntrega = 1.0;
 
     /**
+     * @ORM\Column(name="exige_imagen_entrega", type="boolean", options={"default" : false})
+     */
+    private $exigeImagenEntrega = false;
+
+    /**
      * @return mixed
      */
     public function getCodigoOperadorConfiguracionPk()
@@ -52,6 +57,22 @@ class OperadorConfiguracion
     public function setCalidadImagenEntrega(float $calidadImagenEntrega): void
     {
         $this->calidadImagenEntrega = $calidadImagenEntrega;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isExigeImagenEntrega(): bool
+    {
+        return $this->exigeImagenEntrega;
+    }
+
+    /**
+     * @param bool $exigeImagenEntrega
+     */
+    public function setExigeImagenEntrega(bool $exigeImagenEntrega): void
+    {
+        $this->exigeImagenEntrega = $exigeImagenEntrega;
     }
 
 
