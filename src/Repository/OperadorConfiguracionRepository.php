@@ -28,7 +28,8 @@ class OperadorConfiguracionRepository extends ServiceEntityRepository
         } else {
             return [
                 'error' => false,
-                'calidadImagenEntrega' => 1
+                'calidadImagenEntrega' => 1,
+                'exigeImagenEntrega' => false
             ];
         }
     }
