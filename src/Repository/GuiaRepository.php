@@ -18,6 +18,57 @@ class GuiaRepository extends ServiceEntityRepository
         $this->cromo = $cromo;
     }
 
+    public function apiNuevo($codigoUsuario, $raw)
+    {
+        $em = $this->getEntityManager();
+        $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
+        if($arUsuario) {
+            if($arUsuario->getOperadorRel()) {
+                $arOperador = $arUsuario->getOperadorRel();
+                $parametros = [
+                    "codigoGuiaTipo" => $raw['codigoGuiaTipo'],
+                    "codigoProducto" => $raw['codigoProducto'],
+                    "codigoEmpaque" => $raw['codigoEmpaque'],
+                    "codigoServicio" => $raw['codigoServicio'],
+                    "codigoTercero" => $raw['codigoTercero'],
+                    "codigoOperacion" => $raw['codigoOperacion'],
+                    "remitente" => $raw['remitente'],
+                    "codigoCiudadDestino" => $raw['codigoCiudadDestino'],
+                    "nombreDestinatario" => $raw['nombreDestinatario'],
+                    "direccionDestinatario" => $raw['direccionDestinatario'],
+                    "telefonoDestinatario" => $raw['telefonoDestinatario'],
+                    "unidades" => $raw['unidades'],
+                    "pesoReal" => $raw['pesoReal'],
+                    "pesoVolumen" => $raw['pesoVolumen'],
+                    "pesoFacturado" => $raw['pesoFacturado'],
+                    "declarado" => $raw['declarado'],
+                    "flete" => $raw['flete'],
+                    "manejo" => $raw['manejo']
+                ];
+                $respuesta = $this->cromo->post($arOperador, '/api/transporte/guia/nuevo', $parametros);
+                if($respuesta['error'] == false) {
+                    return [
+                        'error' => false,
+                        'guia' => $respuesta['guia']
+                    ];
+                } else {
+                    return $respuesta;
+                }
+
+            } else {
+                return [
+                    'error' => true,
+                    'errorMensaje' => "El usuario no tiene un operador asignado"
+                ];
+            }
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "No existe el usuario"
+            ];
+        }
+    }
+
     public function apiIngreso($codigoUsuario, $codigoGuia)
     {
         $em = $this->getEntityManager();
