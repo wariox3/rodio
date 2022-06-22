@@ -87,4 +87,23 @@ class GuiaController extends AbstractFOSRestController
         }
     }
 
+    /**
+     * @Rest\Post("/api/guia/tercero/buscar")
+     */
+    public function terceroBuscar(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoUsuario = $raw['codigoUsuario']?? null;
+        $nombre = $raw['nombre']?? null;
+        $cliente = $raw['cliente']?? null;
+        if($codigoUsuario && $nombre) {
+            return $em->getRepository(Guia::class)->apiTerceroBuscar($codigoUsuario, $nombre, $cliente);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
+        }
+    }
+
 }

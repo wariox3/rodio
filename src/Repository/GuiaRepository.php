@@ -151,4 +151,30 @@ class GuiaRepository extends ServiceEntityRepository
             ];
         }
     }
+
+    public function apiTerceroBuscar($codigoUsuario, $nombre, $cliente)
+    {
+        $em = $this->getEntityManager();
+        $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
+        if($arUsuario) {
+            if($arUsuario->getOperadorRel()) {
+                $arOperador = $arUsuario->getOperadorRel();
+                $parametros = [
+                    "nombre" => $nombre,
+                    "cliente" => $cliente
+                ];
+                return $this->cromo->post($arOperador, '/api/general/tercero/buscar', $parametros);
+            } else {
+                return [
+                    'error' => true,
+                    'errorMensaje' => "El usuario no tiene un operador asignado"
+                ];
+            }
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "No existe el usuario"
+            ];
+        }
+    }
 }
