@@ -96,7 +96,6 @@ class GuiaRepository extends ServiceEntityRepository
                 } else {
                     return $respuesta;
                 }
-
             } else {
                 return [
                     'error' => true,
