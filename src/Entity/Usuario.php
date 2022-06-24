@@ -90,6 +90,11 @@ class Usuario
     private $vrSaldo = 0.0;
 
     /**
+     * @ORM\Column(name="codigo_operacion_fk", type="string", length=20, nullable=true)
+     */
+    private $codigoOperacionFk;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Panal", inversedBy="usuariosPanalRel")
      * @ORM\JoinColumn(name="codigo_panal_fk", referencedColumnName="codigo_panal_pk")
      */
@@ -856,6 +861,22 @@ class Usuario
     public function setGuiasUsuarioRel($guiasUsuarioRel): void
     {
         $this->guiasUsuarioRel = $guiasUsuarioRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodigoOperacionFk()
+    {
+        return $this->codigoOperacionFk;
+    }
+
+    /**
+     * @param mixed $codigoOperacionFk
+     */
+    public function setCodigoOperacionFk($codigoOperacionFk): void
+    {
+        $this->codigoOperacionFk = $codigoOperacionFk;
     }
 
 
