@@ -160,6 +160,7 @@ class DespachoRepository extends ServiceEntityRepository
             if($arUsuario) {
                 $parametros = [
                     "codigoGuia" => $guia,
+                    "codigoDespacho" => $arDespacho->getCodigoDespacho(),
                     "usuario" => $usuario,
                     "usuarioNombre" => $arUsuario->getNombre(),
                     "usuarioCorreo" => $arUsuario->getUsuario(),
