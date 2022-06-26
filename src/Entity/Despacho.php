@@ -71,6 +71,11 @@ class Despacho
     private $usuarioRel;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Ubicacion", mappedBy="despachoRel")
+     */
+    private $ubicacionesDespachoRel;
+
+    /**
      * @return mixed
      */
     public function getCodigoDespachoPk()
@@ -245,5 +250,23 @@ class Despacho
     {
         $this->estadoEntregado = $estadoEntregado;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getUbicacionesDespachoRel()
+    {
+        return $this->ubicacionesDespachoRel;
+    }
+
+    /**
+     * @param mixed $ubicacionesDespachoRel
+     */
+    public function setUbicacionesDespachoRel($ubicacionesDespachoRel): void
+    {
+        $this->ubicacionesDespachoRel = $ubicacionesDespachoRel;
+    }
+
+
 
 }

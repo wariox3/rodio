@@ -6,6 +6,7 @@ namespace App\Repository;
 use App\Entity\Despacho;
 use App\Entity\Guia;
 use App\Entity\Operador;
+use App\Entity\Ubicacion;
 use App\Entity\Usuario;
 use App\Utilidades\Cromo;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -176,6 +177,23 @@ class DespachoRepository extends ServiceEntityRepository
                     $arGuia->setCodigoGuia($guia);
                     $arGuia->setCodigoSeguimientoTipoFk('ENTREGA');
                     $em->persist($arGuia);
+
+                    if ($ubicacion) {
+                        if (is_array($ubicacion)) {
+                            $arUbicacion = new Ubicacion();
+                            $arUbicacion->setCodigoGuiaFk($guia);
+                            $arUbicacion->setDespachoRel($arDespacho);
+                            $arUbicacion->setFecha(new \DateTime('now'));
+                            $arUbicacion->setVelocidad($ubicacion['speed'] ?? 0);
+                            $arUbicacion->setLatitud($ubicacion['latitude'] ?? 0);
+                            $arUbicacion->setLongitud($ubicacion['longitude'] ?? 0);
+                            $arUbicacion->setAltitud($ubicacion['altitude'] ?? 0);
+                            $arUbicacion->setExactitud($ubicacion['accuracy'] ?? 0);
+                            $arUbicacion->setExactitudAltitud($ubicacion['altitudeAccuracy'] ?? 0);
+                            $em->persist($arUbicacion);
+                        }
+                    }
+
                     $em->flush();
                     return [
                         'error' => false

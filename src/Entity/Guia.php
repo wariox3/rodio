@@ -44,6 +44,11 @@ class Guia
     private $codigoUsuarioFk;
 
     /**
+     * @ORM\Column(name="estado_error", type="boolean", options={"default" : false}, nullable=true)
+     */
+    private $estadoError = false;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Operador", inversedBy="guiasOperadorRel")
      * @ORM\JoinColumn(name="codigo_operador_fk", referencedColumnName="codigo_operador_pk")
      */
@@ -181,6 +186,22 @@ class Guia
     public function setUsuarioRel($usuarioRel): void
     {
         $this->usuarioRel = $usuarioRel;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEstadoError(): bool
+    {
+        return $this->estadoError;
+    }
+
+    /**
+     * @param bool $estadoError
+     */
+    public function setEstadoError(bool $estadoError): void
+    {
+        $this->estadoError = $estadoError;
     }
 
 

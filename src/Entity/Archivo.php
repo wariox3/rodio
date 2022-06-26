@@ -13,7 +13,7 @@ class Archivo
 
     /**
      * @ORM\Id
-     * @ORM\Column(name="codigo_reserva_pk", type="integer")
+     * @ORM\Column(name="codigo_archivo_pk", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $codigoArchivoPk;
