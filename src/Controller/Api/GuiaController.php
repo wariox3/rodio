@@ -114,8 +114,10 @@ class GuiaController extends AbstractFOSRestController
         $raw = json_decode($request->getContent(), true);
         $codigoUsuario = $raw['codigoUsuario']?? null;
         $codigoGuia = $raw['codigoGuia']?? null;
+        $codigoProducto = $raw['codigoProducto']?? null;
+        $unidades = $raw['unidades']?? null;
         if($codigoUsuario && $codigoGuia) {
-            return $em->getRepository(Guia::class)->apiIngreso($codigoUsuario, $codigoGuia);
+            return $em->getRepository(Guia::class)->apiIngreso($codigoUsuario, $codigoGuia, $codigoProducto, $unidades);
         } else {
             return [
                 'error' => true,

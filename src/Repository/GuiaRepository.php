@@ -69,7 +69,7 @@ class GuiaRepository extends ServiceEntityRepository
         }
     }
 
-    public function apiIngreso($codigoUsuario, $codigoGuia)
+    public function apiIngreso($codigoUsuario, $codigoGuia, $codigoProducto, $unidades)
     {
         $em = $this->getEntityManager();
         $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
@@ -78,7 +78,9 @@ class GuiaRepository extends ServiceEntityRepository
                 $arOperador = $arUsuario->getOperadorRel();
                 $parametros = [
                     "codigoGuia" => $codigoGuia,
-                    "codigoUsuario" => $codigoUsuario
+                    "codigoUsuario" => $codigoUsuario,
+                    "codigoProducto" => $codigoProducto,
+                    "unidades" => $unidades
                 ];
                 $respuesta = $this->cromo->post($arOperador, '/api/transporte/guia/ingreso', $parametros);
                 if($respuesta['error'] == false) {
