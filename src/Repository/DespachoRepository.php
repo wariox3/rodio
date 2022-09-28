@@ -89,7 +89,8 @@ class DespachoRepository extends ServiceEntityRepository
             ->addSelect('o.nombre as operadorNombre')
             ->leftJoin('d.operadorRel', 'o')
             ->andWhere("d.codigoUsuarioFk = {$codigoUsuario}")
-            ->orderBy('d.fecha', 'DESC');
+            ->orderBy('d.fecha', 'DESC')
+            ->setMaxResults(5);
         $arDespachos = $queryBuilder->getQuery()->getResult();
         return [
             'error' => false,
