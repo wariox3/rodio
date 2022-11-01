@@ -39,6 +39,16 @@ class Operador
     private $token;
 
     /**
+     * @ORM\Column(name="usuario_servicio", type="string", length=50, nullable=true)
+     */
+    private $usuarioServicio;
+
+    /**
+     * @ORM\Column(name="clave_servicio", type="string", length=50, nullable=true)
+     */
+    private $claveServicio;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Usuario", mappedBy="operadorRel")
      */
     private $usuariosOperadorRel;
@@ -284,6 +294,38 @@ class Operador
     public function setGuiasOperadorRel($guiasOperadorRel): void
     {
         $this->guiasOperadorRel = $guiasOperadorRel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUsuarioServicio()
+    {
+        return $this->usuarioServicio;
+    }
+
+    /**
+     * @param mixed $usuarioServicio
+     */
+    public function setUsuarioServicio($usuarioServicio): void
+    {
+        $this->usuarioServicio = $usuarioServicio;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getClaveServicio()
+    {
+        return $this->claveServicio;
+    }
+
+    /**
+     * @param mixed $claveServicio
+     */
+    public function setClaveServicio($claveServicio): void
+    {
+        $this->claveServicio = $claveServicio;
     }
 
 

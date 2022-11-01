@@ -19,7 +19,7 @@ class Cromo
     public function post($arOperador, $ruta, $parametros) {
         if($arOperador) {
             if($arOperador->getPuntoServicioCromo()) {
-                if($arOperador->getToken()) {
+                if($arOperador->getUsuarioServicio() && $arOperador->getClaveServicio()) {
                     $datosJson = json_encode($parametros);
                     $url = $arOperador->getPuntoServicioCromo() . $ruta;
                     $ch = curl_init();
@@ -27,8 +27,9 @@ class Cromo
                     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     curl_setopt($ch, CURLOPT_POSTFIELDS, $datosJson);
+                    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+                    curl_setopt($ch, CURLOPT_USERPWD, "{$arOperador->getUsuarioServicio()}:{$arOperador->getClaveServicio()}");
                     curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                            "X-AUTH-TOKEN: {$arOperador->getToken()}",
                             'Content-Type: application/json',
                             'Content-Length: ' . strlen($datosJson))
                     );
