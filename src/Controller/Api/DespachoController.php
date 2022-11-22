@@ -216,4 +216,24 @@ class DespachoController extends AbstractFOSRestController
         }
     }
 
+    /**
+     * @Rest\Post("/api/despacho/monitoreo/detalle/nuevo")
+     */
+    public function monitoreoDetalleNuevo(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoDespacho = $raw['codigoDespacho']?? null;
+        $comentario = $raw['comentario']?? null;
+        $usuario = $raw['usuario']?? null;
+        $ubicacion  = $raw['ubicacion']?? null;
+        if($codigoDespacho && $usuario) {
+            return $em->getRepository(Despacho::class)->apiMonitoreoDetalleNuevo($codigoDespacho, $usuario, $ubicacion, $comentario);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'];
+        }
+    }
+
 }

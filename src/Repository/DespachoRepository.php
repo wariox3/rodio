@@ -321,4 +321,50 @@ class DespachoRepository extends ServiceEntityRepository
             ];
         }
     }
+
+    public function apiMonitoreoDetalleNuevo($codigoDespacho, $usuario, $ubicacion, $comentario)
+    {
+        $em = $this->getEntityManager();
+        $arDespacho = $em->getRepository(Despacho::class)->find($codigoDespacho);
+        if($arDespacho) {
+            $arUsuario = $em->getRepository(Usuario::class)->find($usuario);
+            if($arUsuario) {
+                $parametros = [
+                    "codigoDespacho" => $arDespacho->getCodigoDespacho(),
+                    "usuario" => $usuario,
+                    "comentario" => $comentario,
+                    "ubicacion" => $ubicacion
+                ];
+                $respuesta = $this->cromo->post($arDespacho->getOperadorRel(), '/api/transporte/monitoreo/detalle/nuevo', $parametros);
+                if($respuesta['error'] == false) {
+                    if ($ubicacion) {
+                        if (is_array($ubicacion)) {
+                            $arUbicacion = new Ubicacion();
+                            $arUbicacion->setDespachoRel($arDespacho);
+                            $arUbicacion->setFecha(new \DateTime('now'));
+                            $arUbicacion->setVelocidad($ubicacion['speed'] ?? 0);
+                            $arUbicacion->setLatitud($ubicacion['latitude'] ?? 0);
+                            $arUbicacion->setLongitud($ubicacion['longitude'] ?? 0);
+                            $arUbicacion->setAltitud($ubicacion['altitude'] ?? 0);
+                            $arUbicacion->setExactitud($ubicacion['accuracy'] ?? 0);
+                            $arUbicacion->setExactitudAltitud($ubicacion['altitudeAccuracy'] ?? 0);
+                            $em->persist($arUbicacion);
+                        }
+                    }
+
+                    $em->flush();
+                    return [
+                        'error' => false
+                    ];
+                } else {
+                    return $respuesta;
+                }
+            }
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "El despacho no existe"
+            ];
+        }
+    }
 }
