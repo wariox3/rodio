@@ -153,7 +153,7 @@ class DespachoRepository extends ServiceEntityRepository
         }
     }
 
-    public function apiGuiaEntrega($codigoDespacho, $guia, $usuario, $imagenes, $ubicacion)
+    public function apiGuiaEntrega($codigoDespacho, $guia, $usuario, $imagenes, $ubicacion, $firma)
     {
         $em = $this->getEntityManager();
         $arDespacho = $em->getRepository(Despacho::class)->find($codigoDespacho);
@@ -167,6 +167,7 @@ class DespachoRepository extends ServiceEntityRepository
                     "usuarioNombre" => $arUsuario->getNombre(),
                     "usuarioCorreo" => $arUsuario->getUsuario(),
                     "imagenes" => $imagenes,
+                    "firmarBase64" => $firma,
                     "ubicacion" => $ubicacion
                 ];
                 $respuesta = $this->cromo->post($arDespacho->getOperadorRel(), '/api/transporte/guia/entrega', $parametros);
