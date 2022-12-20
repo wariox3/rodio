@@ -171,8 +171,13 @@ class DespachoController extends AbstractFOSRestController
         $imagenes = $raw['imagenes']?? null;
         $ubicacion  = $raw['ubicacion']?? null;
         $firma = $raw['firmarBase64']?? null;
+        $recibe = $raw['recibe'] ?? null;
+        $recibeParentesco = $raw['parentesco'] ?? null;
+        $recibeNumeroIdentificacion = $raw['numeroIdentificacion'] ?? null;
+        $recibeCelular = $raw['celular'] ?? null;
+
         if($codigoDespacho && $guia && $usuario) {
-            return $em->getRepository(Despacho::class)->apiGuiaEntrega($codigoDespacho, $guia, $usuario, $imagenes, $ubicacion, $firma);
+            return $em->getRepository(Despacho::class)->apiGuiaEntrega($codigoDespacho, $guia, $usuario, $imagenes, $ubicacion, $firma, $recibe, $recibeParentesco, $recibeNumeroIdentificacion, $recibeCelular);
         } else {
             return [
                 'error' => true,
