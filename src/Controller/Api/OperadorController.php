@@ -16,6 +16,17 @@ use Symfony\Component\HttpFoundation\Request;
 
 class OperadorController extends AbstractFOSRestController
 {
+
+    /**
+     * @Rest\Post("/api/operador/lista")
+     */
+    public function lista(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        return $em->getRepository(Operador::class)->apiLista();
+    }
+
     /**
      * @Rest\Post("/api/operador/conectar")
      */
@@ -32,7 +43,6 @@ class OperadorController extends AbstractFOSRestController
                 'errorMensaje' => 'Faltan parametros para el consumo de la api'
             ];
         }
-
     }
 
     /**

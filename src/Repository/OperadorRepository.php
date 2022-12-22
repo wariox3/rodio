@@ -14,6 +14,19 @@ class OperadorRepository extends ServiceEntityRepository
         parent::__construct($registry, Operador::class);
     }
 
+    public function apiLista()
+    {
+        $em = $this->getEntityManager();
+        $queryBuilder = $em->createQueryBuilder()->from(Operador::class, 'o')
+            ->select('o.codigoOperadorPk')
+            ->addSelect('o.nombre');
+        $arOperadores = $queryBuilder->getQuery()->getResult();
+        return [
+            'error' => false,
+            'operadores' => $arOperadores
+        ];
+    }
+
     public function apiConectar($codigoOperador)
     {
         $em = $this->getEntityManager();
