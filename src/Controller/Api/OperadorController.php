@@ -63,4 +63,22 @@ class OperadorController extends AbstractFOSRestController
         }
 
     }
+
+    /**
+     * @Rest\Post("/api/operador/datosoperador")
+     */
+    public function datosOperador(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoOperador = $raw['codigoOperador'] ?? null;
+        if ($codigoOperador) {
+            return $em->getRepository(Operador::class)->apiDatosOperador($codigoOperador);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'
+            ];
+        }
+    }
 }

@@ -4,14 +4,18 @@
 namespace App\Repository;
 
 use App\Entity\Operador;
+use App\Utilidades\Cromo;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 class OperadorRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $cromo;
+
+    public function __construct(ManagerRegistry $registry, Cromo $cromo)
     {
         parent::__construct($registry, Operador::class);
+        $this->cromo = $cromo;
     }
 
     public function apiLista()
@@ -38,6 +42,24 @@ class OperadorRepository extends ServiceEntityRepository
                 'nombre' => $arOperador->getNombre(),
                 'puntoServicio' => $arOperador->getPuntoServicioCromo(),
                 'puntoServicioToken' => $arOperador->getToken()
+            ];
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "No existe el operador"
+            ];
+        }
+    }
+
+    public function apiDatosOperador($codigoOperador)
+    {
+        $em = $this->getEntityManager();
+        $arOperador = $em->getRepository(Operador::class)->find($codigoOperador);
+        if ($arOperador) {
+             $arNovedadesTipos = $this->cromo->post($arOperador, '/api/transporte/novedadtipo/lista', []);
+            return [
+                'error' => false,
+                'novedadesTipos' => $arNovedadesTipos
             ];
         } else {
             return [
