@@ -19,7 +19,8 @@ class OperadorRepository extends ServiceEntityRepository
         $em = $this->getEntityManager();
         $queryBuilder = $em->createQueryBuilder()->from(Operador::class, 'o')
             ->select('o.codigoOperadorPk')
-            ->addSelect('o.nombre');
+            ->addSelect('o.nombre')
+            ->where('o.transporte = 1');
         $arOperadores = $queryBuilder->getQuery()->getResult();
         return [
             'error' => false,

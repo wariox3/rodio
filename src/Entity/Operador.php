@@ -49,6 +49,11 @@ class Operador
     private $claveServicio;
 
     /**
+     * @ORM\Column(name="transporte", type="boolean", options={"default" : false}, nullable=true)
+     */
+    private $transporte = false;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Usuario", mappedBy="operadorRel")
      */
     private $usuariosOperadorRel;
@@ -328,6 +333,20 @@ class Operador
         $this->claveServicio = $claveServicio;
     }
 
+    /**
+     * @return bool
+     */
+    public function isTransporte(): bool
+    {
+        return $this->transporte;
+    }
 
+    /**
+     * @param bool $transporte
+     */
+    public function setTransporte(bool $transporte): void
+    {
+        $this->transporte = $transporte;
+    }
 
 }
