@@ -74,6 +74,64 @@ class DespachoRepository extends ServiceEntityRepository
         }
     }
 
+    public function apiNuevoDesconectado($codigoUsuario, $operador, $codigoDespacho, $token)
+    {
+        $em = $this->getEntityManager();
+        $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
+        if($arUsuario) {
+            $arOperador = $em->getRepository(Operador::class)->find($operador);
+            if($arOperador) {
+                $arDespacho = $em->getRepository(Despacho::class)->findOneBy(['codigoUsuarioFk' => $codigoUsuario, 'codigoOperadorFk' => $operador, 'codigoDespacho' => $codigoDespacho]);
+                if(!$arDespacho) {
+                    $parametros = [
+                        "codigoDespacho" => $codigoDespacho,
+                        "codigoUsuario" => $codigoUsuario,
+                        "token" => $token,
+                    ];
+                    $respuesta = $this->cromo->post($arOperador, '/api/transporte/despacho/cargar', $parametros);
+                    if($respuesta['error'] == false) {
+                        $arDespacho = new Despacho();
+                        $arDespacho->setFecha(new \DateTime('now'));
+                        $arDespacho->setFechaDespacho(date_create($respuesta['fecha']));
+                        $arDespacho->setCodigoDespachoClaseFk($respuesta['codigoDespachoClase']);
+                        $arDespacho->setUsuarioRel($arUsuario);
+                        $arDespacho->setOperadorRel($arOperador);
+                        $arDespacho->setCodigoDespacho($codigoDespacho);
+                        $arDespacho->setToken($token);
+                        $em->persist($arDespacho);
+                        $em->flush();
+                    } else {
+                        return $respuesta;
+                    }
+                }
+                $parametros = [
+                    "codigoDespacho" => $arDespacho->getCodigoDespacho()
+                ];
+                $arGuiasPendientes = $this->cromo->post($arOperador, '/api/transporte/guia/pendiente/entrega/despacho', $parametros);
+                return [
+                    'error' => false,
+                    'codigoDespachoPk' => $arDespacho->getCodigoDespachoPk(),
+                    'codigoOperadorFk' => $arDespacho->getCodigoOperadorFk(),
+                    'codigoDespacho' => $arDespacho->getCodigoDespacho(),
+                    'token' => $arDespacho->getToken(),
+                    'fechaDespacho' => $arDespacho->getFechaDespacho(),
+                    'codigoDespachoClaseFk' => $arDespacho->getCodigoDespachoClaseFk(),
+                    'guiasPendientes' => $arGuiasPendientes
+                ];
+            } else {
+                return [
+                    'error' => true,
+                    'errorMensaje' => "No existe el operador"
+                ];
+            }
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "No existe el usuario"
+            ];
+        }
+    }
+
     public function apiLista($codigoUsuario)
     {
         $em = $this->getEntityManager();

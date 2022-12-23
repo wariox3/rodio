@@ -34,6 +34,27 @@ class DespachoController extends AbstractFOSRestController
     }
 
     /**
+     * @Rest\Post("/api/despacho/nuevo/desconetado")
+     */
+    public function nuevoDesconectado(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoUsuario = $raw['codigoUsuario']?? null;
+        $operador = $raw['operador']?? null;
+        $codigoDespacho = $raw['codigoDespacho']?? null;
+        $token = $raw['token']?? null;
+        if($codigoUsuario && $operador && $codigoDespacho && $token) {
+            return $em->getRepository(Despacho::class)->apiNuevoDesconectado($codigoUsuario, $operador, $codigoDespacho, $token);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'
+            ];
+        }
+    }
+
+    /**
      * @Rest\Post("/api/despacho/lista")
      */
     public function lista(Request $request)
