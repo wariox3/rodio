@@ -110,12 +110,17 @@ class DespachoRepository extends ServiceEntityRepository
                 $arGuiasPendientes = $this->cromo->post($arOperador, '/api/transporte/guia/pendiente/entrega/despacho', $parametros);
                 return [
                     'error' => false,
-                    'codigoDespachoPk' => $arDespacho->getCodigoDespachoPk(),
-                    'codigoOperadorFk' => $arDespacho->getCodigoOperadorFk(),
-                    'codigoDespacho' => $arDespacho->getCodigoDespacho(),
-                    'token' => $arDespacho->getToken(),
-                    'fechaDespacho' => $arDespacho->getFechaDespacho(),
-                    'codigoDespachoClaseFk' => $arDespacho->getCodigoDespachoClaseFk(),
+                    'despacho' => [
+                        'operadorNombre' => $arDespacho->getOperadorRel()->getNombre(),
+                        'estadoEntregado' => $arDespacho->isEstadoEntregado(),
+                        'codigoDespachoClaseFk' => $arDespacho->getCodigoDespachoClaseFk(),
+                        'codigoDespachoPk' => $arDespacho->getCodigoDespachoPk(),
+                        'codigoOperadorFk' => $arDespacho->getCodigoOperadorFk(),
+                        'codigoDespacho' => $arDespacho->getCodigoDespacho(),
+                        'token' => $arDespacho->getToken(),
+                        'fechaDespacho' => $arDespacho->getFechaDespacho(),
+                        'codigoDespachoClaseFk' => $arDespacho->getCodigoDespachoClaseFk(),
+                    ],
                     'guiasPendientes' => $arGuiasPendientes
                 ];
             } else {
