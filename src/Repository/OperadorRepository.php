@@ -4,6 +4,7 @@
 namespace App\Repository;
 
 use App\Entity\Operador;
+use App\Entity\OperadorConfiguracion;
 use App\Utilidades\Cromo;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -56,10 +57,12 @@ class OperadorRepository extends ServiceEntityRepository
         $em = $this->getEntityManager();
         $arOperador = $em->getRepository(Operador::class)->find($codigoOperador);
         if ($arOperador) {
-             $arNovedadesTipos = $this->cromo->post($arOperador, '/api/transporte/novedadtipo/lista', []);
+            $arNovedadesTipos = $this->cromo->post($arOperador, '/api/transporte/novedadtipo/lista', []);
+            $arOperadorConfiguracion = $em->getRepository(OperadorConfiguracion::class)->find($codigoOperador);
             return [
                 'error' => false,
-                'novedadesTipos' => $arNovedadesTipos
+                'novedadesTipos' => $arNovedadesTipos,
+                'operadorConfiguracion' => $arOperadorConfiguracion
             ];
         } else {
             return [
