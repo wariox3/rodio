@@ -115,7 +115,7 @@ class DespachoRepository extends ServiceEntityRepository
                         'estadoEntregado' => $arDespacho->isEstadoEntregado(),
                         'codigoDespachoClaseFk' => $arDespacho->getCodigoDespachoClaseFk(),
                         'codigoDespachoPk' => $arDespacho->getCodigoDespachoPk(),
-                        'codigoOperadorFk' => $arDespacho->getCodigoOperadorFk(),
+                        'codigoOperadorFk' => $arDespacho->getOperadorRel()->getCodigoOperadorPk(),
                         'codigoDespacho' => $arDespacho->getCodigoDespacho(),
                         'token' => $arDespacho->getToken(),
                         'fechaDespacho' => $arDespacho->getFechaDespacho(),
