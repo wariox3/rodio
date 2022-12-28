@@ -216,7 +216,7 @@ class DespachoRepository extends ServiceEntityRepository
         }
     }
 
-    public function apiGuiaEntrega($codigoDespacho, $guia, $usuario, $imagenes, $ubicacion, $firma, $recibe, $recibeParentesco, $recibeNumeroIdentificacion, $recibeCelular)
+    public function apiGuiaEntrega($codigoDespacho, $guia, $usuario, $imagenes, $ubicacion, $firma, $recibe, $recibeParentesco, $recibeNumeroIdentificacion, $recibeCelular, $fechaEntrega)
     {
         $em = $this->getEntityManager();
         $arDespacho = $em->getRepository(Despacho::class)->find($codigoDespacho);
@@ -236,6 +236,7 @@ class DespachoRepository extends ServiceEntityRepository
                     "parentesco" => $recibeParentesco,
                     "numeroIdentificacion" => $recibeNumeroIdentificacion,
                     "celular" => $recibeCelular,
+                    "fechaEntrega" => $fechaEntrega
                 ];
                 $respuesta = $this->cromo->post($arDespacho->getOperadorRel(), '/api/transporte/guia/entrega', $parametros);
                 if($respuesta['error'] == false) {
