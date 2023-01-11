@@ -61,6 +61,7 @@ class OperadorRepository extends ServiceEntityRepository
             $arOperadorConfiguracion = $em->getRepository(OperadorConfiguracion::class)->find($codigoOperador);
             return [
                 'error' => false,
+                'nombre' => $arOperador->getNombre(),
                 'novedadesTipos' => $arNovedadesTipos,
                 'operadorConfiguracion' => $arOperadorConfiguracion
             ];
