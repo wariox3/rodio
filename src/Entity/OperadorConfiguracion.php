@@ -28,6 +28,11 @@ class OperadorConfiguracion
     private $exigeImagenEntrega = false;
 
     /**
+     * @ORM\Column(name="exige_firma_entrega", type="boolean", options={"default" : false})
+     */
+    private $exigeFirmaEntrega = false;
+
+    /**
      * @return mixed
      */
     public function getCodigoOperadorConfiguracionPk()
@@ -73,6 +78,22 @@ class OperadorConfiguracion
     public function setExigeImagenEntrega(bool $exigeImagenEntrega): void
     {
         $this->exigeImagenEntrega = $exigeImagenEntrega;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isExigeFirmaEntrega(): bool
+    {
+        return $this->exigeFirmaEntrega;
+    }
+
+    /**
+     * @param bool $exigeFirmaEntrega
+     */
+    public function setExigeFirmaEntrega(bool $exigeFirmaEntrega): void
+    {
+        $this->exigeFirmaEntrega = $exigeFirmaEntrega;
     }
 
 

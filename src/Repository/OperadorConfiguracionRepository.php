@@ -23,13 +23,15 @@ class OperadorConfiguracionRepository extends ServiceEntityRepository
             return [
                 'error' => false,
                 'calidadImagenEntrega' => $arOperadorConfiguracion->getCalidadImagenEntrega(),
-                'exigeImagenEntrega' => $arOperadorConfiguracion->isExigeImagenEntrega()
+                'exigeImagenEntrega' => $arOperadorConfiguracion->isExigeImagenEntrega(),
+                'exigeFirmaEntrega' => $arOperadorConfiguracion->isExigeFirmaEntrega()
             ];
         } else {
             return [
                 'error' => false,
                 'calidadImagenEntrega' => 1,
-                'exigeImagenEntrega' => false
+                'exigeImagenEntrega' => false,
+                'exigeFirmaEntrega' => false
             ];
         }
     }
