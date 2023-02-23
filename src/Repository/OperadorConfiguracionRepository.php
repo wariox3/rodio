@@ -36,4 +36,26 @@ class OperadorConfiguracionRepository extends ServiceEntityRepository
         }
     }
 
+
+    public function apiCambiarConfiguracion($codigoOperador, $calidadImagenEntrega, $exigeImagenEntrega, $exigeFirmaEntrega)
+    {
+        $em = $this->getEntityManager();
+        $arOperadorConfiguracion = $em->getRepository(OperadorConfiguracion::class)->find($codigoOperador);
+        if ($arOperadorConfiguracion) {
+            $arOperadorConfiguracion->setCalidadImagenEntrega($calidadImagenEntrega);
+            $arOperadorConfiguracion->setExigeImagenEntrega($exigeImagenEntrega);
+            $arOperadorConfiguracion->setExigeFirmaEntrega($exigeFirmaEntrega);
+            $em->persist($arOperadorConfiguracion);
+            $em->flush();
+            return [
+                'error' => false,
+            ];
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => "No una configuracion"
+            ];
+        }
+    }
+
 }
