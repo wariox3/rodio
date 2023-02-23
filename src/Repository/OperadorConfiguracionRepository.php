@@ -53,7 +53,7 @@ class OperadorConfiguracionRepository extends ServiceEntityRepository
         } else {
             return [
                 'error' => true,
-                'errorMensaje' => "No una configuracion"
+                'errorMensaje' => "No existe una configuracion para el operador"
             ];
         }
     }
