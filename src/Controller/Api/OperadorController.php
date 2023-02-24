@@ -81,4 +81,26 @@ class OperadorController extends AbstractFOSRestController
             ];
         }
     }
+
+    /**
+     * @Rest\Post("/api/operador/cambiarConfiguracion")
+     */
+    public function cambiarConfiguracion(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $raw = json_decode($request->getContent(), true);
+        $codigoOperador = $raw['codigoOperador'] ?? null;
+        $calidadImagenEntrega = $raw['calidadImagenEntrega'] ?? null;
+        $exigeImagenEntrega = $raw['exigeImagenEntrega'] ?? null;
+        $exigeFirmaEntrega = $raw['exigeFirmaEntrega'] ?? null;
+        if ($codigoOperador) {
+            return $em->getRepository(OperadorConfiguracion::class)->apiCambiarConfiguracion($codigoOperador, $calidadImagenEntrega, $exigeImagenEntrega, $exigeFirmaEntrega);
+        } else {
+            return [
+                'error' => true,
+                'errorMensaje' => 'Faltan parametros para el consumo de la api'
+            ];
+        }
+
+    }
 }
