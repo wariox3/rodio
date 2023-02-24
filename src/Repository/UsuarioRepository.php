@@ -36,18 +36,18 @@ class UsuarioRepository extends ServiceEntityRepository
             $puntoServicio = "";
             $puntoServicioToken = "";
             $celda = "";
-            if($arUsuario->getOperadorRel()) {
+            if ($arUsuario->getOperadorRel()) {
                 $operador = $arUsuario->getOperadorRel()->getNombre();
                 $puntoServicio = $arUsuario->getOperadorRel()->getPuntoServicioCromo();
                 $puntoServicioToken = $arUsuario->getOperadorRel()->getToken();
             }
             $oferta = false;
             $tienda = false;
-            if($arUsuario->getPanalRel()) {
+            if ($arUsuario->getPanalRel()) {
                 $oferta = $arUsuario->getPanalRel()->isOferta();
                 $tienda = $arUsuario->getPanalRel()->isTienda();
             }
-            if($arUsuario->getCeldaRel()) {
+            if ($arUsuario->getCeldaRel()) {
                 $celda = $arUsuario->getCeldaRel()->getCelda();
             }
             return [
@@ -66,6 +66,7 @@ class UsuarioRepository extends ServiceEntityRepository
                     'codigoOperador' => $arUsuario->getCodigoOperadorFk(),
                     'calidadImagen' => $arUsuario->getCalidadImagen(),
                     'codigoOperacion' => $arUsuario->getCodigoOperacionFk(),
+                    'habilitadoConfiguracion' => $arUsuario->isHabilitadoConfiguracion(),
                     'celda' => $celda,
                     'tienda' => $tienda,
                     'oferta' => $oferta,
@@ -153,7 +154,7 @@ class UsuarioRepository extends ServiceEntityRepository
         $em = $this->getEntityManager();
         $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
         if ($arUsuario) {
-            if(!$arUsuario->getPanalRel()) {
+            if (!$arUsuario->getPanalRel()) {
                 $arCiudad = $em->getRepository(Ciudad::class)->find($codigoCiudad);
                 if ($arCiudad) {
                     $arPanal = $em->getRepository(Panal::class)->find($codigoPanal);
@@ -201,7 +202,7 @@ class UsuarioRepository extends ServiceEntityRepository
         $em = $this->getEntityManager();
         $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
         if ($arUsuario) {
-            if($arUsuario->getCeldaRel()) {
+            if ($arUsuario->getCeldaRel()) {
                 $arCeldaUsuarios = $em->getRepository(CeldaUsuario::class)->findBy(['codigoCeldaFk' => $arUsuario->getCodigoCeldaFk(), 'codigoUsuarioFk' => $codigoUsuario]);
                 foreach ($arCeldaUsuarios as $arCeldaUsuario) {
                     $em->remove($arCeldaUsuario);
@@ -226,17 +227,17 @@ class UsuarioRepository extends ServiceEntityRepository
     {
         $em = $this->getEntityManager();
         $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
-        if($arUsuario) {
+        if ($arUsuario) {
             $panalNombre = null;
             $celda = null;
             $ciudadNombre = null;
-            if($arUsuario->getPanalRel()) {
+            if ($arUsuario->getPanalRel()) {
                 $panalNombre = $arUsuario->getPanalRel()->getNombre();
             }
-            if($arUsuario->getCeldaRel()) {
+            if ($arUsuario->getCeldaRel()) {
                 $celda = $arUsuario->getCeldaRel()->getCelda();
             }
-            if($arUsuario->getCiudadRel()) {
+            if ($arUsuario->getCiudadRel()) {
                 $ciudadNombre = $arUsuario->getCiudadRel()->getNombre();
             }
             return [
@@ -265,7 +266,7 @@ class UsuarioRepository extends ServiceEntityRepository
     {
         $em = $this->getEntityManager();
         $arUsuario = $em->getRepository(Usuario::class)->find($codigoUsuario);
-        if($arUsuario) {
+        if ($arUsuario) {
             $arUsuario->setNombre($nombre);
             $arUsuario->setCelular($celular);
             $em->persist($arUsuario);

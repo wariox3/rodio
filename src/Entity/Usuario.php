@@ -90,6 +90,12 @@ class Usuario
     private $vrSaldo = 0.0;
 
     /**
+     * @ORM\Column(name="habilitado_configuracion", type="boolean", options={"default" : false}, nullable=true)
+     */
+    private $habilitadoConfiguracion = false;
+
+
+    /**
      * @ORM\Column(name="codigo_operacion_fk", type="string", length=20, nullable=true)
      */
     private $codigoOperacionFk;
@@ -877,6 +883,22 @@ class Usuario
     public function setCodigoOperacionFk($codigoOperacionFk): void
     {
         $this->codigoOperacionFk = $codigoOperacionFk;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHabilitadoConfiguracion(): bool
+    {
+        return $this->habilitadoConfiguracion;
+    }
+
+    /**
+     * @param bool $habilitadoConfiguracion
+     */
+    public function setHabilitadoConfiguracion(bool $habilitadoConfiguracion): void
+    {
+        $this->habilitadoConfiguracion = $habilitadoConfiguracion;
     }
 
 
