@@ -33,6 +33,11 @@ class OperadorConfiguracion
     private $exigeFirmaEntrega = false;
 
     /**
+     * @ORM\Column(name="entrega_novedad", type="boolean", options={"default" : false})
+     */
+    private $entrega_novedad = false;
+
+    /**
      * @return mixed
      */
     public function getCodigoOperadorConfiguracionPk()
@@ -94,6 +99,22 @@ class OperadorConfiguracion
     public function setExigeFirmaEntrega(bool $exigeFirmaEntrega): void
     {
         $this->exigeFirmaEntrega = $exigeFirmaEntrega;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEntregaNovedad(): bool
+    {
+        return $this->entrega_novedad;
+    }
+
+    /**
+     * @param bool $entrega_novedad
+     */
+    public function setEntregaNovedad(bool $entrega_novedad): void
+    {
+        $this->entrega_novedad = $entrega_novedad;
     }
 
 

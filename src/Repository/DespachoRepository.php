@@ -6,6 +6,7 @@ namespace App\Repository;
 use App\Entity\Despacho;
 use App\Entity\Guia;
 use App\Entity\Operador;
+use App\Entity\OperadorConfiguracion;
 use App\Entity\Ubicacion;
 use App\Entity\Usuario;
 use App\Utilidades\Cromo;
@@ -165,6 +166,7 @@ class DespachoRepository extends ServiceEntityRepository
     {
         $em = $this->getEntityManager();
         $arDespacho = $em->getRepository(Despacho::class)->find($codigoDespacho);
+        $arOperadorConfiguracion = $em->getRepository(OperadorConfiguracion::class)->find($arDespacho->getCodigoOperadorFk());
         if($arDespacho) {
             return [
                 'error' => false,
@@ -176,8 +178,8 @@ class DespachoRepository extends ServiceEntityRepository
                 'codigoOperador' => $arDespacho->getCodigoOperadorFk(),
                 'nombre' => $arDespacho->getOperadorRel()->getNombre(),
                 'puntoServicio' => $arDespacho->getOperadorRel()->getPuntoServicioCromo(),
-                'puntoServicioToken' => $arDespacho->getOperadorRel()->getToken()
-
+                'puntoServicioToken' => $arDespacho->getOperadorRel()->getToken(),
+                'entregaNovedad' => $arOperadorConfiguracion->isEntregaNovedad()
             ];
         } else {
             return [
