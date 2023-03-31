@@ -93,8 +93,9 @@ class OperadorController extends AbstractFOSRestController
         $calidadImagenEntrega = $raw['calidadImagenEntrega'] ?? null;
         $exigeImagenEntrega = $raw['exigeImagenEntrega'] ?? null;
         $exigeFirmaEntrega = $raw['exigeFirmaEntrega'] ?? null;
+        $entregaNovedad = $raw['entregaNovedad'] ?? null;
         if ($codigoOperador) {
-            return $em->getRepository(OperadorConfiguracion::class)->apiCambiarConfiguracion($codigoOperador, $calidadImagenEntrega, $exigeImagenEntrega, $exigeFirmaEntrega);
+            return $em->getRepository(OperadorConfiguracion::class)->apiCambiarConfiguracion($codigoOperador, $calidadImagenEntrega, $exigeImagenEntrega, $exigeFirmaEntrega, $entregaNovedad);
         } else {
             return [
                 'error' => true,

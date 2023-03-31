@@ -24,7 +24,8 @@ class OperadorConfiguracionRepository extends ServiceEntityRepository
                 'error' => false,
                 'calidadImagenEntrega' => $arOperadorConfiguracion->getCalidadImagenEntrega(),
                 'exigeImagenEntrega' => $arOperadorConfiguracion->isExigeImagenEntrega(),
-                'exigeFirmaEntrega' => $arOperadorConfiguracion->isExigeFirmaEntrega()
+                'exigeFirmaEntrega' => $arOperadorConfiguracion->isExigeFirmaEntrega(),
+                'entregaNovedad' => $arOperadorConfiguracion->isEntregaNovedad()
             ];
         } else {
             return [
@@ -37,7 +38,7 @@ class OperadorConfiguracionRepository extends ServiceEntityRepository
     }
 
 
-    public function apiCambiarConfiguracion($codigoOperador, $calidadImagenEntrega, $exigeImagenEntrega, $exigeFirmaEntrega)
+    public function apiCambiarConfiguracion($codigoOperador, $calidadImagenEntrega, $exigeImagenEntrega, $exigeFirmaEntrega, $entregaNovedad)
     {
         $em = $this->getEntityManager();
         $arOperadorConfiguracion = $em->getRepository(OperadorConfiguracion::class)->find($codigoOperador);
@@ -45,6 +46,7 @@ class OperadorConfiguracionRepository extends ServiceEntityRepository
             $arOperadorConfiguracion->setCalidadImagenEntrega($calidadImagenEntrega);
             $arOperadorConfiguracion->setExigeImagenEntrega($exigeImagenEntrega);
             $arOperadorConfiguracion->setExigeFirmaEntrega($exigeFirmaEntrega);
+            $arOperadorConfiguracion->setExigeFirmaEntrega($entregaNovedad);
             $em->persist($arOperadorConfiguracion);
             $em->flush();
             return [
