@@ -46,7 +46,7 @@ class OperadorConfiguracionRepository extends ServiceEntityRepository
             $arOperadorConfiguracion->setCalidadImagenEntrega($calidadImagenEntrega);
             $arOperadorConfiguracion->setExigeImagenEntrega($exigeImagenEntrega);
             $arOperadorConfiguracion->setExigeFirmaEntrega($exigeFirmaEntrega);
-            $arOperadorConfiguracion->setExigeFirmaEntrega($entregaNovedad);
+            $arOperadorConfiguracion->setEntregaNovedad($entregaNovedad);
             $em->persist($arOperadorConfiguracion);
             $em->flush();
             return [
