@@ -357,7 +357,7 @@ class DespachoRepository extends ServiceEntityRepository
         }
     }
 
-    public function apiGuiaNovedadNuevo($codigoDespacho, $codigoGuia, $codigoNovedadTipo, $descripcion)
+    public function apiGuiaNovedadNuevo($codigoDespacho, $codigoGuia, $codigoNovedadTipo, $descripcion, $usuario)
     {
         $em = $this->getEntityManager();
         $arDespacho = $em->getRepository(Despacho::class)->find($codigoDespacho);
@@ -365,7 +365,8 @@ class DespachoRepository extends ServiceEntityRepository
             $parametros = [
                 "codigoGuia" => $codigoGuia,
                 "codigoNovedadTipo" => $codigoNovedadTipo,
-                "descripcion" => $descripcion
+                "descripcion" => $descripcion,
+                "usuario" => $usuario
             ];
             return $this->cromo->post($arDespacho->getOperadorRel(), '/api/transporte/novedad/nuevo', $parametros);
         } else {
