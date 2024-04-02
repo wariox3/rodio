@@ -13,7 +13,7 @@ class Ubicacion
 
     /**
      * @ORM\Id
-     * @ORM\Column(name="codigo_reserva_pk", type="integer")
+     * @ORM\Column(name="codigo_ubicacion_pk", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $codigoUbicacionPk;
